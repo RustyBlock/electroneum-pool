@@ -1,13 +1,13 @@
-var api = "https://eupool.electroneum.com/api";
+var api = "http://cryptoharbour.westeurope.cloudapp.azure.com:8117";
 
 var coinUnits = 100;
 var coinDecimalPlaces = 2;
 
-var poolHost = "eupool.electroneum.com";
+var poolHost = "cryptoharbour.westeurope.cloudapp.azure.com";
 
-var irc = "irc.freenode.net/#monero-pools";
+var irc = "irc.freenode.net/#rustylock";
 
-var email = "support@electroneum.com";
+var email = "cryptoharbour@gmail.com";
 
 var easyminerDownload = "https://github.com/zone117x/cryptonote-easy-miner/releases/";
 
