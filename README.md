@@ -75,24 +75,37 @@ Comes with lightweight example front-end script which uses the pool's AJAX API.
 * https://etn.dark-mine.su/
 * https://electroneum-pool.me/
 * http://etnpool.club/
-
+* http://pool.hashusa.win/
+* https://etn.mymininghub.com/
 Usage
 ===
 
 #### Requirements
+* A non root user. To intall & run the pool, you should do so as a user that is NOT root. Running as root will cause issues.
 * Coin daemon [electroneum repo](https://www.github.com/electroneum/electroneum)
   * To compile the coin you'll need several packages as detailed in the repo's readme. A quick one line command is below:
   * `sudo apt install build-essential cmake pkg-config libboost-all-dev libssl-dev libunbound-dev`
-* [Node.js](http://nodejs.org/) v0.10.48 ([follow these installation instructions](https://github.com/joyent/node/wiki/Installing-Node.js-via-package-manager))
+* [NVM](https://github.com/creationix/nvm) to install v0.10.48. Follow the instructions for installing nvm (Node Version Manager). Then type `nvm install 0.10.48`. Once finished, type `nvm use 0.10.48`.
 * [Redis](http://redis.io/) key-value store v2.6+ ([follow these instructions](http://redis.io/topics/quickstart))
 * libssl required for the node-multi-hashing module
   * For Ubuntu: `sudo apt-get install libssl-dev`
 * Boost is required for the cryptonote-util module
   * For Ubuntu: `sudo apt-get install libboost-all-dev`
+* Screen - for running the different parts of the pool in the background. This may come pre-installed on some systems.
+  * For Ubuntu: `sudo apt-get install screen`
+  * Usage:  
+    `screen -S daemond` <--- Use to run the daemond  
+    `screen -S rpc` <---- Use to run rpc  
+    `screen -S website` < --- use to run website  
+    `screen -list` <---- List screens  
+    `screen -x website` <--- reconnect to screen website  
+    `CTRL + a` then `CTRL + d` <----- detatch from a screen  
 
+##### Node.js v0.10.48
+* This version of node.js is required to run the cryptonight-util and node-multi-hashing modules. These modules were created by other users and currently only work with Node.js 0.10.48. Please ensure that you have this version of node.js installed before opening an issue asking for help.
 
 ##### Seriously
-Those are legitimate requirements. If you use old versions of Node.js or Redis that may come with your system package manager then you will have problems. Follow the linked instructions to get the last stable versions.
+Those are legitimate requirements. If you use a different version of Node.js or Redis that may come with your system package manager then you will have problems. Follow the linked instructions to get the last stable versions.
 
 
 [**Redis security warning**](http://redis.io/topics/security): be sure firewall access to redis - an easy way is to
