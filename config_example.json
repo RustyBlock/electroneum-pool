@@ -34,6 +34,12 @@
                 "port": 7777,
                 "difficulty": 10000,
                 "desc": "High end hardware"
+            },
+            {
+                "port": 7443,
+                "difficulty": 10000,
+                "desc": "SSL support",
+                "SSL": true
             }
         ],
         "varDiff": {
