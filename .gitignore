@@ -1,6 +1,7 @@
 node_modules/
 .idea/
 config.json
+website_example/config.js
 logs/
 *.save
 *.save.*

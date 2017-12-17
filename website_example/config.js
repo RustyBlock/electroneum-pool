@@ -1,4 +1,4 @@
-var api = "http://cryptoharbour.westeurope.cloudapp.azure.com:8117";
+var api = "http://18.196.14.71:8117";
 
 var coinUnits = 100;
 var coinDecimalPlaces = 2;
