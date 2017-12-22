@@ -9,9 +9,9 @@ require('./lib/configReader.js');
 
 require('./lib/logger.js');
 
+require('./lib/auth.js')
 
 global.redisClient = redis.createClient(config.redis.port, config.redis.host, {auth_pass: config.redis.auth});
-
 
 if (cluster.isWorker){
     switch(process.env.workerType){
