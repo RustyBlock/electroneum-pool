@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
 		{
+			"type": "node",
+			"request": "attach",
+			"name": "Attach to pool",
+			"processId": "${command:PickProcess}"
+		},
+		{
             "request": "launch",
 			// Name of configuration; appears in the launch configuration drop down menu.
 			"name": "Run mocha",

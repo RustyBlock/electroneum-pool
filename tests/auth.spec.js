@@ -7,28 +7,27 @@ const assert = require('chai').assert
 describe('Authentication module', function () {
   
   it('exports getWallet global API', function * () {
-    assert.exists(global.getWallet);
-  });
-
-  it('exports getWalletUsers global API', function * () {
-    assert.exists(global.getWalletUsers);
+    assert.exists(getWallet);
   });
 
   it('finds a wallet object by address', function * () {
-    var w = global.getWallet('etnkNn3izXrXazWDgZo2LYECBeyTDmJxqedxtFsRNP1hb5znsr36dxp8EPz4svfGAXXMTkHJ7rGHFJYSFhVRSVUY8WJ3zzKJrQ');
-    assert.exists(w);
-    assert.exists(w.users);
-    assert.exists(w.users.indexed);
+    getWallet('etnkNn3izXrXazWDgZo2LYECBeyTDmJxqedxtFsRNP1hb5znsr36dxp8EPz4svfGAXXMTkHJ7rGHFJYSFhVRSVUY8WJ3zzKJrQ', 
+      function(w){
+        assert.isTrue(typeof w !== 'undefined');
+        assert.isTrue(typeof w.users !== 'undefined');
+        assert.isAbove(w.users.length, 0);
+      }, function(err) {
+        assert.fail("error", "success", err.toString());
+      });
   });
 
-  it('finds user objects linked to a wallet address', function * () {
-    var u = global.getWalletUsers('etnkNn3izXrXazWDgZo2LYECBeyTDmJxqedxtFsRNP1hb5znsr36dxp8EPz4svfGAXXMTkHJ7rGHFJYSFhVRSVUY8WJ3zzKJrQ')
-    
-    assert.notEqual(u.length, 0, " number of users");
-    assert.notSameDeepMembers(u.splice(u.find(function(e) { return e.id === "1" }), 1), u, " users 1 present");
-    assert.notSameDeepMembers(u.splice(u.find(function(e) { return e.id === "2" }), 1), u, " user 2 present");
-    assert.notSameDeepMembers(u.splice(u.find(function(e) { return e.id === "4" }), 1), u, " user 4 present");
-    assert.equal(u.length, 0, " no users left");
+  it('doesn\'t find a wallet object by address', function * () {
+    getWallet('non-existing-address', 
+      function(w){
+        assert.isTrue(typeof w === 'undefined');
+      }, function(err) {
+        assert.fail("error", "success", err.toString());
+      });
   });
-
+  
 });
