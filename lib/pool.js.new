@@ -497,40 +497,23 @@ function handleMinerMethod(method, params, ip, portData, sendReply, pushMessage)
                 sendReply('missing login');
                 return;
             }
-            
-            // parse address for additional paramaters after '.'
             var addressParts = params.login.split('.');
             if (addressParts.length > 1) {
-                log('info', logSystem, 'Address parts after "." not supported. Ignoring: %s', [addressParts.slice(1).join('.')]);
+                sendReply('Adress parts after "." not supported. Ignoring: ' + addressParts.slice(1).join('.'));
             }
-            params.login = addressParts[0];
-            
-            if (!utils.isValidAddress(params.login)){
+            if (!utils.isValidAddress(addressParts)){
                 sendReply('invalid address used for login');
                 return;
             }
-
-            global.getWallet(params.login, function(result){
-                if(typeof result === 'undefined') {
-                    sendReply(params.login + 
-                        ' is not registered. Please register your user and add ' + params.login + ' to your miner wallets list in the user profile section.');
-                    return;
-                }
-
-                var minerId = utils.uid();
-                miner = new Miner(minerId, params.login, params.pass, ip, portData.difficulty, pushMessage);
-                connectedMiners[minerId] = miner;
-                sendReply(null, {
-                    id: minerId,
-                    job: miner.getJob(),
-                    status: 'OK'
-                });
-                log('info', logSystem, 'Miner connected %s@%s',  [params.login, miner.ip]);
-                    
-            }, function(err) {
-                log('error', logSystem, 'Failed to read wallet details: %s', [err.toString()])
-                sendReply('Miner login failed. Please report to the pool admin quoting your wallet address.');
-            })
+            var minerId = utils.uid();
+            miner = new Miner(minerId, params.login, params.pass, ip, portData.difficulty, pushMessage);
+            connectedMiners[minerId] = miner;
+            sendReply(null, {
+                id: minerId,
+                job: miner.getJob(),
+                status: 'OK'
+            });
+            log('info', logSystem, 'Miner connected %s@%s',  [params.login, miner.ip]);
             break;
         case 'getjob':
             if (!miner){
@@ -745,7 +728,5 @@ function startPoolServerTcp(callback){
             callback(true);
     });
 }
-
-
 
 
