@@ -6,3 +6,4 @@ website_example/config.js
 logs/
 *.save
 *.save.*
+*.nicehash
