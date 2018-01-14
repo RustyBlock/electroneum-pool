@@ -63,6 +63,7 @@ Comes with lightweight example front-end script which uses the pool's AJAX API.
 * https://asiapool.electroneum.com
 * https://eupool.electroneum.com
 * https://uspool.electroneum.com
+* http://etn.proxpool.com <- cloud based, high efficiency, EU Pool Server, 0% fee
 * http://ucrypto.com
 * http://pool.electroneumcharts.com
 * https://easyhash.io/pools/etn
@@ -80,6 +81,7 @@ Comes with lightweight example front-end script which uses the pool's AJAX API.
 * http://electroneum.dedpewl.com
 * http://etn.pool.nocroom.com < - cloud based, US Pool Server
 * http://etn.bl0ck.party <- Atlanta, GA, USA -- 0.5% fee
+* https://www.etn.rustylock.club - cloud based, high efficiency, EU Pool Server
 
 Usage
 ===
