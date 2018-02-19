@@ -7,3 +7,8 @@ logs/
 *.save
 *.save.*
 *.nicehash
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

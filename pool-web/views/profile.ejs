@@ -1,0 +1,297 @@
+<div class="container">
+    <% if (message) { %>
+        <div class="alert alert-danger"><%= message %></div>
+    <% } %>
+
+    <div class="page-header">
+        <a href="/logout" class="btn btn-default btn-danger">&nbsp;&nbsp;Logout&nbsp;&nbsp;</a>
+    </div>
+
+    <div class="row"> <!-- User settings -->
+        <div class="col-sm-12">
+            <div class="well">
+                <h4>Enter wallet address(es) of your miner(s)</h4>
+                <span>One address per line. <strong>Warning!</strong> Pool will not be able to accept miner connections if this field is empty or incorrect.</span>
+                <div>
+                    <textarea id="wallets" style="width:100%" rows="3"><%= wallets.join('\n') %></textarea>
+                </div>
+                <button id="saveWallets" class="btn btn-default">&nbsp;Save&nbsp;</button>&nbsp;&nbsp;
+                <span style="color:#FF0004;" id="saveWalletsMessage"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row"> <!-- Notification settings -->
+        <div class="col-sm-12">
+            <div class="well">
+                <h4>Email notifications</h4>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>Send email if hashrate is<label for="chkNfLow">&nbsp;too low</label>&nbsp;<input type="checkbox" id="chkNfLow" <%= (user.hashNf.loEnabled ==='true' ? 'checked="checked"' : '') %>/>&nbsp;and/or&nbsp;<label for="chkNfHigh">too high</label>
+                            <input type="checkbox" id="chkNfHigh" <%= (user.hashNf.hiEnabled === 'true' ? 'checked="checked"' : '') %>/></p>
+                        <p>Optimal hashrate from &nbsp;<input type="text" name="minRate" id="minRate" style="width:100px;" value="<%= user.hashNf.loRate %>"/>&nbsp;to&nbsp;
+                            <input type="text" name="maxRate" id="maxRate" style="width:100px;" value="<%= user.hashNf.hiRate %>"/>&nbsp;<strong>H/s</strong></p>
+                    </div>
+                    <div class="col-sm-6">
+                        <p>Also notify me if:
+                            <ul>
+                                <li><input type="checkbox" id="chkNfBlock" disabled="disabled" title="coming soon..."/>&nbsp;<label for="chkNfBlock">we found a block</label> (coming soon...)</li>
+                                <li><input type="checkbox" id="chkNfPayment" disabled="disabled" title="coming soon..."/>&nbsp;<label for="chkNfPayment">payment is made</label> (coming soon...)</li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="col-sm-12">
+                        <button id="saveNf" class="btn btn-default">&nbsp;Save&nbsp;</button>&nbsp;&nbsp;
+                        <span style="color:#FF0004;" id="saveNfMessage"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h4><span class="fa fa-user"></span> Email &amp; password <!--<a href="/unlink/local" class="btn btn-default">Unlink</a>-->
+                    <a href="#" class="btn btn-default" id="changePass" onclick="$('#changePassForm').show(); $('#changePass').hide(); mess.hide(); return false;">Change password</a>
+                </h4>
+
+                <% if (user.local.email) { %>
+                    <p>
+                        <!--strong>id</strong>: <%= user._id %><br>-->
+                        <strong>email</strong>: <%= user.local.email %> 
+                    </p>
+                <% } else { %>
+                    <a href="/connect/local" class="btn btn-default">Connect Local</a>
+                <% } %>
+                <p style="color:#FF0004;display:none;" id="changePassMessage"></p>
+                <div id="changePassForm" style="display:none;"><div class="row">
+                    <div class="col-sm-12">
+                    <p>Your password cannot be the same as your user name (email).</p>
+                    <form method="post" id="passwordForm" action="/changepass">
+                    <% include ../static/pages/password.html %>
+                    <input type="submit" class="btn btn-primary" data-loading-text="Changing Password..." value="Change password" id="submitPass" disabled="disabled">
+                    <input type="buton" class="btn btn-default" value="Cancel" onclick="$('#changePass').show(); $('#changePassForm').hide(); return false;">
+                    </form>
+                    </div><!--/col-sm-6-->
+                    </div><!--/row-->
+                </div>
+            </div>
+        </div>
+
+        <!-- FACEBOOK INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-primary"><span class="fa fa-facebook"></span> Facebook</h3>
+
+                <!-- check if the user has this token (is the user authenticated with this social account) -->
+                <% if (user.facebook.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.facebook.id %><br>
+                        <strong>token</strong>: <%= user.facebook.token %><br>
+                        <strong>email</strong>: <%= user.facebook.email %><br>
+                        <strong>name</strong>: <%= user.facebook.name %><br>
+                    </p>
+
+                    <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/facebook" class="btn btn-primary" disabled="disabled">Connect Facebook</a> coming soon...
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+        <!-- TWITTER INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-info"><span class="fa fa-twitter"></span> Twitter</h3>
+
+                <% if (user.twitter.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.twitter.id %><br>
+                        <strong>token</strong>: <%= user.twitter.token %><br>
+                        <strong>display name</strong>: <%= user.twitter.displayName %><br>
+                        <strong>username</strong>: <%= user.twitter.username %>
+                    </p>
+
+                    <a href="/unlink/twitter" class="btn btn-info">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/twitter" class="btn btn-info" disabled="disabled">Connect Twitter</a> coming soon...
+                <% } %>
+
+            </div>
+        </div>
+
+        <!-- GOOGLE INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3 class="text-danger"><span class="fa fa-google-plus"></span> Google+</h3>
+
+                <% if (user.google.token) { %>
+                    <p>
+                        <strong>id</strong>: <%= user.google.id %><br>
+                        <strong>token</strong>: <%= user.google.token %><br>
+                        <strong>email</strong>: <%= user.google.email %><br>
+                        <strong>name</strong>: <%= user.google.name %>
+                    </p>
+
+                    <a href="/unlink/google" class="btn btn-danger">Unlink</a>
+                <% } else { %>
+                    <a href="/connect/google" class="btn btn-danger" disabled="disabled">Connect Google</a> coming soon...
+                <% } %>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+
+var btn = $("#submitPass"),
+        mess = $("#changePassMessage");
+
+$("#passwordForm").submit(function(e){
+
+    e.preventDefault();
+    
+    if(!valid) {
+        return false;
+    }
+
+    mess.hide();
+
+    $.ajax({
+           type: "POST",
+           url: "/changepass",
+           data: $("#passwordForm").serialize(), // serializes the form's elements.
+           success: function(data) {
+               mess.css("color","#00A41E");
+               mess.text("Password changed successfully");
+               $('#changePass').show(); $('#changePassForm').hide();
+               mess.show();
+           },
+           error: function(settings) {
+               mess.css("color","#FF0004");
+               mess.text("Failed to change password");
+               mess.show();
+           }
+         });
+
+    return false;
+});
+
+$("#wallets").keyup(function(){
+    $("#saveWalletsMessage").text("");
+});
+
+$("#chkNfLow, #chkNfHigh, #minRate, #maxRate").keyup(function(){
+    $("#saveNfMessage").text("");
+});
+$("#chkNfLow, #chkNfHigh").click(function(){
+    $("#saveNfMessage").text("");
+});
+
+$("#saveWallets").click(function(){
+    var wallets = $("#wallets").val().trim(),
+        mess = $("#saveWalletsMessage"),
+        addresses = wallets.split("\n"), addressValid = true;
+
+    if(wallets == "") {
+        mess.css("color","#FF0004");
+        mess.text("List of wallets cannot be empty");
+        return false;
+    }
+
+    for(var i=0;i<addresses.length;i++)
+    {
+        var addr = addresses[i] = addresses[i].replace(/\s/g, ""),
+            addrWithPaymentId = addr.split('-'),
+            lengthWarning = "Electroneum wallet address should be 98 characters long";
+
+        if(addr.indexOf("etn") !== 0) {
+            mess.html("line " + (i + 1) + ": Electroneum wallet address should start from <b>etn</b>, e.g. \"<u>etn</u>Nn3iz...\"");
+            addressValid = false;
+            break;
+        }
+
+        if(addr.indexOf(".") !== -1) {
+            mess.html("line " + (i + 1) + ": Dot should not be included in wallet address registration.</br>Please use hyphen (-) symbol to specify Payment ID after ETN wallet address.");
+            addressValid = false;
+            break;
+        }
+
+        if(addr.length === 33 && (i + 2) < addresses.length) { // might be silly copy paste from PDF that makes 3 lines
+            var addr1 = addresses[i+1].replace(/\s/g, ""),
+                addr2 = addresses[i+2].replace(/\s/g, "");
+            if(addr1.length === 33 && addr2.length === 32) { // definitely copy from PDF
+                addresses[i] = addr + addr1 + addr2;
+                addresses.splice(i+1, 2);
+                i = i+2;
+                continue;
+            }
+        } else if(addrWithPaymentId[0].length < 98) {
+            mess.html("line " + (i + 1) + ": " + lengthWarning);
+            addressValid = false;
+            break;
+        }
+        
+        if(addrWithPaymentId[0].length > 98) {
+            mess.html("line " + (i + 1) + ": " + lengthWarning);
+            addressValid = false;
+            break;
+        }
+        
+        if(addrWithPaymentId.length > 1 && addrWithPaymentId[1].length !== 64) {
+            mess.html("line " + (i + 1) + ": Payment ID should be 64 charatcers long, including numbers and letters from A to F");
+            addressValid = false;
+            break;
+        }
+    };
+
+    if(!addressValid) {
+            mess.css("color","#FF0004");
+            return false;
+    } else {
+        $("#wallets").val(addresses.join("\n"));
+    }
+
+    $.post("/savewallets", { 
+        "wallets": addresses
+    }).done(function() { mess.css("color","#00A41E"); mess.text("Saved successfully!"); })
+    .fail(function() { mess.css("color","#FF0004"); mess.text("Failed to save wallet address(es)"); } );
+});
+
+$("#saveNf").click(function(){
+    var minRate = $("#minRate").val().trim(),
+        maxRate = $("#maxRate").val().trim(),
+        chkNfLow = $("#chkNfLow").is(":checked"),
+        chkNfHigh = $("#chkNfHigh").is(":checked"),
+        mess = $("#saveNfMessage");
+
+    if(chkNfLow && (minRate === "" || isNaN(minRate))) {
+        mess.css("color","#FF0004");
+        mess.text("\"hashrate from\" must be a numer");
+        return false;
+    }
+    if(chkNfHigh && (maxRate === "" || isNaN(maxRate))) {
+        mess.css("color","#FF0004");
+        mess.text("\"hashrate to\" must be a numer");
+        return false;
+    }
+
+    $.post("/saveNfSettings", { 
+        "hashNf": {
+            loEnabled: chkNfLow,
+            hiEnabled: chkNfHigh,
+            loRate: isNaN(minRate) ? '' : minRate,
+            hiRate: isNaN(maxRate) ? '' : maxRate
+        }
+    }).done(function() { mess.css("color","#00A41E"); mess.text("Saved successfully!"); })
+    .fail(function() { mess.css("color","#FF0004"); mess.text("Failed to save user settings"); } );
+});
+
+
+</script>

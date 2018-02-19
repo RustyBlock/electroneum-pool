@@ -27,9 +27,9 @@ if (cluster.isWorker){
         case 'api':
             require('./lib/api.js');
             break;
-        case 'cli':
-            require('./lib/cli.js');
-            break
+        case 'web':
+            require('./pool-web/server.js');
+            break;
     }
     return;
 }
@@ -40,7 +40,7 @@ require('./lib/exceptionWriter.js')(logSystem);
 
 var singleModule = (function(){
 
-    var validModules = ['pool', 'api', 'unlocker', 'payments'];
+    var validModules = ['pool', 'api', 'unlocker', 'payments', 'web'];
 
     for (var i = 0; i < process.argv.length; i++){
         if (process.argv[i].indexOf('-module=') === 0){
@@ -75,6 +75,10 @@ var singleModule = (function(){
                 case 'api':
                     spawnApi();
                     break;
+                case 'web':
+                    spawnWebsite();
+                    break;
+
             }
         }
         else{
@@ -82,10 +86,8 @@ var singleModule = (function(){
             spawnBlockUnlocker();
             spawnPaymentProcessor();
             spawnApi();
+            spawnWebsite();
         }
-
-        spawnCli();
-
     });
 })();
 
@@ -197,6 +199,18 @@ function spawnBlockUnlocker(){
 
 }
 
+function spawnWebsite() {
+    var worker = cluster.fork({
+        workerType: 'web'
+    });
+    worker.on('exit', function(code, signal){
+        log('error', logSystem, 'Web site died, spawning replacement...');
+        setTimeout(function(){
+            spawnWebsite();
+        }, 2000);
+    });
+}
+
 function spawnPaymentProcessor(){
 
     if (!config.payments || !config.payments.enabled) return;
@@ -224,8 +238,4 @@ function spawnApi(){
             spawnApi();
         }, 2000);
     });
-}
-
-function spawnCli(){
-
 }
