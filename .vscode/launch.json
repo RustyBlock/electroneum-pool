@@ -6,6 +6,12 @@
     "configurations": [
 		{
 			"type": "node",
+			"request": "launch",
+			"name": "Launch website",
+			"program": "${workspaceFolder}/pool-web/server.js"
+		},
+		{
+			"type": "node",
 			"request": "attach",
 			"name": "Attach to pool",
 			"processId": "${command:PickProcess}"

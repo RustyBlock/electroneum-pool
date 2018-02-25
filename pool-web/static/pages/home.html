@@ -199,7 +199,7 @@
 		<div class="yourStats"><i class="fa fa-money"></i> Total Paid: <span id="yourPaid"></span></div>
 		<div class="yourStats"><i class="fa fa-clock-o"></i> Last Share Submitted: <span id="yourLastShare"></span></div>
 		<div class="yourStats"><i class="fa fa-tachometer"></i> Hash Rate: <span id="yourHashrateHolder"></span></div>
-		<div class="yourStats"><i class="fa fa-cloud-upload"></i> Total Hashes Submitted: <span id="yourHashes"></span></div>
+		<div class="yourStats"><i class="fa fa-cloud-upload"></i> Round Share: <span id="yourHashes"></span> / <span id="yourShare" style="font-weight:bold;"></span> (est.)</div>
 
 		<br class="yourStats">
 
@@ -434,7 +434,8 @@
 						updateText('yourLastShare', 'Never');
 
 					updateText('yourHashrateHolder', (data.stats.hashrate || '0 H') + '/sec');
-					updateText('yourHashes', (data.stats.hashes || 0).toString());
+					updateText('yourHashes', (data.stats.roundCurrent || 0).toString());
+					updateText('yourShare', getReadableCoins(lastStats.network.reward * data.stats.roundCurrent / lastStats.pool.roundHashes));
 					updateText('yourPaid', getReadableCoins(data.stats.paid));
 					updateText('yourPendingBalance', getReadableCoins(data.stats.balance));
 
