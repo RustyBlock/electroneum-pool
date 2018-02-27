@@ -20,7 +20,7 @@
         "bignum": "^0.12.5",
         "cli-color": "1.1.0",
         "dateformat": "1.0.12",
-        "redis": "0.12.1",
+        "redis": "2.8.0",
         "nodemailer": "2.7.2",
         "multi-hashing": "git://github.com/zone117x/node-multi-hashing.git",
         "cryptonote-util": "git://github.com/RustyBlock/node-cryptonote-util.git#xmr-Nan-2.0"
