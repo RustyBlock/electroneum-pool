@@ -450,7 +450,6 @@
 				},
 				error: function(e){
 					if (e.statusText === 'abort') return;
-					$('#lookUp').html(lookupBtnHtml);
 					$('#addressError').text('Connection error').show();
 
 					if (addressTimeout) clearTimeout(addressTimeout);
