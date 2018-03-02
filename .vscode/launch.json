@@ -7,6 +7,12 @@
 		{
 			"type": "node",
 			"request": "launch",
+			"name": "Start API",
+			"program": "${workspaceFolder}/tools/get-hashrates.js"
+		},
+		{
+			"type": "node",
+			"request": "launch",
 			"name": "Launch website",
 			"program": "${workspaceFolder}/pool-web/server.js"
 		},
