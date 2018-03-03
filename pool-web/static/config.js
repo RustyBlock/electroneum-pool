@@ -1,4 +1,5 @@
-var api = "https://api.etn.rustylock.club:8118";
+var isHttps = location.protocol === 'https:';
+var api = (isHttps ? 'https' : 'http') + "://api.etn.rustylock.club:811" + (isHttps ? '8' : '7');
 
 var coinUnits = 100;
 var coinDecimalPlaces = 2;

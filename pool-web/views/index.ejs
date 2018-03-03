@@ -19,20 +19,23 @@
 		gtag('config', 'UA-111416801-1');
 	</script>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.0/jquery.timeago.min.js"></script>
 
 	<link href="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 	<script src="https://netdna.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-	<link href="https://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+	<script src="https://code.highcharts.com/stock/4.2.2/highstock.js"></script>
+	<script src="https://code.highcharts.com/stock/4.2.2/modules/exporting.js"></script>
+
+	<link href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" rel="stylesheet">
 
 	<link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 
 	<script src="config.js"></script>
 	<script src="custom.js"></script>
-	<script src="snowfall.jquery.min.js"></script>
+	<!--<script src="snowfall.jquery.min.js"></script>-->
 
 	<link href="custom.css" rel="stylesheet">
 
@@ -305,10 +308,11 @@
 			updateIndex();
 			routePage(fetchLiveStats);
 		});
+		/*
 		$("body>div.navbar.navbar-inverse.navbar-fixed-top").snowfall({
 			image :"images/flake.png", minSize: 5, maxSize:10,
 			maxSpeed: 1, flakeCount: 3, collect: "body>div.container"
-		});
+		}); */
 	});
 
 	var isAuthenticated = <%= req.isAuthenticated() %>;
@@ -343,7 +347,7 @@
 				</a></li>
 
 				<li><a class="hot_link" data-page="payments.html" href="#payments">
-					<i class="fa fa-paper-plane-o"></i> Payments
+					<i class="fa fas fa-paper-plane"></i> Payments
 				</a></li>
 
 				<li><a class="hot_link" data-page="information.html" href="#support">
@@ -351,9 +355,9 @@
 				</a></li>
 
 				<li><% if(req.isAuthenticated()) { %><a class="hot_link" data-page="../profile" href="#profile">
-					<i class="fa fa-user"></i> My settings
+					<i class="fa fas fa-user"></i> My settings
                 </a><% } else {%><a class="hot_link" data-page="../login" href="#login">
-					<i class="fa fa-sign-in"></i> Login
+					<i class="fa fas fa-sign-in-alt"></i> Login
 				</a><%} %></li>
 			</ul>
 			<a class="hot_link" style="display:none;" data-page="verified.html" href="#verified"></a>
