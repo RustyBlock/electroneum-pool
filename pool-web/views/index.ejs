@@ -190,7 +190,6 @@
 		return row;
 	}
 
-
 	function parsePayment(time, serializedPayment){
 		var parts = serializedPayment.split(':');
 		return {
@@ -334,7 +333,7 @@
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
 
-				<li class="active"><a class="hot_link" data-page="home.html" href="#">
+				<li class="active"><a class="hot_link" data-page="home.html" href="#" onclick="lastChartUpdate = null;">
 					<i class="fa fa-home"></i> Home
 				</a></li>
 
