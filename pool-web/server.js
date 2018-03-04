@@ -55,5 +55,5 @@ app.use('/', express.static(path.join(__dirname,'/static')));
 // routes ======================================================================
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
-app.listen(port);
+app.listen(port, '0.0.0.0');
 log('info', logSystem, 'Started web site on port ' + port);

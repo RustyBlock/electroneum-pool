@@ -14,25 +14,25 @@
         "postinstall": "cd pool-web && npm install"
     },
     "dependencies": {
-        "extend": "3.0.1",
         "async": "1.5.2",
         "base58-native": "0.1.4",
         "bignum": "^0.12.5",
         "cli-color": "1.1.0",
+        "cryptonote-util": "git://github.com/RustyBlock/node-cryptonote-util.git#xmr-Nan-2.0",
         "dateformat": "1.0.12",
-        "redis": "2.8.0",
-        "nodemailer": "2.7.2",
+        "extend": "3.0.1",
         "multi-hashing": "git://github.com/zone117x/node-multi-hashing.git",
-        "cryptonote-util": "git://github.com/RustyBlock/node-cryptonote-util.git#xmr-Nan-2.0"
+        "nodemailer": "2.7.2",
+        "redis": "2.8.0"
     },
     "devDependencies": {
         "chai": "~4.1.2",
         "co-mocha": "~1.2.1",
         "mocha": "~4.0.1",
         "sinon": "~4.1.3",
-        "sinon-chai": "~2.14.0"
+        "sinon-chai": "~2.14.0"     
     },
     "engines": {
-        "node": ">=0.10"
+        "node": "=0.10.48"
     }
 }
