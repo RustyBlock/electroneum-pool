@@ -1,23 +1,4 @@
-<style>
-    .blocksStatHolder > span{
-        display: inline-block;
-        border-radius: 5px;
-        padding: 1px 9px;
-        border: 1px solid #e5e5e5;
-        margin: 2px;
-    }
-    .blocksStatHolder > span > span{
-        font-weight: bold;
-    }
-    #blocks_rows > tr > td{
-        vertical-align: middle;
-        font-family: 'Inconsolata', monospace;
-        font-size: 0.95em;
-        text-align: center;
-    }
-</style>
-
-<div class="blocksStatHolder">
+<div class="statHolder">
     <span class="bg-primary">Total Blocks Mined: <span id="blocksTotal"></span></span>
     <span class="bg-info">Maturity Depth Requirement: <span id="blocksMaturityCount"></span></span>
 </div>
@@ -36,7 +17,7 @@
             <th><i class="fa fas fa-star-half"></i> Luck</th>
         </tr>
         </thead>
-        <tbody id="blocks_rows">
+        <tbody id="stats_rows" class="stats_rows">
 
         </tbody>
     </table>
@@ -67,7 +48,7 @@
         xhrGetBlocks = $.ajax({
             url: api + '/get_blocks',
             data: {
-                height: $('#blocks_rows').children().last().data('height')
+                height: $('#stats_rows').children().last().data('height')
             },
             dataType: 'json',
             cache: 'false',
@@ -145,7 +126,7 @@
 
     function renderBlocks(blocksResults){
 
-        var $blocksRows = $('#blocks_rows');
+        var $blocksRows = $('#stats_rows');
 
         for (var i = 0; i < blocksResults.length; i += 2){
 

@@ -1,0 +1,138 @@
+<div class="statHolder">
+    <div style="display:inline-block">
+        <span class="dropdown">
+            <button class="btn btn-info dropdown-toggle" type="button" id="roundSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span id="roundSelectorText" value="0">Current round</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="javascript:void(0)" value="0">Current round</a></li>
+                <li role="separator" class="divider"></li>      
+            </ul>
+        </span>
+    </div>
+    <span class="bg-primary">Total hashes: <span id="totalRoundHashes"></span></span>
+    <span class="bg-info">Total miners: <span id="totalMiners"></span></span>
+    <span class="bg-info">Block reward: <span id="blockReward"></span></span>
+</div>
+
+<hr>
+    
+<div class="table-responsive">
+    <table class="table table-hover table-striped">
+        <thead>
+        <tr>
+            <th style="width:30px;"><i class="fas fa-list-ol"></i></th>
+            <th><i class="fas fa-address-card"></i> Wallet adddress</th>
+            <th><i class="fa fa-chart-pie"></i> Hashes</th>
+            <th><i class="fa fas fa-money-bill-alt"></i> Reward</th>
+        </tr>
+        </thead>
+        <tbody id="stats_rows" class="stats_rows">
+        </tbody>
+    </table>
+</div>
+
+<p class="text-center">
+    <button type="button" class="btn btn-default" id="loadMoreStats">Load More</button>
+</p>
+
+<script>
+
+var xhrGetRound;
+currentPage = {
+    destroy: function() {
+        if (xhrGetRound) xhrGetRound.abort();
+    },
+    update: function() {
+    }
+};
+
+function renderRound(data) {
+
+    var roundRows = $('#stats_rows');
+
+    for (var i = 0; i < data.length; i++) {
+
+        var dataJson = JSON.stringify(data[i]);
+        var existingRow = document.getElementById('roundRow' + data[i].rank);
+
+        if (existingRow && existingRow.getAttribute('data-json') !== dataJson){
+            $(existingRow).replaceWith(getRoundRowElement(data[i], dataJson));
+        }
+        else if (!existingRow){
+
+            var roundElement = getRoundRowElement(data[i], dataJson);
+
+            var inserted = false;
+            var rows = roundRows.children().get();
+            for (var f = 0; f < rows.length; f++) {
+                var pRank = parseInt(rows[f].getAttribute('data-rank'));
+                if (pRank < roundElement.rank){
+                    inserted = true;
+                    $(rows[f]).before(roundElement);
+                    break;
+                }
+            }
+            if (!inserted)
+                roundRows.append(roundElement);
+        }
+    }
+}
+
+function getRoundRowElement(roundShare, jsonString){
+
+    var row = document.createElement('tr');
+    row.setAttribute('data-json', jsonString);
+    row.setAttribute('data-rank', roundShare.rank);
+    row.setAttribute('id', 'roundRow' + roundShare.rank);
+
+    row.innerHTML = '<td>' + roundShare.rank + '</td>' +
+            '<td style="text-align:left;">' + roundShare.address + '</td>' +
+            '<td style="text-align:left;">' + roundShare.hashes + '</td>' +
+            '<td style="text-align:left;">' + getReadableCoins(roundShare.reward, coinDecimalPlaces, true) + '</td>';
+
+    return row;
+}
+
+function loadRound() {
+    if (xhrGetRound) xhrGetRound.abort();
+    xhrGetRound = $.ajax({
+        url: api + '/get_round',
+        data: {
+            height: $("#roundSelectorText").attr("value"),
+            rank: $('#stats_rows').children().last().data('rank')
+        },
+        dataType: 'json',
+        cache: 'false',
+        success: function(data){
+            data.hashes.forEach(function(itm) {
+                itm.reward = itm.hashes / data.roundHashes * data.reward;
+            });
+            renderRound(data.hashes);
+            updateText('totalRoundHashes', data.roundHashes.toString());
+            updateText('totalMiners', data.roundMinders.toString());
+            updateText('blockReward', getReadableCoins(data.reward, coinDecimalPlaces));
+        }
+    });
+}
+
+
+$('#loadMoreStats').click(loadRound);
+
+$(".dropdown-menu li a").click(function(){
+    var that = $(this), val = that.attr("value"),
+        button = $("#roundSelectorText"), before = button.attr("value");   
+    button.text(that.text());
+    button.attr("value", val);
+
+    if(before === val) {
+        return;
+    }
+});
+
+$(function() {
+    loadRound();
+});
+
+</script>

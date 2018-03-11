@@ -1,23 +1,4 @@
-<style>
-    .paymentsStatHolder > span{
-        display: inline-block;
-        border-radius: 5px;
-        padding: 1px 9px;
-        border: 1px solid #e5e5e5;
-        margin: 2px;
-    }
-    .paymentsStatHolder > span > span{
-        font-weight: bold;
-    }
-    #payments_rows > tr > td{
-        vertical-align: middle;
-        font-family: 'Inconsolata', monospace;
-        font-size: 0.95em;
-        text-align: center;
-    }
-</style>
-
-<div class="paymentsStatHolder">
+<div class="statHolder">
     <span class="bg-primary">Total Payments: <span id="paymentsTotal"></span></span>
     <span class="bg-info">Total Miners Paid: <span id="paymentsTotalPaid"></span></span>
     <span class="bg-info">Minimum Payment Threshold: <span id="paymentsMinimum"></span></span>
@@ -38,7 +19,7 @@
             <th><i class="fa fas fa-users"></i> Payees</th>
         </tr>
         </thead>
-        <tbody id="payments_rows">
+        <tbody id="stats_rows" class="stats_rows">
 
         </tbody>
     </table>
@@ -70,7 +51,7 @@
         xhrGetPayments = $.ajax({
             url: api + '/get_payments',
             data: {
-                time: $('#payments_rows').children().last().data('time')
+                time: $('#stats_rows').children().last().data('time')
             },
             dataType: 'json',
             cache: 'false',

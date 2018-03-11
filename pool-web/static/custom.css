@@ -108,3 +108,20 @@ input[type='checkbox']  {
 .luckBad{
 	color: darkred;
 }
+
+.statHolder > span{
+	display: inline-block;
+	border-radius: 5px;
+	padding: 1px 9px;
+	border: 1px solid #e5e5e5;
+	margin: 2px;
+}
+.statHolder > span > span{
+	font-weight: bold;
+}
+.stats_rows > tr > td{
+	vertical-align: middle;
+	font-family: 'Inconsolata', monospace;
+	font-size: 0.95em;
+	text-align: center;
+}
