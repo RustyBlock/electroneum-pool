@@ -1,15 +1,15 @@
 <div class="statHolder">
     <div style="display:inline-block">
-        <span class="dropdown">
-            <button class="btn btn-info dropdown-toggle" type="button" id="roundSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        <div class="dropdown">
+            <button class="btn btn-info" type="button" id="roundSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span id="roundSelectorText" value="0">Current round</span>
                 <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+            <ul class="dropdown-menu" id="roundsMenu">
                 <li><a href="javascript:void(0)" value="0">Current round</a></li>
                 <li role="separator" class="divider"></li>      
             </ul>
-        </span>
+        </div>
     </div>
     <span class="bg-primary">Total hashes: <span id="totalRoundHashes"></span></span>
     <span class="bg-info">Total miners: <span id="totalMiners"></span></span>
@@ -88,7 +88,7 @@ function getRoundRowElement(roundShare, jsonString){
     row.setAttribute('id', 'roundRow' + roundShare.rank);
 
     row.innerHTML = '<td>' + roundShare.rank + '</td>' +
-            '<td style="text-align:left;">' + roundShare.address + '</td>' +
+            '<td style="text-align:left;"><a href="/?miner=' + roundShare.address + '">' + roundShare.address + '</a></td>' +
             '<td style="text-align:left;">' + roundShare.hashes + '</td>' +
             '<td style="text-align:left;">' + getReadableCoins(roundShare.reward, coinDecimalPlaces, true) + '</td>';
 
@@ -117,22 +117,40 @@ function loadRound() {
     });
 }
 
-
 $('#loadMoreStats').click(loadRound);
 
-$(".dropdown-menu li a").click(function(){
-    var that = $(this), val = that.attr("value"),
-        button = $("#roundSelectorText"), before = button.attr("value");   
-    button.text(that.text());
-    button.attr("value", val);
+function attachRoundSelector() {
+    $(".dropdown-menu li a").click(function(){
+        var that = $(this), val = that.attr("value"),
+            button = $("#roundSelectorText"), before = button.attr("value");   
+        button.text(that.text());
+        button.attr("value", val);
 
-    if(before === val) {
-        return;
+        if(before === val) {
+            return;
+        }
+
+        $('#stats_rows').html('');
+        loadRound();
+    });
+}
+
+function populateRounds() {
+    if(lastStats.pool.blocks && lastStats.pool.blocks.length) {
+
+        var mnu = $('#roundsMenu'), blks = lastStats.pool.blocks;
+        for(var i=0; i < lastStats.pool.blocks.length; i+=2) {
+            var blk = blks[i].split(':');
+            mnu.append('<li><a href="javascript:void(0)" value="' + blks[i+1] + '">' + blks[i+1] + ' - ' + 
+                new Date(parseInt(blk[1]) * 1000).toLocaleString() + '</a></li>');
+        }
+        mnu.dropdown();
+        attachRoundSelector();
     }
-});
+}
 
-$(function() {
-    loadRound();
-});
+populateRounds();
+loadRound();
+attachRoundSelector();
 
 </script>

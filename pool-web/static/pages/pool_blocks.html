@@ -68,7 +68,8 @@
             difficulty: parseInt(parts[2]),
             shares: parseInt(parts[3]),
             orphaned: parts[4],
-            reward: parts[5]
+            reward: parts[5],
+            miner: parts[6]
         };
 
         var toGo = lastStats.config.depth - (lastStats.network.height - block.height);
@@ -110,12 +111,14 @@
         row.setAttribute('title', block.status);
         row.className = blockStatusClasses[block.status];
 
+        var found = block.miner ? ('<td title="' + block.miner + '"><a href="/?miner=' + block.miner + '">' + formatDate(block.time) + '</a></td>') :
+            ('<td>' + formatDate(block.time) + '</td>');
         var columns =
             '<td>' + block.height + '</td>' +
             '<td>' + block.maturity + '</td>' +
             '<td>' + block.difficulty + '</td>' +
             '<td>' + formatBlockLink(block.hash) + '</td>' +
-            '<td>' + formatDate(block.time) + '</td>' +
+            found +
             '<td>' + formatLuck(block.difficulty, block.shares) + '</td>';
 
         row.innerHTML = columns;

@@ -297,7 +297,6 @@
 	}
 
 	function updateIndex(){
-		// updateText('coinName', lastStats.config.coin);
 		updateText('poolVersion', lastStats.config.version);
 	}
 
@@ -307,11 +306,6 @@
 			updateIndex();
 			routePage(fetchLiveStats);
 		});
-		/*
-		$("body>div.navbar.navbar-inverse.navbar-fixed-top").snowfall({
-			image :"images/flake.png", minSize: 5, maxSize:10,
-			maxSpeed: 1, flakeCount: 3, collect: "body>div.container"
-		}); */
 	});
 
 	var isAuthenticated = <%= req.isAuthenticated() %>;
