@@ -48,7 +48,7 @@ currentPage = {
     }
 };
 
-function renderRound(data) {
+function renderRound(data, miner) {
 
     var roundRows = $('#stats_rows');
 
@@ -58,11 +58,11 @@ function renderRound(data) {
         var existingRow = document.getElementById('roundRow' + data[i].rank);
 
         if (existingRow && existingRow.getAttribute('data-json') !== dataJson){
-            $(existingRow).replaceWith(getRoundRowElement(data[i], dataJson));
+            $(existingRow).replaceWith(getRoundRowElement(data[i], dataJson, miner));
         }
         else if (!existingRow){
 
-            var roundElement = getRoundRowElement(data[i], dataJson);
+            var roundElement = getRoundRowElement(data[i], dataJson, miner);
 
             var inserted = false;
             var rows = roundRows.children().get();
@@ -80,15 +80,20 @@ function renderRound(data) {
     }
 }
 
-function getRoundRowElement(roundShare, jsonString){
+function getRoundRowElement(roundShare, jsonString, miner){
 
-    var row = document.createElement('tr');
+    var row = document.createElement('tr'),
+        worker = roundShare.address;
     row.setAttribute('data-json', jsonString);
     row.setAttribute('data-rank', roundShare.rank);
     row.setAttribute('id', 'roundRow' + roundShare.rank);
 
+    if(roundShare.address === miner) {
+        worker += ' <b>(winner)</b>';
+    }
+
     row.innerHTML = '<td>' + roundShare.rank + '</td>' +
-            '<td style="text-align:left;"><a href="/?miner=' + roundShare.address + '">' + roundShare.address + '</a></td>' +
+            '<td style="text-align:left;"><a href="/?miner=' + roundShare.address + '">' + worker + '</a></td>' +
             '<td style="text-align:left;">' + roundShare.hashes + '</td>' +
             '<td style="text-align:left;">' + getReadableCoins(roundShare.reward, coinDecimalPlaces, true) + '</td>';
 
@@ -109,7 +114,7 @@ function loadRound() {
             data.hashes.forEach(function(itm) {
                 itm.reward = itm.hashes / data.roundHashes * data.reward;
             });
-            renderRound(data.hashes);
+            renderRound(data.hashes, data.miner);
             updateText('totalRoundHashes', data.roundHashes.toString());
             updateText('totalMiners', data.roundMinders.toString());
             updateText('blockReward', getReadableCoins(data.reward, coinDecimalPlaces));
