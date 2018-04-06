@@ -82,3 +82,22 @@ function parse_query_string(query) {
         return '<span class="luckBad">' + percent + '%</span>';
     }
 }
+
+function getReadableHashRateString(hashrate){
+	var i = 0;
+	var byteUnits = [' H', ' KH', ' MH', ' GH', ' TH', ' PH' ];
+	while (hashrate > 1000){
+		hashrate = hashrate / 1000;
+		i++;
+	}
+	return hashrate.toFixed(2) + byteUnits[i];
+}
+
+// Created time out for not loading the history on every refresh
+// because history is not updated more often than every 5 minutes
+function shouldFetchTheHistory(dt) {
+	if((new Date() - dt) / 1000 < 300) {
+		return false;
+	}
+	return true;
+}

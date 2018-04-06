@@ -217,6 +217,8 @@
 
 <script>
 
+lastMinerChartUpdate = new Date(2018, 1, 1);
+
 currentPage = {
 	destroy: function(){
 		$('#networkLastBlockFound,#poolLastBlockFound,#yourLastShare,#marketLastUpdated').timeago('dispose');
@@ -253,7 +255,7 @@ currentPage = {
 		}
 
 		updateText('poolMiners', lastStats.pool.miners.toString());
-		updateText('poolRoundHashes', lastStats.pool.roundHashes.toString());	
+		updateText('poolRoundHashes', lastStats.pool.roundHashes.toString());
 		$('#poolRoundHashes').append("&nbsp;(luck: " + formatLuck(lastStats.network.difficulty, lastStats.pool.roundHashes) + ")");
 
 		var totalFee = lastStats.config.fee;
@@ -263,17 +265,10 @@ currentPage = {
 		updateText('calcHashSymbol', lastStats.config.symbol);
 
 		calcEstimateProfit();
-		
-		setTimeout(function(){
-
-		}, 10);
 	}
 };
 
-
 $('#networkLastBlockFound,#poolLastBlockFound,#yourLastShare,#marketLastUpdated').timeago();
-
-
 function getReadableTime(seconds){
 
 	var units = [ [60, 'second'], [60, 'minute'], [24, 'hour'],
@@ -292,17 +287,6 @@ function getReadableTime(seconds){
 	}
 	return formatAmounts(amount,  units[units.length - 1][1]);
 }
-
-function getReadableHashRateString(hashrate){
-	var i = 0;
-	var byteUnits = [' H', ' KH', ' MH', ' GH', ' TH', ' PH' ];
-	while (hashrate > 1000){
-		hashrate = hashrate / 1000;
-		i++;
-	}
-	return hashrate.toFixed(2) + byteUnits[i];
-}
-
 
 /* Hash Profitability Calculator */
 
@@ -341,28 +325,17 @@ function getPaymentCells(payment){
 			'<td>' + payment.mixin + '</td>';
 }
 
-var xhrAddressPoll;
-var addressTimeout;
-
 $('#lookUp').click(function(){
-	var address = $('#yourStatsInput').val().trim();
-	if (!address){
+	var addressLkp = $('#yourStatsInput').val().trim();
+	if (!addressLkp){
 		$('#yourStatsInput').focus();
 		return;
 	}		
-	window.location.href = window.location.href.split('?')[0].replace('#', '') + '?miner=' + address;
+	window.location.href = window.location.href.split('?')[0].replace('#', '') + '?miner=' + addressLkp;
 });
 
-function shouldFetchTheHistory() {
-	if(lastChartUpdate == null) {
-		lastChartUpdate = new Date(2018, 1, 1);
-	}
-	if((new Date() - lastChartUpdate) / 1000 < 300) {
-		return false;
-	}
-
-	return true;
-}
+xhrAddressPoll = null;
+addressTimeout = null;
 
 function applyMinerAddress() {
 	var address = $('#yourStatsInput').val().trim();
@@ -388,7 +361,7 @@ function applyMinerAddress() {
 			data: {
 				address: address,
 				longpoll: longpoll,
-				history: shouldFetchTheHistory()
+				history: shouldFetchTheHistory(lastMinerChartUpdate)
 			},
 			dataType: 'json',
 			cache: 'false',
@@ -431,7 +404,7 @@ function applyMinerAddress() {
 				fetchAddressStats(true);
 				
 				if(data.stats.history) {
-					renderChart([{
+					renderMinerChart([{
 						name: '~' + address.substr(address.length - 7),
 						data: function() {
 							var res = [], nao = (new Date()).getTime() - 300000; // 5 minutes ago
@@ -464,11 +437,11 @@ function applyMinerAddress() {
 	fetchAddressStats(false);
 };
 
-var qsChunks = window.location.href.split('?'),
+qsChunks = window.location.href.split('?'),
 	qs = qsChunks.length > 1 ? qs = qsChunks[1] : '',
 	urlParams = parse_query_string(qs);
 
-var address = urlParams['miner'] || docCookies.getItem('mining_address');
+address = urlParams['miner'] || docCookies.getItem('mining_address');
 if(address) {
 	address = address.replace('#', '');
 }
@@ -483,7 +456,7 @@ $('#yourStatsInput').keyup(function(e){
 		$('#lookUp').click();
 });
 
-var xhrGetPayments;
+xhrGetPayments = null;
 $('#loadMorePayments').click(function(){
 	if (xhrGetPayments) xhrGetPayments.abort();
 	xhrGetPayments = $.ajax({
@@ -500,34 +473,33 @@ $('#loadMorePayments').click(function(){
 	});
 });
 
-var warn = $('#paymentIdNote');
+warnPaymentIdNote = $('#paymentIdNote');
 if (readCookie('paymentIdNote')) {
-	warn.hide();
+	warnPaymentIdNote.hide();
 } else {
-	warn.show();
+	warnPaymentIdNote.show();
 }
 
-var reg = $('#registerWarning');
+registerWarning = $('#registerWarning');
 if (readCookie('registerWarning') || isAuthenticated) {
-	reg.hide();
+	registerWarning.hide();
 } else {
-	reg.show();
+	registerWarning.show();
 }
 
 // ****************************** Chart **************************
-var chart = null;
-var lastChartUpdate = new Date();
-function renderChart(data) {
-	lastChartUpdate = new Date();
-	if(chart) {
+minerChart = null;
+function renderMinerChart(data) {
+	lastMinerChartUpdate = new Date();
+	if(minerChart) {
 		var cntr = 0;
 		data.forEach(function(itm) {
-			chart.series[cntr].setData(data[cntr].data, true);			
+			minerChart.series[cntr].setData(data[cntr].data, true);			
 			cntr++;
 		});
 		return;
 	}
-	chart = Highcharts.stockChart('chart-container', {
+	minerChart = Highcharts.stockChart('chart-container', {
 		rangeSelector: { enabled: false },
 		scrollbar: { enabled: false },
 		navigator: { enabled: false },

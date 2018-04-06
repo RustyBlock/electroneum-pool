@@ -1,4 +1,55 @@
 <div class="statHolder">
+    <h4 class="statTitle"><i class="far fa-building"></i> Pool &nbsp;</h4>
+    <div style="display:inline-block">
+        <div class="dropdown">
+            <button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span value="wk" id="poolSelectorText">Last week</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="poolMenu">
+                <li><a href="javascript:void(0)" value="day">Last 24 hours</a></li>
+                <li><a href="javascript:void(0)" value="wk">Last week</a></li>
+                <li><a href="javascript:void(0)" value="wk2">Last 2 weeks</a></li>
+                <li><a href="javascript:void(0)" value="mo">Last month</a></li>
+            </ul>
+        </div>
+    </div>
+    <span class="bg-primary">Hash rate: <span id="poolHashrate"></span></span>
+    <span class="bg-info">Connected miners: <span id="poolMiners"></span></span>
+    <span class="bg-info">Round hashes: <span id="poolRoundHashes"></span></span>
+</div>
+
+<hr>
+<div id="pool-chart-container" style="height: 180px; min-width: 310px"></div>
+<hr>
+
+<div class="statHolder">
+    <h4 class="statTitle"><i class="fas fa-globe"></i> Network &nbsp;</h4>
+    <div style="display:inline-block">
+        <div class="dropdown">
+            <button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <span value="wk" id="netSelectorText">Last week</span>
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" id="netMenu">
+                <li><a href="javascript:void(0)" value="day">Last 24 hours</a></li>
+                <li><a href="javascript:void(0)" value="wk">Last week</a></li>
+                <li><a href="javascript:void(0)" value="wk2">Last 2 weeks</a></li>
+                <li><a href="javascript:void(0)" value="mo">Last month</a></li>
+            </ul>
+        </div>
+    </div>
+    <span class="bg-primary">Hash rate: <span id="networkHashrate"></span></span>
+    <span class="bg-info">Difficulty: <span id="networkDifficulty"></span></span>
+    <span class="bg-info">Blockchain height: <span id="blockchainHeight"></span></span>
+</div>
+    
+<hr>
+<div id="net-chart-container" style="height: 180px; min-width: 310px"></div>
+<hr>
+
+<div class="statHolder">
+    <h4 class="statTitle"><i class="fas fa-stopwatch"></i> Round &nbsp;</h4>
     <div style="display:inline-block">
         <div class="dropdown">
             <button class="btn btn-info" type="button" id="roundSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -11,9 +62,9 @@
             </ul>
         </div>
     </div>
-    <span class="bg-primary">Total hashes: <span id="totalRoundHashes"></span></span>
-    <span class="bg-info">Total miners: <span id="totalMiners"></span></span>
-    <span class="bg-info">Block reward: <span id="blockReward"></span></span>
+    <span class="bg-primary">Round hashes: <span id="totalRoundHashes"></span></span>
+    <span class="bg-info">Round miners: <span id="totalMiners"></span></span>
+    <span class="bg-info">Round block reward: <span id="blockReward"></span></span>
 </div>
 
 <hr>
@@ -24,8 +75,8 @@
         <tr>
             <th style="width:30px;"><i class="fas fa-list-ol"></i></th>
             <th><i class="fas fa-address-card"></i> Wallet adddress</th>
-            <th><i class="fa fa-chart-pie"></i> Hashes</th>
-            <th><i class="fa fas fa-money-bill-alt"></i> Reward</th>
+            <th style="width:90px;"><i class="fa fa-chart-pie"></i> Hashes</th>
+            <th style="width:90px;"><i class="fa fas fa-money-bill-alt"></i> Reward</th>
         </tr>
         </thead>
         <tbody id="stats_rows" class="stats_rows">
@@ -45,8 +96,31 @@ currentPage = {
         if (xhrGetRound) xhrGetRound.abort();
     },
     update: function() {
+        updateText('poolHashrate', getReadableHashRateString(lastStats.pool.hashrate) + '/sec');
+        updateText('poolMiners', lastStats.pool.miners.toString());
+        updateText('poolRoundHashes', lastStats.pool.roundHashes.toString());
+		updateText('networkHashrate', getReadableHashRateString(lastStats.network.difficulty / 60) + '/sec');
+		updateText('networkDifficulty', lastStats.network.difficulty.toString());
+        updateText('blockchainHeight', lastStats.network.height.toString());
+        
+        if(lastStats.history) {
+            if(lastStats.history.historyFrom) {
+                updateNetChart(lastStats.history);
+                lastTimeNetHistoryRequested = new Date();
+            }
+            if(lastStats.history.poolHistoryFrom) {
+                updatePoolChart(lastStats.history);
+                lastTimePoolHistoryRequested = new Date();
+            }
+        }
     }
 };
+
+function updateNetChart(dat) {
+}
+
+function updatePoolChart(dat) {
+}
 
 function renderRound(data, miner) {
 
@@ -124,17 +198,22 @@ function loadRound() {
 
 $('#loadMoreStats').click(loadRound);
 
-function attachRoundSelector() {
-    $(".dropdown-menu li a").click(function(){
+function dropDownSelectorCommon(ddMenu, ddText, selectCb) {
+    ddMenu.click(function(){
         var that = $(this), val = that.attr("value"),
-            button = $("#roundSelectorText"), before = button.attr("value");   
+            button = ddText, before = button.attr("value");   
         button.text(that.text());
         button.attr("value", val);
 
         if(before === val) {
             return;
         }
+        selectCb();
+    });
+}
 
+function attachRoundSelector() {
+    dropDownSelectorCommon($("#roundsMenu li a"), $("#roundSelectorText"), function() {
         $('#stats_rows').html('');
         loadRound();
     });
@@ -157,5 +236,86 @@ function populateRounds() {
 populateRounds();
 loadRound();
 attachRoundSelector();
+
+lastTimePoolHistoryRequested = new Date(2018, 1, 1);
+lastTimeNetHistoryRequested = new Date(2018, 1, 1);
+window.statsUrlExtra = function() {
+    var shouldPool = shouldFetchTheHistory(lastTimePoolHistoryRequested),
+        shouldNet = shouldFetchTheHistory(lastTimeNetHistoryRequested);
+    
+    if(!shouldPool && !shouldNet) {
+        return '';
+    }
+
+    function selectorToDates(val) {
+        var to = new Date(), from = new Date(to.getTime());
+        switch(val) {
+            case 'day':
+                from.setDate(from.getDate()-1);
+                break;
+            case 'wk':
+                from.setDate(from.getDate()-7);
+                break;
+            case 'wk2':
+                from.setDate(from.getDate()-14);
+                break;
+            case 'mo':
+                from.setMonth(from.getMonth()-1);
+                break;
+        }
+        return [from, to];
+    }
+
+    var netFromTo = selectorToDates($('#netSelectorText').attr('value')), 
+        poolFromTo = selectorToDates($('#poolSelectorText').attr('value'));
+    
+
+
+    return '?' + formatFromToDate(netFromTo[0], netFromTo[1], 'historyFrom', 'historyTo') + 
+        '&' + formatFromToDate(poolFromTo[0], poolFromTo[1], 'poolHistoryFrom', 'poolHistoryTo');
+}
+
+dropDownSelectorCommon($("#poolMenu li a"), $("#poolSelectorText"), function() {
+
+});
+
+dropDownSelectorCommon($("#netMenu li a"), $("#netSelectorText"), function() {
+});
+
+// ****************************** Chart **************************
+minerChart = null;
+function renderMinerChart(data) {
+	lastMinerChartUpdate = new Date();
+	if(minerChart) {
+		var cntr = 0;
+		data.forEach(function(itm) {
+			minerChart.series[cntr].setData(data[cntr].data, true);			
+			cntr++;
+		});
+		return;
+	}
+	minerChart = Highcharts.stockChart('chart-container', {
+		rangeSelector: { enabled: false },
+		scrollbar: { enabled: false },
+		navigator: { enabled: false },
+		exporting: { enabled: false },
+		yAxis: {
+			title: {
+				text: 'Hash rate (kH/s)'
+			},
+			labels: {
+				formatter: function () {
+					return this.value;
+				}
+			}
+		},
+		tooltip: {
+			pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> (kH/s)<br/>',
+			valueDecimals: 2,
+			split: true
+		},
+		series: data
+	});
+}
 
 </script>

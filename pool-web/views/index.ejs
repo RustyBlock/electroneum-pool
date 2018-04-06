@@ -102,7 +102,6 @@
 <body style="padding-top: 80px;">
 <script>
 
-
 	var docCookies = {
 		getItem: function (sKey) {
 			return decodeURIComponent(document.cookie.replace(new RegExp("(?:(?:^|.*;)\\s*" + encodeURIComponent(sKey).replace(/[\-\.\+\*]/g, "\\$&") + "\\s*\\=\\s*([^;]*).*$)|^.*$"), "$1")) || null;
@@ -254,7 +253,7 @@
 
 	function fetchLiveStats() {
 		$.ajax({
-			url: api + '/live_stats',
+			url: api + '/live_stats' + (window.statsUrlExtra ? window.statsUrlExtra() : ''),
 			dataType: 'json',
 			cache: 'false'
 		}).done(function(data){
@@ -300,8 +299,27 @@
 		updateText('poolVersion', lastStats.config.version);
 	}
 
+	function pad(num, size) {
+		var s = num+"";
+		while (s.length < size) s = "0" + s;
+		return s;
+	}
+
+	function formatFromToDate (dtFrom, dtTo, varFrom, varTo) {
+		return varFrom + '=' + dtFrom.getFullYear().toString() + '-' + 
+			pad(dtFrom.getMonth() + 1, 2).toString() + '-' + 
+			pad(dtFrom.getDate(), 2).toString() +
+			'&' + varTo + '=' + dtTo.getFullYear().toString() + '-' + 
+			pad(dtTo.getMonth() + 1, 2).toString() + '-' + 
+			pad(dtTo.getDate(), 2).toString();
+	}
+
 	$(function(){
-		$.get(api + '/stats', function(data){
+		var shouldGetHistory = window.location.href.indexOf('#stats') >= 0,
+			to = new Date(), from = new Date(to.getTime());
+		from.setDate(to.getDate() - 7);
+		$.get(api + '/stats' + (shouldGetHistory ? ('?' + formatFromToDate(from, to, 'historyFrom', 'historyTo') + 
+				'&' + formatFromToDate(from, to, 'poolHistoryFrom', 'poolHistoryTo')) : ''), function(data){
 			lastStats = data;
 			updateIndex();
 			routePage(fetchLiveStats);
