@@ -101,3 +101,38 @@ function shouldFetchTheHistory(dt) {
 	}
 	return true;
 }
+
+function calculateDataAverage(data) {
+    var runningTotal = 0, count = 1, res = [];
+    data.forEach(function(itm) {
+        runningTotal += itm[1];
+        res.push([itm[0], runningTotal / count]);
+        count++;
+    });
+    return res;
+}
+
+function pad(num, size) {
+    var s = num+"";
+    while (s.length < size) s = "0" + s;
+    return s;
+}
+
+function formatFromToDate (dtFrom, dtTo, varFrom, varTo) {
+    return varFrom + '=' + dtFrom.toISOString() +
+        '&' + varTo + '=' + dtTo.toISOString();
+}
+
+function dropDownSelectorCommon(ddMenu, ddText, selectCb) {
+    ddMenu.click(function(){
+        var that = $(this), val = that.attr("value"),
+            button = ddText, before = button.attr("value");   
+        button.text(that.text());
+        button.attr("value", val);
+
+        if(before === val) {
+            return;
+        }
+        selectCb();
+    });
+}

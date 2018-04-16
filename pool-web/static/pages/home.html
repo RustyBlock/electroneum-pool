@@ -355,7 +355,7 @@ function applyMinerAddress() {
 	if (xhrAddressPoll) xhrAddressPoll.abort();
 	if (addressTimeout) clearTimeout(addressTimeout);
 
-	function fetchAddressStats(longpoll){
+	function fetchAddressStats(longpoll, skipChart){
 		xhrAddressPoll = $.ajax({
 			url: api + '/stats_address',
 			data: {
@@ -402,9 +402,9 @@ function applyMinerAddress() {
 				docCookies.setItem('mining_address', address, Infinity);
 
 				fetchAddressStats(true);
-				
+								
 				if(data.stats.history) {
-					renderMinerChart([{
+					var data = [{
 						name: '~' + address.substr(address.length - 7),
 						data: function() {
 							var res = [], nao = (new Date()).getTime() - 300000; // 5 minutes ago
@@ -420,7 +420,12 @@ function applyMinerAddress() {
 							}
 							return res;
 						}()
-					}]);
+					}];
+					data.push({
+						name: 'Average',
+						data: calculateDataAverage(data[0].data)
+					});
+					renderMinerChart(data);
 				}
 			},
 			error: function(e){
@@ -502,7 +507,7 @@ function renderMinerChart(data) {
 	minerChart = Highcharts.stockChart('chart-container', {
 		rangeSelector: { enabled: false },
 		scrollbar: { enabled: false },
-		navigator: { enabled: false },
+		navigator: { enabled: true, height: 20 },
 		exporting: { enabled: false },
 		yAxis: {
 			title: {

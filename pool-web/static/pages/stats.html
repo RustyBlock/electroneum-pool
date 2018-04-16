@@ -1,6 +1,6 @@
 <div class="statHolder">
-    <h4 class="statTitle"><i class="far fa-building"></i> Pool &nbsp;</h4>
-    <div style="display:inline-block">
+    <h4 class="statTitle" title="ETN pool statistics including hash rate and number of connected miners. Collected over the period of up to one month"><i class="far fa-building"></i> Pool &nbsp;</h4>
+    <div style="display:inline-block" title="Select time period for statistics">
         <div class="dropdown">
             <button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span value="wk" id="poolSelectorText">Last week</span>
@@ -14,18 +14,19 @@
             </ul>
         </div>
     </div>
-    <span class="bg-primary">Hash rate: <span id="poolHashrate"></span></span>
-    <span class="bg-info">Connected miners: <span id="poolMiners"></span></span>
-    <span class="bg-info">Round hashes: <span id="poolRoundHashes"></span></span>
+    <span class="bg-primary" title="Current pool hash rate">Hash rate: <span id="poolHashrate"></span></span>
+    <span class="bg-info" title="Currently connected miners">Miners: <span id="poolMiners"></span></span>
+    <span class="bg-info" title="Current round hashes">Hashes: <span id="poolRoundHashes"></span></span>
 </div>
 
 <hr>
-<div id="pool-chart-container" style="height: 180px; min-width: 310px"></div>
+<div class="col-md-6 col-sm-12 stats" id="pool-chart-container" style="height: 180px; min-width: 310px"></div>
+<div class="col-md-6 col-sm-12 stats" id="poolminers-chart-container" style="height: 180px; min-width: 310px"></div>
 <hr>
 
 <div class="statHolder">
-    <h4 class="statTitle"><i class="fas fa-globe"></i> Network &nbsp;</h4>
-    <div style="display:inline-block">
+    <h4 class="statTitle" title="ETN network statistics including difficulty (also means hash rate) and frequency of blocks. Collected over the period of up to one month"><i class="fas fa-globe"></i> Network &nbsp;</h4>
+    <div style="display:inline-block" title="Select time period for statistics">
         <div class="dropdown">
             <button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span value="wk" id="netSelectorText">Last week</span>
@@ -39,18 +40,19 @@
             </ul>
         </div>
     </div>
-    <span class="bg-primary">Hash rate: <span id="networkHashrate"></span></span>
-    <span class="bg-info">Difficulty: <span id="networkDifficulty"></span></span>
-    <span class="bg-info">Blockchain height: <span id="blockchainHeight"></span></span>
+    <span class="bg-primary" title="Current ETN network speed calculated as netwok difficulty divided by 60">Hash rate: <span id="networkHashrate"></span></span>
+    <span class="bg-info" title="Current ETN network difficulty">Difficulty: <span id="networkDifficulty"></span></span>
+    <span class="bg-info" title="Most recent ETN block number">Blockchain height: <span id="blockchainHeight"></span></span>
 </div>
     
 <hr>
-<div id="net-chart-container" style="height: 180px; min-width: 310px"></div>
+<div class="col-md-6 col-sm-12 stats" id="net-chart-container" style="height: 180px; min-width: 310px"></div>
+<div class="col-md-6 col-sm-12 stats" id="netblocks-chart-container" style="height: 180px; min-width: 310px"></div>
 <hr>
 
 <div class="statHolder">
-    <h4 class="statTitle"><i class="fas fa-stopwatch"></i> Round &nbsp;</h4>
-    <div style="display:inline-block">
+    <h4 class="statTitle" title="Round history showing details for split of each block reward and the miner that found a block."><i class="fas fa-stopwatch"></i> Round &nbsp;</h4>
+    <div style="display:inline-block" title="Select specific round. Showing current round statistics by default.">
         <div class="dropdown">
             <button class="btn btn-info" type="button" id="roundSelector" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                 <span id="roundSelectorText" value="0">Current round</span>
@@ -62,9 +64,9 @@
             </ul>
         </div>
     </div>
-    <span class="bg-primary">Round hashes: <span id="totalRoundHashes"></span></span>
-    <span class="bg-info">Round miners: <span id="totalMiners"></span></span>
-    <span class="bg-info">Round block reward: <span id="blockReward"></span></span>
+    <span class="bg-primary" title="Number of hashes submitted in the selected round.">Round hashes: <span id="totalRoundHashes"></span></span>
+    <span class="bg-info" title="Number of miners contributed to the selected round.">Round miners: <span id="totalMiners"></span></span>
+    <span class="bg-info" title="ETN block reward for the block found in the selected round.">Round block reward: <span id="blockReward"></span></span>
 </div>
 
 <hr>
@@ -76,7 +78,7 @@
             <th style="width:30px;"><i class="fas fa-list-ol"></i></th>
             <th><i class="fas fa-address-card"></i> Wallet adddress</th>
             <th style="width:90px;"><i class="fa fa-chart-pie"></i> Hashes</th>
-            <th style="width:90px;"><i class="fa fas fa-money-bill-alt"></i> Reward</th>
+            <th style="width:95px;"><i class="fa fas fa-money-bill-alt"></i> Reward</th>
         </tr>
         </thead>
         <tbody id="stats_rows" class="stats_rows">
@@ -88,11 +90,19 @@
     <button type="button" class="btn btn-default" id="loadMoreStats">Load More</button>
 </p>
 
+<script lang="javascript">
+var renderedAnyChart = false;
+</script>
+
+<script src="pool-charts.js"></script>
+<script src="net-charts.js"></script>
+
 <script>
 
 var xhrGetRound;
 currentPage = {
     destroy: function() {
+        window.statsUrlExtra = null;
         if (xhrGetRound) xhrGetRound.abort();
     },
     update: function() {
@@ -115,12 +125,6 @@ currentPage = {
         }
     }
 };
-
-function updateNetChart(dat) {
-}
-
-function updatePoolChart(dat) {
-}
 
 function renderRound(data, miner) {
 
@@ -198,20 +202,6 @@ function loadRound() {
 
 $('#loadMoreStats').click(loadRound);
 
-function dropDownSelectorCommon(ddMenu, ddText, selectCb) {
-    ddMenu.click(function(){
-        var that = $(this), val = that.attr("value"),
-            button = ddText, before = button.attr("value");   
-        button.text(that.text());
-        button.attr("value", val);
-
-        if(before === val) {
-            return;
-        }
-        selectCb();
-    });
-}
-
 function attachRoundSelector() {
     dropDownSelectorCommon($("#roundsMenu li a"), $("#roundSelectorText"), function() {
         $('#stats_rows').html('');
@@ -237,8 +227,28 @@ populateRounds();
 loadRound();
 attachRoundSelector();
 
-lastTimePoolHistoryRequested = new Date(2018, 1, 1);
-lastTimeNetHistoryRequested = new Date(2018, 1, 1);
+function selectorToDates(val) {
+    var to = new Date(), from;
+    // limit queries to 6 minutes ago to ensure there is a full 5m record
+    to = new Date(to.getTime() - 360000);
+    from = new Date(to.getTime());
+    switch(val) {
+        case 'day':
+            from.setDate(from.getDate()-1);
+            break;
+        case 'wk':
+            from.setDate(from.getDate()-7);
+            break;
+        case 'wk2':
+            from.setDate(from.getDate()-14);
+            break;
+        case 'mo':
+            from.setMonth(from.getMonth()-1);
+            break;
+    }
+    return [from, to];
+}
+
 window.statsUrlExtra = function() {
     var shouldPool = shouldFetchTheHistory(lastTimePoolHistoryRequested),
         shouldNet = shouldFetchTheHistory(lastTimeNetHistoryRequested);
@@ -247,61 +257,30 @@ window.statsUrlExtra = function() {
         return '';
     }
 
-    function selectorToDates(val) {
-        var to = new Date(), from = new Date(to.getTime());
-        switch(val) {
-            case 'day':
-                from.setDate(from.getDate()-1);
-                break;
-            case 'wk':
-                from.setDate(from.getDate()-7);
-                break;
-            case 'wk2':
-                from.setDate(from.getDate()-14);
-                break;
-            case 'mo':
-                from.setMonth(from.getMonth()-1);
-                break;
-        }
-        return [from, to];
-    }
-
     var netFromTo = selectorToDates($('#netSelectorText').attr('value')), 
         poolFromTo = selectorToDates($('#poolSelectorText').attr('value'));
     
-
-
     return '?' + formatFromToDate(netFromTo[0], netFromTo[1], 'historyFrom', 'historyTo') + 
         '&' + formatFromToDate(poolFromTo[0], poolFromTo[1], 'poolHistoryFrom', 'poolHistoryTo');
 }
 
-dropDownSelectorCommon($("#poolMenu li a"), $("#poolSelectorText"), function() {
-
-});
-
-dropDownSelectorCommon($("#netMenu li a"), $("#netSelectorText"), function() {
-});
-
-// ****************************** Chart **************************
-minerChart = null;
-function renderMinerChart(data) {
-	lastMinerChartUpdate = new Date();
-	if(minerChart) {
+function renderStatsChart(data, chartObject, containerSelector, title, unit) {
+	if(chartObject) {
 		var cntr = 0;
 		data.forEach(function(itm) {
-			minerChart.series[cntr].setData(data[cntr].data, true);			
+			chartObject.series[cntr].setData(data[cntr].data, true);			
 			cntr++;
 		});
 		return;
 	}
-	minerChart = Highcharts.stockChart('chart-container', {
+	return Highcharts.stockChart(containerSelector, {
 		rangeSelector: { enabled: false },
 		scrollbar: { enabled: false },
-		navigator: { enabled: false },
+		navigator: { enabled: true, height: 20 },
 		exporting: { enabled: false },
 		yAxis: {
 			title: {
-				text: 'Hash rate (kH/s)'
+				text: title
 			},
 			labels: {
 				formatter: function () {
@@ -310,12 +289,25 @@ function renderMinerChart(data) {
 			}
 		},
 		tooltip: {
-			pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> (kH/s)<br/>',
-			valueDecimals: 2,
+			pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b>' + (unit ? (' (' + unit + ')') : '') + '<br/>',
+			valueDecimals: 0,
 			split: true
 		},
 		series: data
 	});
 }
 
+function forceLoadStatCharts() {
+    var netDates = selectorToDates($('#netSelectorText').attr('value')),
+        poolDates = selectorToDates($('#poolSelectorText').attr('value'));
+    $.get(api + '/stats?' + formatFromToDate(netDates[0], netDates[1], 'historyFrom', 'historyTo') + 
+				'&' + formatFromToDate(poolDates[0], poolDates[1], 'poolHistoryFrom', 'poolHistoryTo'), function(data){
+            lastStats = data;
+            currentPage.update();
+		});    
+}
+
+if(!renderedAnyChart && lastStats && !lastStats.history) {
+    forceLoadStatCharts();
+}
 </script>
