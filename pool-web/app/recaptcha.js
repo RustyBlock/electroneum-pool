@@ -15,16 +15,17 @@ module.exports = function(success, failure)
                     remoteip: req.headers['X-Forwarded-For'] || 
                         req.connection.remoteAddress
                 }
-            }, function (error, response, body) {
+            }, function (error, response, bodyText) {
                 if (!error && response.statusCode == 200) {
-                    body = JSON.parse(body);
+                    body = JSON.parse(bodyText);
                     if(body.success){
                         s(req, res, next);
                     } else {
+                        log('warning', 'captcha', 'reCAPTCHA code is incorrect: %s', [bodyText]);
                         f(req, res, next, "reCAPTCHA code is incorrect");    
                     }
                 } else {
-                    console.error("reCaptcha validation failed, status: " + response.statusCode + ", error: " + error);
+                    log('error', 'captcha', 'reCaptcha validation failed, status: %s, error: %s', [response.statusCode, error]);
                     f(req, res, next, "Failed to validate reCAPTCHA");
                 }
             });
