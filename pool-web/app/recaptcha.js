@@ -21,7 +21,7 @@ module.exports = function(success, failure)
                     if(body.success){
                         s(req, res, next);
                     } else {
-                        log('warning', 'captcha', 'reCAPTCHA code is incorrect: %s', [bodyText]);
+                        log('warn', 'captcha', 'reCAPTCHA code is incorrect: %s', [bodyText]);
                         f(req, res, next, "reCAPTCHA code is incorrect");    
                     }
                 } else {
