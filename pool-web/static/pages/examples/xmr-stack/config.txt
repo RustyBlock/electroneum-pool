@@ -11,7 +11,7 @@
 "pool_list" :
 [
 	{
-		"pool_address" : "etn.rustylock.club:23333", 
+		"pool_address" : "etn.rustyblock.com:23333", 
 		"wallet_address" : "etnkNPnq9mqPq2uin6g3LdG3xakNw2fS368XjK7wrtk2Qd2xQ72A2kpLW7QXsLQGFKbRkvL7aTZxDeGi9rXsPynB1KT8EzcJpp",
 		"pool_password" : "x",
 		"use_nicehash" : false,
