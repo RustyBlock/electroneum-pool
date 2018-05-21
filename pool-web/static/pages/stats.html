@@ -170,6 +170,11 @@ function getRoundRowElement(roundShare, jsonString, miner){
         worker += ' <b>(winner)</b>';
     }
 
+    if(roundShare.address.substr(roundShare.address.length - 8) === ':penalty') {
+        roundShare.address = roundShare.address.substr(0, roundShare.address.length - 8);
+        worker = roundShare.address + ' (penalty)';
+    }
+
     row.innerHTML = '<td>' + roundShare.rank + '</td>' +
             '<td style="text-align:left;"><a href="/?miner=' + roundShare.address + '">' + worker + '</a></td>' +
             '<td style="text-align:left;">' + roundShare.hashes + '</td>' +
@@ -188,7 +193,7 @@ function loadRound() {
         },
         dataType: 'json',
         cache: 'false',
-        success: function(data){
+        success: function(data) {
             data.hashes.forEach(function(itm) {
                 itm.reward = itm.hashes / data.roundHashes * data.reward;
             });

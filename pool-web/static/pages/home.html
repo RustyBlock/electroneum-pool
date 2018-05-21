@@ -91,11 +91,11 @@
 			<div style="border:2px solid #E4E6EB;border-radius: 10px;font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif;min-width:285px;">
 				<div>
 					<div style="float:right;width:67%;border: 0px solid #000;text-align:left;padding:5px 0px;line-height:25px;">
-						<span style="font-size: 18px;"><a href="http://coinmarketcap.com/currencies/electroneum/?utm_medium=widget&amp;utm_campaign=cmcwidget&amp;utm_source=etn.rustylock.club&amp;utm_content=electroneum" target="_blank" style="text-decoration: none; color: rgb(66, 139, 202);">Electroneum (ETN)</a></span>
+						<span style="font-size: 18px;"><a href="http://coinmarketcap.com/currencies/electroneum/?utm_medium=widget&amp;utm_campaign=cmcwidget&amp;utm_source=www.etn.rustyblock.com&amp;utm_content=electroneum" target="_blank" style="text-decoration: none; color: rgb(66, 139, 202);">Electroneum (ETN)</a></span>
 						<br><span style="font-size: 16px;"><span style="color:#093"></span></span>
 						<br><span style="font-size: 12px; color:gray"></span>
 					</div>
-					<div style="text-align:center;padding:5px 0px;width:33%;"><img src="https://files.coinmarketcap.com/static/img/coins/64x64/electroneum.png"></div>
+					<div style="text-align:center;padding:5px 0px;width:33%;"><img src="https://files.coinmarketcap.com/static/widget/coins_legacy/64x64/electroneum.png"></div>
 				</div>
 				<div style="border-top: 1px solid #E4E6EB;clear:both;">
 					<div style="text-align:center;float:left;width:33%;font-size:12px;padding:12px 0;border-right:1px solid #E4E6EB;line-height:1.25em;">                        RANK                        <br>
@@ -108,7 +108,7 @@
 						<br><span style="font-size: 14px; "><span style="font-size:9px">USD</span></span>
 					</div>
 				</div>
-				<div style="border-top: 1px solid #E4E6EB;text-align:center;clear:both;font-size:10px;font-style:italic;padding:5px 0;">        <a href="http://coinmarketcap.com?utm_medium=widget&amp;utm_campaign=cmcwidget&amp;utm_source=etn.rustylock.club&amp;utm_content=electroneum" target="_blank" style="text-decoration: none; color: rgb(66, 139, 202);">Powered by CoinMarketCap</a>
+				<div style="border-top: 1px solid #E4E6EB;text-align:center;clear:both;font-size:10px;font-style:italic;padding:5px 0;">        <a href="http://coinmarketcap.com?utm_medium=widget&amp;utm_campaign=cmcwidget&amp;utm_source=www.etn.rustyblock.com&amp;utm_content=electroneum" target="_blank" style="text-decoration: none; color: rgb(66, 139, 202);">Powered by CoinMarketCap</a>
 				</div>
 			</div>
 		</div>
@@ -137,7 +137,7 @@
 		<i class="fa fa-times" title="Hide wallet information"></i></a></div>
 	<div class="float-left"><h3 class="mb-20">Electroneum wallets for mining</h3></div>
 	<div class="alert alert-success clearfix">
-		<strong>We support direct mining to <a href="https://accounts.qryptos.com/sign-up?affiliate=LkK_26BZ309235" target="_blank">Qryptos</a> or <a href="https://www.cryptopia.co.nz/Exchange" target="_blank">Cryptopia</a> accounts!</strong> Use hyphen symbol (-) to separate your ETN wallet address and Payment ID.
+		<strong>We support direct mining to exchange accounts, e.g. <a href="https://www.kucoin.com/#/trade.pro/ETN-BTC" target="_blank">KuCoin</a>, <a href="https://accounts.qryptos.com/sign-up?affiliate=LkK_26BZ309235" target="_blank">Qryptos</a>,  <a href="https://www.cryptopia.co.nz/Exchange" target="_blank">Cryptopia</a> and <a href="https://electroneum.com/exchanges/" target="_blank">others</a>.</strong> Use hyphen symbol (-) to separate your ETN wallet address and Payment ID.
 		For example <span style="font-family:Courier New, Courier, monospace">etnjzKFU6ogESSKRZZbdq...BWYqtchtq9tBap8Qr4M<b style="color:chocolate;">-a6e59f7bb27d9ba...8b6df</b></span>.
 		<br/>We recommend mobile or paper wallet if you'd like to mine to your own ETN address:
 	</div>
@@ -403,7 +403,7 @@ function applyMinerAddress() {
 
 				fetchAddressStats(true);
 								
-				if(data.stats.history) {
+				if(data.stats.history && data.stats.history.length > 0) {
 					var data = [{
 						name: '~' + address.substr(address.length - 7),
 						data: function() {

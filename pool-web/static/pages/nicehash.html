@@ -1,0 +1,49 @@
+<h3><a href="https://www.Nicehash.com" target="_blank">Nicehash</a> mining rules</h3>
+<br/>
+Dear Miners,<br/>
+<br/>
+RustyBlock pools are committed to accept any traffic that is compliant with Electroneum protocol. 
+Our statistics are public and we are striving to promote equality and decentralization principles that 
+are at heart of the generic cryptocurrency concept. We welcome all hardware, strong or weak, operated privately, rented from 
+the cloud providers or elsewhere. This is why we are using <a href="https://en.bitcoin.it/wiki/Mining_pool_reward_FAQ" target="_blank">proportional 
+reward system</a> that, we believe, is the most fair and transparent choice.<br/>
+<h4>RustyBlock approach</h4>
+<p style="font-size:larger"><b style="color:blue;">To put it simply:</b> if miner is using <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> with RustyBlock pools, they should stay connected and contributing 
+until block is found otherwise they lose 50% of their shares.<br/>
+</p>
+Here's more details for the "mechanics". If miner is connected on port 28888 that is compatible with <a href="https://www.Nicehash.com" target="_blank">Nicehash</a>, pool is tracking the connection
+and applies the following rules when block found and reward is being split between miners contributed their shares.
+<ul>
+ <li>If miner sent shares to port 28888, they are considered <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> miner for the rest of the round.
+     <ul>
+         <li>Shares sent to other ports using same wallet address in the same round <b>will also be subject for this <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> mining conditions</b>.</li>
+         <li><i>We advise miners to use different wallet addresses for their <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> connections so mining on CPU/GPU will not be considered <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> traffic</i>.</li>
+     </ul>
+ </li>
+ <li>When pool finds a block, it checks the timestamp of the last share sent by each <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> miner.
+     <ul>
+         <li>If last share's timestamp is older than 1 minute, then total number of shares submitted by this miner is reduced by 50%.</li>
+     </ul>
+ </li>
+</ul>
+<h4>Why are we doing this?</h4>
+Unfortunately, proportional reward system has some specifics including its
+vulnerability to the mining tactics known as "pool hopping". It's not easy to gain real benefits from the pool hopping
+due to the various reasons but the idea seems tempting for many people in the mining community so they keep trying, 
+e.g. <a href="https://bitcointalk.org/index.php?topic=2335622.0" target="_blank">https://bitcointalk.org/index.php?topic=2335622.0</a><br/>
+<br/>
+Pool hopping isn't causing notable damage to the "loyal miners" of the pool <i>unless the hopper is using
+services like <a href="https://www.Nicehash.com" target="_blank">Nicehash</a></i> that can send very high 
+hashrate against the pool. This allows to accumulate a lot of shares on the hopper's account and get a 
+large cut of the subsequent reward when other miners find a block. <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> traffic is expensive so profitability of 
+pool hopping with <a href="https://www.Nicehash.com" target="_blank">Nicehash</a> is questionable but reward deviation that it causes for small pools is too big to ignore.<br/>
+<br/>
+Feel free to join our <a href="https://goo.gl/oEM1sM" target="_blank"><img src="images/slack-logo.png" alt="slack"/>&nbsp;channel</a> 
+if you have questions or suggestions to discuss.<br/>
+<br/>
+Happy mining!<br/>
+<br/>
+Sincerely yours<br/>
+RustyBlock Team
+
+
