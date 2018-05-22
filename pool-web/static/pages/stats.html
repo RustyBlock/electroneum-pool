@@ -194,6 +194,9 @@ function loadRound() {
         dataType: 'json',
         cache: 'false',
         success: function(data) {
+            if(!data.hashes) {
+                return;
+            }
             data.hashes.forEach(function(itm) {
                 itm.reward = itm.hashes / data.roundHashes * data.reward;
             });

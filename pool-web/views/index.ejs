@@ -195,7 +195,7 @@
 			hash: parts[0],
 			amount: parts[1],
 			fee: parts[2],
-			mixin: parts[3],
+			extra: parts[3],
 			recipients: parts[4]
 		};
 	}
@@ -234,6 +234,14 @@
 			}
 
 		}
+
+		$('.ellipsis').on('mouseenter', function(){
+    		var $this = $(this);
+
+    	if(this.offsetWidth < this.scrollWidth && !$this.attr('title')){
+        		$this.attr('title', $this.text());
+    		}
+		});
 	}
 
 	function pulseLiveUpdate(){

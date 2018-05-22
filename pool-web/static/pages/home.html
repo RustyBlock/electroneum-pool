@@ -52,6 +52,12 @@
 	.stats_rows > tr > td:nth-child(2){
 		text-align: left;
 	}
+	.stats_rows > tr > td > div {
+		width: 150px;
+		white-space: nowrap; 
+    	overflow: hidden;
+    	text-overflow: ellipsis;
+	}
 
 </style>
 
@@ -199,7 +205,7 @@
 						<th><i class="fa fa-clock"></i> Time Sent</th>
 						<th><i class="fa fa-paw"></i> Transaction Hash</th>
 						<th><i class="fa fa-money-bill-alt"></i> Amount</th>
-						<th><i class="fa fa-sitemap"></i> Mixin</th>
+						<th style="width: 100px;"><i class="fa fa-cubes"></i> Blocks</th>
 					</tr>
 					</thead>
 					<tbody id="stats_rows" class="stats_rows">
@@ -322,7 +328,7 @@ function getPaymentCells(payment){
 	return '<td>' + formatDate(payment.time) + '</td>' +
 			'<td>' + formatPaymentLink(payment.hash) + '</td>' +
 			'<td>' + getReadableCoins(payment.amount, coinDecimalPlaces, true) + '</td>' +
-			'<td>' + payment.mixin + '</td>';
+			'<td><div class="ellipsis">' + payment.extra + '</div></td>';
 }
 
 $('#lookUp').click(function(){
