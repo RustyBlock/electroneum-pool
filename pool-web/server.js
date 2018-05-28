@@ -32,6 +32,15 @@ app.use(cookieParser()); // read cookies (needed for auth)
 app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
+app.use(function (req, res, next) {
+    var host = req.get('Host');
+    if (host.toLowerCase().indexOf('.rustylock.club') >0) {
+      return res.redirect(301, 
+        req.protocol + '://' + host.replace('.rustylock.club', '.rustyblock.com') + req.originalUrl);
+    }
+    return next();
+});
+
 app.set('view engine', 'ejs'); // set up ejs for templating
 app.set('views', path.join(__dirname, '/views'));
 
