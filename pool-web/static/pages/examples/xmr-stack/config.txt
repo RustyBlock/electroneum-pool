@@ -25,7 +25,7 @@
  * currency to mine
  * allowed values: 'monero' or 'aeon'
  */
-"currency" : "monero",
+"currency" : "monero7",
 
 /*
  * Network timeouts.
