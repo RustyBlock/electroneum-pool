@@ -1,31 +1,3 @@
-/*
- * pool_address    - Pool address should be in the form "pool.supportxmr.com:3333". Only stratum pools are supported.
- * wallet_address  - Your wallet, or pool login.
- * pool_password   - Can be empty in most cases or "x".
- * use_nicehash    - Limit the nonce to 3 bytes as required by nicehash.
- * use_tls         - This option will make us connect using Transport Layer Security.
- * tls_fingerprint - Server's SHA256 fingerprint. If this string is non-empty then we will check the server's cert against it.
- * pool_weight     - Pool weight is a number telling the miner how important the pool is. Miner will mine mostly at the pool 
- *                   with the highest weight, unless the pool fails. Weight must be an integer larger than 0.
- */
-"pool_list" :
-[
-	{
-		"pool_address" : "etn.rustyblock.com:23333", 
-		"wallet_address" : "etnkNPnq9mqPq2uin6g3LdG3xakNw2fS368XjK7wrtk2Qd2xQ72A2kpLW7QXsLQGFKbRkvL7aTZxDeGi9rXsPynB1KT8EzcJpp",
-		"pool_password" : "x",
-		"use_nicehash" : false,
-		"use_tls" : false,
-		"tls_fingerprint" : "",
-		"pool_weight" : 1
-	},
-],
-
-/*
- * currency to mine
- * allowed values: 'monero' or 'aeon'
- */
-"currency" : "monero7",
 
 /*
  * Network timeouts.
@@ -131,7 +103,7 @@
  *
  * tls_secure_algo - Use only secure algorithms. This will make us quit with an error if we can't negotiate a secure algo.
  */
-"tls_secure_algo" : false,
+"tls_secure_algo" : true,
 
 /*
  * Daemon mode
@@ -185,3 +157,4 @@
  *               This setting will only be needed in 2020's. No need to worry about it now.
  */
 "prefer_ipv4" : true,
+

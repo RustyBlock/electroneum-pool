@@ -1,6 +1,6 @@
 node_modules/
 .idea/
-config.json
+./config.json
 pool-access.json
 website_example/config.js
 logs/
