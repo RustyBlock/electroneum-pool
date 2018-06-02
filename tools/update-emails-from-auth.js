@@ -2,7 +2,8 @@ require('../lib/configReader.js');
 
 var redis = require('redis'),
     redisClient = redis.createClient(config.redis.port, config.redis.host, {auth_pass: config.redis.auth}),
-    logSystem = 'update-emails-from-auth', interval, cursor = 0, doneKeys = {};
+    logSystem = 'update-emails-from-auth', interval, cursor = 0, doneKeys = {},
+    fs = require('fs');
 
 require('../lib/exceptionWriter.js')(logSystem);
 require('../lib/logger.js');
@@ -41,6 +42,11 @@ function scan() {
 
                     if(result) {
                         log('info', logSystem, 'Key %s has email address', [key]);
+                        fs.appendFile('emails.csv', result, function(err) {
+                            if(err) {
+                                log('error', logSystem, 'Failed to write email to file: %s', [err.toString()]);
+                            }
+                        });
                         return;
                     }
                     copyUserEmail(keys[3]);
