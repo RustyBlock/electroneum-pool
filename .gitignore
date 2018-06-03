@@ -1,15 +1,14 @@
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
 node_modules/
 .idea/
-/config.json
-pool-access.json
-website_example/config.js
 logs/
 *.save
 *.save.*
 *.nicehash
-
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
 /npm-debug.log
+/config.json
+/blacklist.json
