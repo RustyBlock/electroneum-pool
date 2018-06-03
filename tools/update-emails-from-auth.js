@@ -42,7 +42,7 @@ function scan() {
 
                     if(result) {
                         log('info', logSystem, 'Key %s has email address', [key]);
-                        fs.appendFile('emails.csv', result, function(err) {
+                        fs.appendFile('emails.csv', result + '\n', function(err) {
                             if(err) {
                                 log('error', logSystem, 'Failed to write email to file: %s', [err.toString()]);
                             }

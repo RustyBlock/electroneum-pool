@@ -13,3 +13,4 @@ logs/
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 /npm-debug.log
+/blacklist.json
