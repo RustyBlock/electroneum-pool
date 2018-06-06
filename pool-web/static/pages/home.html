@@ -78,14 +78,6 @@
 	</div>
 </div>
 
-<div class="row" id="delayWarning">
-	<div class="alert alert-warning clearfix">
-		<b>Block delays after fork.</b> Electroneum team released <a href="https://www.facebook.com/electroneum/photos/a.1875461826049120.1073741828.1850733001855336/2005542463041055/?type=1&theater" target="_blank">update on their Facebook page</a> 
-		explaining the delays with new blocks. Please stay connected or return to us when network stabilised after a few blocks. This may happen within a day or two since block 307501.<br/>
-		Happy mining!
-	</div>
-</div>
-
 <div class="row">
 	<div class="col-md-4 col-sm-6 stats">
 		<h3>This Pool</h3>
@@ -253,7 +245,7 @@ currentPage = {
 		$('#networkLastBlockFound').timeago('update', ts);
 		$('#networkLastBlockFound').parent().attr("title", ts);
 
-		updateText('networkHashrate', getReadableHashRateString(lastStats.network.difficulty / 60) + '/sec');
+		updateText('networkHashrate', getReadableHashRateString(lastStats.network.difficulty / 120) + '/sec');
 		updateText('networkDifficulty', lastStats.network.difficulty.toString());
 		updateText('blockchainHeight', lastStats.network.height.toString());
 		updateText('networkLastReward', getReadableCoins(lastStats.network.reward, coinDecimalPlaces));
