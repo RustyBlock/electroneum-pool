@@ -28,7 +28,7 @@
                     <div class="col-sm-6">
                         <p>Send email if hashrate is<label for="chkNfLow">&nbsp;too low</label>&nbsp;<input type="checkbox" id="chkNfLow" <%= (user.hashNf.loEnabled ==='true' ? 'checked="checked"' : '') %>/>&nbsp;and/or&nbsp;<label for="chkNfHigh">too high</label>
                             <input type="checkbox" id="chkNfHigh" <%= (user.hashNf.hiEnabled === 'true' ? 'checked="checked"' : '') %>/></p>
-                        <p>Optimal hashrate from &nbsp;<input type="text" name="minRate" id="minRate" style="width:100px;" value="<%= user.hashNf.loRate %>"/>&nbsp;to&nbsp;
+                        <p>Miner speed min. &nbsp;<input type="text" name="minRate" id="minRate" style="width:100px;" value="<%= user.hashNf.loRate %>"/>&nbsp;max.&nbsp;
                             <input type="text" name="maxRate" id="maxRate" style="width:100px;" value="<%= user.hashNf.hiRate %>"/>&nbsp;<strong>H/s</strong></p>
                     </div>
                     <div class="col-sm-6">
