@@ -33,8 +33,9 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
-    var host = req.get('Host');
-    if (host.toLowerCase().indexOf('.rustylock.club') > 0 || req.get('X-Forwarded-Proto') !== 'https') {
+    var host = req.get('Host').toLowerCase();
+    if (host.indexOf('.rustylock.club') > 0 || req.get('X-Forwarded-Proto') !== 'https' || 
+        host.indexOf('www') !== 0) {
       return res.redirect(301, 'https://www.etn.rustyblock.com' + req.originalUrl);
     }
     return next();
