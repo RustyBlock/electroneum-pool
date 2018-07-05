@@ -34,7 +34,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
     var host = req.get('Host');
-    if (host.toLowerCase().indexOf('.rustylock.club') >0 || req.protocol.toLowerCase() === 'http') {
+    if (host.toLowerCase().indexOf('.rustylock.club') > 0 || req.get('X-Forwarded-Proto') !== 'https') {
       return res.redirect(301, 'https://www.etn.rustyblock.com' + req.originalUrl);
     }
     return next();
