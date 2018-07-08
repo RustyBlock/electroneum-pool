@@ -14,7 +14,7 @@ var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
-
+var redirect     = require('./redirect');
 require('../lib/configReader.js');
 
 // configuration ===============================================================
@@ -33,12 +33,9 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
-    var host = req.get('Host').toLowerCase();
-    if (host.indexOf('.rustylock.club') > 0 || req.get('X-Forwarded-Proto') !== 'https' || 
-        host.indexOf('www') !== 0) {
-      return res.redirect(301, 'https://www.etn.rustyblock.com' + req.originalUrl);
+    if(!redirect(req, res)) {
+        return next();
     }
-    return next();
 });
 
 app.set('view engine', 'ejs'); // set up ejs for templating
