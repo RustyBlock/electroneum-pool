@@ -12,3 +12,4 @@ logs/
 /npm-debug.log
 /config.json
 /blacklist.json
+/redirect.js
