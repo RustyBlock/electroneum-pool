@@ -130,3 +130,28 @@ input[type='checkbox']  {
 	font-size: 0.95em;
 	text-align: center;
 }
+.overlay {
+	display: none;
+	position: absolute;
+    width: 100%;
+    height: 100%;
+}
+.loader {
+	position: absolute;
+    width: 100%;
+    height: 100%;
+	background: url(images/spinner.gif);
+	background-position: center;
+	background-repeat: no-repeat;
+	z-index: 100;
+	margin: 5px;
+}
+.loader-overlay {
+	position: absolute;
+    width: 100%;
+	height: 100%;
+	background: black;
+	opacity: 0.1;
+	z-index: 99;
+	margin: 5px;
+}

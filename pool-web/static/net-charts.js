@@ -51,6 +51,7 @@ function updateNetChart(data) {
 }
 
 dropDownSelectorCommon($("#netMenu li a"), $("#netSelectorText"), function() {
+    $('.netChartOverlay').show();
     forceLoadStatCharts();
 });
 

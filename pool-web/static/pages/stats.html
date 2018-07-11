@@ -20,8 +20,20 @@
 </div>
 
 <hr>
-<div class="col-md-6 col-sm-12 stats" id="pool-chart-container" style="height: 180px; min-width: 310px"></div>
-<div class="col-md-6 col-sm-12 stats" id="poolminers-chart-container" style="height: 180px; min-width: 310px"></div>
+<div class="col-md-6 col-sm-12 stats">
+    <div class="overlay poolChartOverlay">
+            <div class="loader-overlay"></div>
+            <div class="loader"></div>
+    </div>
+    <div id="pool-chart-container" style="height: 180px; min-width: 310px"></div>
+</div>
+<div class="col-md-6 col-sm-12 stats">
+    <div class="overlay poolChartOverlay">
+            <div class="loader-overlay"></div>
+            <div class="loader"></div>
+    </div>    
+    <div id="poolminers-chart-container" style="height: 180px; min-width: 310px"></div>
+</div>
 <hr>
 
 <div class="statHolder">
@@ -46,8 +58,20 @@
 </div>
     
 <hr>
-<div class="col-md-6 col-sm-12 stats" id="net-chart-container" style="height: 180px; min-width: 310px"></div>
-<div class="col-md-6 col-sm-12 stats" id="netblocks-chart-container" style="height: 180px; min-width: 310px"></div>
+<div class="col-md-6 col-sm-12 stats">
+    <div class="overlay netChartOverlay">
+            <div class="loader-overlay"></div>
+            <div class="loader"></div>
+    </div>
+    <div id="net-chart-container" style="height: 180px; min-width: 310px"></div>
+</div>
+<div class="col-md-6 col-sm-12 stats">
+    <div class="overlay netChartOverlay">
+            <div class="loader-overlay"></div>
+            <div class="loader"></div>
+    </div>    
+    <div  id="netblocks-chart-container" style="height: 180px; min-width: 310px"></div>
+</div>
 <hr>
 
 <div class="statHolder">
@@ -308,8 +332,12 @@ function renderStatsChart(data, chartObject, containerSelector, title, unit) {
 function forceLoadStatCharts() {
     var netDates = selectorToDates($('#netSelectorText').attr('value')),
         poolDates = selectorToDates($('#poolSelectorText').attr('value'));
+    
     $.get(api + '/stats?' + formatFromToDate(netDates[0], netDates[1], 'historyFrom', 'historyTo') + 
-				'&' + formatFromToDate(poolDates[0], poolDates[1], 'poolHistoryFrom', 'poolHistoryTo'), function(data){
+                '&' + formatFromToDate(poolDates[0], poolDates[1], 'poolHistoryFrom', 'poolHistoryTo'), 
+        function(data){
+            $('.poolChartOverlay').hide();
+            $('.netChartOverlay').hide();
             lastStats = data;
             currentPage.update();
 		});    

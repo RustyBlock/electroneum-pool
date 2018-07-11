@@ -52,6 +52,7 @@ function updatePoolChart(data) {
 }
 
 dropDownSelectorCommon($("#poolMenu li a"), $("#poolSelectorText"), function() {
+    $('.poolChartOverlay').show();
     forceLoadStatCharts();
 });
 

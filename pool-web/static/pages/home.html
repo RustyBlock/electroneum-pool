@@ -59,21 +59,32 @@
     	text-overflow: ellipsis;
 	}
 
+	ul.time-filter {
+    	list-style-type: none;
+    	margin: 0;
+    	padding: 0;
+		text-align: right;
+	}
+
+	ul.time-filter li {
+		display: inline;
+		white-space: nowrap;
+	}
+
 </style>
 
 <div class="row" id="registerWarning">
 	<div style="margin-top:5px;margin-right:5px;" class="float-right"><a href="#" class="btn btn-xs btn-info" onclick="$('#registerWarning').hide(); createCookie('registerWarning', true, 365);">
 		<i class="fa fa-times" title="Hide registration prompt"></i></a></div>
 	<div class="alert alert-info clearfix">
-		<p><strong>Please <a href="#login">register</a> before mining.</strong>  This pool requires user registration. Miner connections with unregistered wallet address will be declined.</p>
+		<p><strong>Please <a href="#signup">register</a> before mining.</strong>  This pool requires user registration. Miner connections with unregistered wallet address will be declined.</p>
 	</div>
 </div>
 
 <div class="row">
 	<div class="alert alert-success clearfix">
 		<p><a href="https://goo.gl/oEM1sM" target="_blank"><b>Join RustyBlock community on &nbsp;<img src="images/slack-logo.png"/></b></a> &nbsp;for discussions and support.</p>
-		<p>RustyBlock nodes updated to the <a href="https://www.facebook.com/electroneum/posts/2030562537205714" target="_blank">latest version</a> of Electroneum. Happy mining!</p>
-		<p><img src="images/forkV7.png" alt="Electroneum v2.1 fork"></p>
+		<p>Calling for ASIC owners to support Electroneum. Happy mining!</p>
 	</div>
 </div>
 
@@ -197,8 +208,18 @@
 				<div class="yourStats"><i class="fa fa-tachometer-alt"></i> Hash Rate: <span id="yourHashrateHolder"></span></div>
 				<div class="yourStats"><i class="fa fa-chart-pie"></i> Round Share: <span id="yourHashes"></span> / <span id="yourShare" style="font-weight:bold;"></span> (est.)</div>
 			</div>
-
-			<div class="col-md-7 col-sm-6 col-lg-8">
+			<div class="col-md-1 col-sm-1 col-lg-1" style="padding-right: 0px">
+				<ul class="time-filter">
+					<li>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="switchAddressChart(24)">1 day</a></li>
+					<li>&nbsp;<a href="javascript:void(0)" onclick="switchAddressChart(72)">3 days</a></li>
+					<li><a href="javascript:void(0)" onclick="switchAddressChart(168)">7 days</a></li>
+				</ul>
+			</div>
+			<div class="col-md-6 col-sm-5 col-lg-7" style="padding-left: 0px">
+				<div id="chartOverlay" class="overlay">
+					<div class="loader-overlay"></div>
+					<div class="loader"></div>
+				</div>
 				<div id="chart-container" style="height: 180px; min-width: 310px"></div>
 			</div>
 		</div>
@@ -294,8 +315,9 @@ function getReadableTime(seconds){
 
 	var amount = seconds;
 	for (var i = 0; i < units.length; i++){
-		if (amount < units[i][0])
+		if (amount < units[i][0]) {
 			return formatAmounts(amount, units[i][1]);
+		}
 		amount = amount / units[i][0];
 	}
 	return formatAmounts(amount,  units[units.length - 1][1]);
@@ -350,6 +372,96 @@ $('#lookUp').click(function(){
 xhrAddressPoll = null;
 addressTimeout = null;
 
+function fetchAddressStats(){
+	var interval = readCookie('addressChartInterval');
+	$('#chartOverlay').show();
+	xhrAddressPoll = $.ajax({
+		url: api + '/stats_address',
+		data: {
+			address: address,
+			history: shouldFetchTheHistory(lastMinerChartUpdate),
+			interval: interval ? interval : 24
+		},
+		dataType: 'json',
+		cache: 'false',
+		success: function(data){
+
+			$('#lookUp > span:last-child').hide();
+			$('#lookUp > span:first-child').show();
+
+			if (!data.stats){
+				$('.yourStats').hide();
+				$('#addressError').text(data.error).show();
+
+				if (addressTimeout) { 
+					clearTimeout(addressTimeout);
+				}
+				addressTimeout = setTimeout(function(){
+					fetchAddressStats();
+				}, 2000);
+
+				return;
+			}
+
+			$('#addressError').hide();
+			if (data.stats.lastShare)
+				$('#yourLastShare').timeago('update', new Date(parseInt(data.stats.lastShare) * 1000).toISOString());
+			else
+				updateText('yourLastShare', 'Never');
+
+			updateText('yourHashrateHolder', (data.stats.hashrate || '0 H') + '/sec');
+			updateText('yourHashes', (data.stats.roundCurrent || 0).toString());
+			updateText('yourShare', getReadableCoins(lastStats.network.reward * data.stats.roundCurrent / lastStats.pool.roundHashes));
+			updateText('yourPaid', getReadableCoins(data.stats.paid));
+			updateText('yourPendingBalance', getReadableCoins(data.stats.balance));
+
+			renderPayments(data.payments);
+
+			$('.yourStats').show();
+
+			docCookies.setItem('mining_address', address, Infinity);
+							
+			if(data.stats.history && data.stats.history.length > 0) {
+				var data = [{
+					name: '~' + address.substr(address.length - 7),
+					data: function() {
+						var res = [], nao = (new Date()).getTime() - 300000; // 5 minutes ago
+						date = data.stats.historyTimestamp * 1000; 
+						date -= data.stats.history.length * 300000;
+						data.stats.history.forEach(function(itm) {
+							res.push([date, itm / 300000]);
+							date += 300000;	
+						});
+						while(date < nao) {
+							res.push([date, 0]);
+							date += 300000;
+						}
+						return res;
+					}()
+				}];
+				data.push({
+					name: 'Average',
+					data: calculateDataAverage(data[0].data)
+				});
+				renderMinerChart(data);
+			}
+
+			$('#chartOverlay').hide();
+			setTimeout(fetchAddressStats, 60000);
+		},
+		error: function(e){
+			$('#chartOverlay').hide();
+			if (e.statusText === 'abort') return;
+			$('#addressError').text('Connection error').show();
+
+			if (addressTimeout) clearTimeout(addressTimeout);
+			addressTimeout = setTimeout(function(){
+				fetchAddressStats();
+			}, 2000);
+		}
+	});
+}
+
 function applyMinerAddress() {
 	var address = $('#yourStatsInput').val().trim();
 	if (!address){
@@ -368,91 +480,7 @@ function applyMinerAddress() {
 	if (xhrAddressPoll) xhrAddressPoll.abort();
 	if (addressTimeout) clearTimeout(addressTimeout);
 
-	function fetchAddressStats(longpoll, skipChart){
-		xhrAddressPoll = $.ajax({
-			url: api + '/stats_address',
-			data: {
-				address: address,
-				longpoll: longpoll,
-				history: shouldFetchTheHistory(lastMinerChartUpdate)
-			},
-			dataType: 'json',
-			cache: 'false',
-			success: function(data){
-
-				$('#lookUp > span:last-child').hide();
-				$('#lookUp > span:first-child').show();
-
-				if (!data.stats){
-					$('.yourStats').hide();
-					$('#addressError').text(data.error).show();
-
-					if (addressTimeout) clearTimeout(addressTimeout);
-					addressTimeout = setTimeout(function(){
-						fetchAddressStats(false);
-					}, 2000);
-
-					return;
-				}
-
-
-				$('#addressError').hide();
-				if (data.stats.lastShare)
-					$('#yourLastShare').timeago('update', new Date(parseInt(data.stats.lastShare) * 1000).toISOString());
-				else
-					updateText('yourLastShare', 'Never');
-
-				updateText('yourHashrateHolder', (data.stats.hashrate || '0 H') + '/sec');
-				updateText('yourHashes', (data.stats.roundCurrent || 0).toString());
-				updateText('yourShare', getReadableCoins(lastStats.network.reward * data.stats.roundCurrent / lastStats.pool.roundHashes));
-				updateText('yourPaid', getReadableCoins(data.stats.paid));
-				updateText('yourPendingBalance', getReadableCoins(data.stats.balance));
-
-				renderPayments(data.payments);
-
-				$('.yourStats').show();
-
-				docCookies.setItem('mining_address', address, Infinity);
-
-				fetchAddressStats(true);
-								
-				if(data.stats.history && data.stats.history.length > 0) {
-					var data = [{
-						name: '~' + address.substr(address.length - 7),
-						data: function() {
-							var res = [], nao = (new Date()).getTime() - 300000; // 5 minutes ago
-							date = data.stats.historyTimestamp * 1000; 
-							date -= data.stats.history.length * 300000;
-							data.stats.history.forEach(function(itm) {
-								res.push([date, itm / 300000]);
-								date += 300000;	
-							});
-							while(date < nao) {
-								res.push([date, 0]);
-								date += 300000;
-							}
-							return res;
-						}()
-					}];
-					data.push({
-						name: 'Average',
-						data: calculateDataAverage(data[0].data)
-					});
-					renderMinerChart(data);
-				}
-			},
-			error: function(e){
-				if (e.statusText === 'abort') return;
-				$('#addressError').text('Connection error').show();
-
-				if (addressTimeout) clearTimeout(addressTimeout);
-				addressTimeout = setTimeout(function(){
-					fetchAddressStats(false);
-				}, 2000);
-			}
-		});
-	}
-	fetchAddressStats(false);
+	fetchAddressStats();
 };
 
 qsChunks = window.location.href.split('?'),
@@ -539,5 +567,15 @@ function renderMinerChart(data) {
 		},
 		series: data
 	});
+}
+
+function switchAddressChart(hours) {
+	setTimeout(function() {
+		createCookie('addressChartInterval', hours, 1000);
+		if (xhrAddressPoll) xhrAddressPoll.abort();
+		lastMinerChartUpdate = new Date(2018, 1, 1);
+		fetchAddressStats();
+	}, 200);
+	return true;
 }
 </script>
