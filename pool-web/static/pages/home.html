@@ -61,14 +61,21 @@
 
 	ul.time-filter {
     	list-style-type: none;
-    	margin: 0;
-    	padding: 0;
+		padding-left: 5px;
+		padding-right: 5px;
 		text-align: right;
+		position: absolute;
+		top: -10px;
+		left: 24px;
+		z-index: 1;
+		background-color:rgba(0, 0, 0, 0.1);
 	}
 
 	ul.time-filter li {
 		display: inline;
 		white-space: nowrap;
+		font-weight: bold;
+		font-size: x-small;
 	}
 
 </style>
@@ -208,18 +215,16 @@
 				<div class="yourStats"><i class="fa fa-tachometer-alt"></i> Hash Rate: <span id="yourHashrateHolder"></span></div>
 				<div class="yourStats"><i class="fa fa-chart-pie"></i> Round Share: <span id="yourHashes"></span> / <span id="yourShare" style="font-weight:bold;"></span> (est.)</div>
 			</div>
-			<div class="col-md-1 col-sm-1 col-lg-1" style="padding-right: 0px">
-				<ul class="time-filter">
-					<li>&nbsp;&nbsp;&nbsp;<a href="javascript:void(0)" onclick="switchAddressChart(24)">1 day</a></li>
-					<li>&nbsp;<a href="javascript:void(0)" onclick="switchAddressChart(72)">3 days</a></li>
-					<li><a href="javascript:void(0)" onclick="switchAddressChart(168)">7 days</a></li>
-				</ul>
-			</div>
-			<div class="col-md-6 col-sm-5 col-lg-7" style="padding-left: 0px">
+			<div class="col-md-7 col-sm-6 col-lg-8">
 				<div id="chartOverlay" class="overlay">
 					<div class="loader-overlay"></div>
 					<div class="loader"></div>
 				</div>
+				<ul class="time-filter">
+					<li><a href="javascript:void(0)" onclick="switchAddressChart(24)">1 day</a>&nbsp;|</li>
+					<li><a href="javascript:void(0)" onclick="switchAddressChart(72)">3 days</a>&nbsp;|</li>
+					<li><a href="javascript:void(0)" onclick="switchAddressChart(168)">7 days</a></li>
+				</ul>
 				<div id="chart-container" style="height: 180px; min-width: 310px"></div>
 			</div>
 		</div>
@@ -425,9 +430,8 @@ function fetchAddressStats(){
 				var data = [{
 					name: '~' + address.substr(address.length - 7),
 					data: function() {
-						var res = [], nao = (new Date()).getTime() - 300000; // 5 minutes ago
-						date = data.stats.historyTimestamp * 1000; 
-						date -= data.stats.history.length * 300000;
+						var res = [], nao = data.stats.historyTimestamp * 1000;
+						date = nao - data.stats.history.length * 300000; 
 						data.stats.history.forEach(function(itm) {
 							res.push([date, itm / 300000]);
 							date += 300000;	
