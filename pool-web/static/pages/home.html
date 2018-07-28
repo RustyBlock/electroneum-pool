@@ -45,9 +45,6 @@
 	.yourStats{
 		display: none;
 	}
-	#addressError{
-		color: red;
-	}
 
 	.stats_rows > tr > td:nth-child(2){
 		text-align: left;
@@ -83,7 +80,7 @@
 <div class="row" id="registerWarning">
 	<div style="margin-top:5px;margin-right:5px;" class="float-right"><a href="#" class="btn btn-xs btn-info" onclick="$('#registerWarning').hide(); createCookie('registerWarning', true, 365);">
 		<i class="fa fa-times" title="Hide registration prompt"></i></a></div>
-	<div class="alert alert-info clearfix">
+	<div class="alert alert-danger clearfix" id="registrationMessage">
 		<p><strong>Please <a href="#signup">register</a> before mining.</strong>  This pool requires user registration. Miner connections with unregistered wallet address will be declined.</p>
 	</div>
 </div>
@@ -215,7 +212,7 @@
 				<div class="yourStats"><i class="fa fa-tachometer-alt"></i> Hash Rate: <span id="yourHashrateHolder"></span></div>
 				<div class="yourStats"><i class="fa fa-chart-pie"></i> Round Share: <span id="yourHashes"></span> / <span id="yourShare" style="font-weight:bold;"></span> (est.)</div>
 			</div>
-			<div class="col-md-7 col-sm-6 col-lg-8">
+			<div class="col-md-7 col-sm-6 col-lg-8" style="display:none;" id="chartColumn">
 				<div id="chartOverlay" class="overlay">
 					<div class="loader-overlay"></div>
 					<div class="loader"></div>
@@ -395,8 +392,10 @@ function fetchAddressStats(){
 			$('#lookUp > span:first-child').show();
 
 			if (!data.stats){
+				var addrErr = $('#addressError');
 				$('.yourStats').hide();
-				$('#addressError').text(data.error).show();
+				addrErr.html($('#registrationMessage')[0].outerHTML);
+				addrErr.show();
 
 				if (addressTimeout) { 
 					clearTimeout(addressTimeout);
@@ -549,6 +548,9 @@ function renderMinerChart(data) {
 		});
 		return;
 	}
+
+	$('#chartColumn').show();
+
 	minerChart = Highcharts.stockChart('chart-container', {
 		rangeSelector: { enabled: false },
 		scrollbar: { enabled: false },
