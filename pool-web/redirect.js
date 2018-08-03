@@ -6,7 +6,8 @@ module.exports = function(req, res) {
       return res.redirect(301, 'https://www.etn.rustyblock.com' + req.originalUrl);
     }
     // fix URL format broken by automated newsletters - they add '?...' after '#...'
-    if(req.originalUrl.indexOf('?') && req.originalUrl.substr(1,1) === '#') {
+    if(req.originalUrl.indexOf('?') > 0 && req.originalUrl.substr(1,1) === '#') {
+        log('info', 'poolweb', 'URL: %s', [req.originalUrl]);
         var parts = req.originalUrl.substr(1).split('?');
         if(parts.length != 2) { // multiple question marks in the URL, don't know what to do with it
             return;
