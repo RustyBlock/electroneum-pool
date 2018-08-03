@@ -158,7 +158,13 @@ module.exports = function(app, passport) {
         app.post('/saveNfSettings', userProfile.saveNfSettings);
     
         function makeFullUrl(req) {
-            return req.protocol + '://' + req.get('host') + req.originalUrl;
+            var queryIndex = req.originalUrl.indexOf('?');
+            var base = req.protocol + '://' + req.get('host') + req.baseUrl;
+            if(queryIndex >= 0) {
+                return base + req.originalUrl.substr(queryIndex);
+            } else {
+                return base;
+            }
         }
         // redirects for marketing: from conventional URL to fragment-based
         app.get('/stats', function(req, res) {
