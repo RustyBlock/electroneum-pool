@@ -159,7 +159,7 @@ module.exports = function(app, passport) {
     
         function makeFullUrl(req) {
             var queryIndex = req.originalUrl.indexOf('?');
-            var base = req.protocol + '://' + req.get('host') + req.baseUrl;
+            var base = 'https://' + req.get('host') + req.baseUrl;
             if(queryIndex >= 0) {
                 return base + req.originalUrl.substr(queryIndex);
             } else {
