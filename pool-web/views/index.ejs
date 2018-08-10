@@ -398,4 +398,9 @@
 <div style="display:none"><% include ../static/pages/signup.html %><% include ../static/pages/login.html %></div>
 <a class='hot_link' data-page='nicehash.html' href='#nicehash' style="display:none;">placeholder</a>
 </body>
+<script>
+	$('.navbar-nav>li>a').on('click', function(){
+		$('.navbar-collapse').collapse('hide');
+	});
+</script>
 </html>
