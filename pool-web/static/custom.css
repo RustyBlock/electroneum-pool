@@ -23,6 +23,7 @@
 
 .container{
 	font-size: 14px!important;
+	min-width: 365px;
 }
 
 .float-right {

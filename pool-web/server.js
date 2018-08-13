@@ -9,12 +9,14 @@ var port     = process.env.PORT || 8080;
 var mongoose = require('mongoose');
 var passport = require('passport');
 var flash    = require('connect-flash');
+var fs       = require('fs');
 
 var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser   = require('body-parser');
 var session      = require('express-session');
 var redirect     = require('./redirect');
+var poolCtx      = require('./config/pool-context');
 require('../lib/configReader.js');
 
 // configuration ===============================================================
@@ -39,6 +41,16 @@ app.use(function (req, res, next) {
 
 app.set('view engine', 'ejs'); // set up ejs for templating
 app.set('views', path.join(__dirname, '/views'));
+// redirect static html pages to server-side rendered views
+app.use('/pages/', function(req, res, next) {
+    var filename = req.originalUrl.split('/').pop().split('#')[0].split('?')[0];
+    var ext = filename.substr(filename.length - 5).toLowerCase();
+    var ejs = __dirname + '/views/' + filename + '.ejs';
+    if (ext === '.html' && fs.existsSync(ejs)) {
+        return res.render(ejs, { req: req, res: res, pool : poolCtx(req) });
+    }
+    next();
+  });
 
 // required for passport
 app.use(session({
@@ -50,11 +62,10 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-// custom static content integration
-app.use('/pages', express.static(path.join(__dirname, '/static/pages')));
 app.get('/pages/undefined', function(request, response, next) {
     response.redirect('/login');
   });
+// custom static content integration
 app.use('/', express.static(path.join(__dirname,'/static')));
 
 // routes ======================================================================

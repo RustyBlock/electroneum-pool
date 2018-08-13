@@ -4,6 +4,7 @@ module.exports = function(app, passport) {
     var User = require('../app/models/user');
     var userProfile = require('./userprofile')();
     var wallets = require('./wallets')();
+    var poolCtx = require('../config/pool-context');
 
 // normal routes ===============================================================
 
@@ -17,7 +18,7 @@ module.exports = function(app, passport) {
             }
             req.flash(flashKey, flash[0]);
         }
-        res.render('index.ejs', { req : req, res : res });
+        res.render('index.ejs', { req : req, res : res, pool : poolCtx(req) });
     });
 
     // PROFILE SECTION =========================
