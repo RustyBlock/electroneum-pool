@@ -8,6 +8,7 @@ module.exports = function(req) {
             {
                 code: 'ETN',
                 name: 'Electroneum',
+                homePage: 'https://electroneum.com/',
                 coinMarketId: 2137,
                 promptHtml: 'Calling for ASIC owners to support Electroneum. Happy mining!',
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.kucoin.com/#/trade.pro/ETN-BTC" target="_blank">KuCoin</a>, <a href="https://accounts.qryptos.com/sign-up?affiliate=LkK_26BZ309235" target="_blank">Qryptos</a>,  <a href="https://www.cryptopia.co.nz/Exchange" target="_blank">Cryptopia</a> and <a href="https://electroneum.com/exchanges/" target="_blank">others</a>.</strong> Use hyphen symbol (-) to separate your ETN wallet address and Payment ID. '+
@@ -21,6 +22,7 @@ module.exports = function(req) {
             }, {
                 code: 'XHV',
                 name: 'Haven Protocol',
+                homePage: 'https://havenprotocol.com/',
                 coinMarketId: 2662,
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.southxchange.com/Market/Book/XHV/BTC" target="_blank">southXchange</a>.</strong> Use hyphen symbol (-) to separate your XHV wallet address and Payment ID. '+
                     'For example <span style="font-family:Courier New, Courier, monospace">hvxyC6NNG4zMSX4sA8hUe...gsuvoyjAyq3o8o2JsEpX<b style="color:chocolate;">-b02000cccc124e...e548f</b></span>.',
