@@ -10,6 +10,7 @@ module.exports = function(req) {
                 name: 'Electroneum',
                 homePage: 'https://electroneum.com/',
                 coinMarketId: 2137,
+                walletPrefix: [['etn', 98],['f4V', 109]],
                 promptHtml: 'Calling for ASIC owners to support Electroneum. Happy mining!',
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.kucoin.com/#/trade.pro/ETN-BTC" target="_blank">KuCoin</a>, <a href="https://accounts.qryptos.com/sign-up?affiliate=LkK_26BZ309235" target="_blank">Qryptos</a>,  <a href="https://www.cryptopia.co.nz/Exchange" target="_blank">Cryptopia</a> and <a href="https://electroneum.com/exchanges/" target="_blank">others</a>.</strong> Use hyphen symbol (-) to separate your ETN wallet address and Payment ID. '+
                     'For example <span style="font-family:Courier New, Courier, monospace">etnjzKFU6ogESSKRZZbdq...BWYqtchtq9tBap8Qr4M<b style="color:chocolate;">-a6e59f7bb27d9ba...8b6df</b></span>.',
@@ -24,6 +25,7 @@ module.exports = function(req) {
                 name: 'Haven Protocol',
                 homePage: 'https://havenprotocol.com/',
                 coinMarketId: 2662,
+                walletPrefix: [['hvx', 98],['hvi', 109]],
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.southxchange.com/Market/Book/XHV/BTC" target="_blank">southXchange</a>.</strong> Use hyphen symbol (-) to separate your XHV wallet address and Payment ID. '+
                     'For example <span style="font-family:Courier New, Courier, monospace">hvxyC6NNG4zMSX4sA8hUe...gsuvoyjAyq3o8o2JsEpX<b style="color:chocolate;">-b02000cccc124e...e548f</b></span>.',
                 paperWalletHtml: '<a href="https://havenwallet.com/#/" style="float:left;margin: 4px 4px 0px 0px;" target="_blank">'+

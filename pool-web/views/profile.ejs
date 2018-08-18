@@ -208,16 +208,16 @@ $("#saveWallets").click(function(){
     {
         var addr = addresses[i] = addresses[i].replace(/\s/g, ""),
             addrWithPaymentId = addr.split('-'),
-            lengthWarning = "Electroneum wallet address should be 98 characters long";
+            lengthWarning = "<%= pool.currency.name %> wallet address should be <%= pool.currency.walletPrefix[0][1] %> or <%= pool.currency.walletPrefix[1][1] %> characters long";
 
-        if(addr.indexOf("etn") !== 0) {
-            mess.html("line " + (i + 1) + ": Electroneum wallet address should start from <b>etn</b>, e.g. \"<u>etn</u>Nn3iz...\"");
+        if(addr.indexOf("<%= pool.currency.walletPrefix[0][0] %>") !== 0 && addr.indexOf("<%= pool.currency.walletPrefix[1][0] %>")) {
+            mess.html("line " + (i + 1) + ": <%= pool.currency.name %> wallet address should start from <b><%= pool.currency.walletPrefix[0][0] %></b> or <b><%= pool.currency.walletPrefix[1][0] %></b>");
             addressValid = false;
             break;
         }
 
         if(addr.indexOf(".") !== -1) {
-            mess.html("line " + (i + 1) + ": Dot should not be included in wallet address registration.</br>Please use hyphen (-) symbol to specify Payment ID after ETN wallet address.");
+            mess.html("line " + (i + 1) + ": Dot should not be included in wallet address registration.</br>Please use hyphen (-) symbol to specify Payment ID after wallet address.");
             addressValid = false;
             break;
         }
@@ -231,18 +231,15 @@ $("#saveWallets").click(function(){
                 i = i+2;
                 continue;
             }
-        } else if(addrWithPaymentId[0].length < 98) {
+        }
+        
+        if(addrWithPaymentId[0].length !== <%= pool.currency.walletPrefix[0][1] %> && 
+                addrWithPaymentId[0].length !== <%= pool.currency.walletPrefix[1][1] %>) {
             mess.html("line " + (i + 1) + ": " + lengthWarning);
             addressValid = false;
             break;
         }
-        
-        if(addrWithPaymentId[0].length > 98) {
-            mess.html("line " + (i + 1) + ": " + lengthWarning);
-            addressValid = false;
-            break;
-        }
-        
+                
         if(addrWithPaymentId.length > 1 && addrWithPaymentId[1].length !== 64) {
             mess.html("line " + (i + 1) + ": Payment ID should be 64 charatcers long, including numbers and letters from A to F");
             addressValid = false;

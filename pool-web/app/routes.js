@@ -29,7 +29,8 @@ module.exports = function(app, passport) {
                 res.render('profile.ejs', {
                     user : user,
                     message : req.flash('profileMessage').toString(),
-                    wallets : results
+                    wallets : results,
+                    pool : poolCtx(req)
                 });    
             }, function(error) {
                 done(err);    

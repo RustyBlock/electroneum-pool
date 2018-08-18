@@ -1,5 +1,5 @@
 <div class="statHolder">
-    <h4 class="statTitle" title="ETN pool statistics including hash rate and number of connected miners. Collected over the period of up to one month"><i class="far fa-building"></i> Pool &nbsp;</h4>
+    <h4 class="statTitle" title="Pool statistics including hash rate and number of connected miners. Collected over the period of up to one month"><i class="far fa-building"></i> Pool &nbsp;</h4>
     <div style="display:inline-block" title="Select time period for statistics">
         <div class="dropdown">
             <button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -37,7 +37,7 @@
 <hr>
 
 <div class="statHolder">
-    <h4 class="statTitle" title="ETN network statistics including difficulty (also means hash rate) and frequency of blocks. Collected over the period of up to one month"><i class="fas fa-globe"></i> Network &nbsp;</h4>
+    <h4 class="statTitle" title="Network statistics including difficulty (also means hash rate) and frequency of blocks. Collected over the period of up to one month"><i class="fas fa-globe"></i> Network &nbsp;</h4>
     <div style="display:inline-block" title="Select time period for statistics">
         <div class="dropdown">
             <button class="btn btn-info" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -52,9 +52,9 @@
             </ul>
         </div>
     </div>
-    <span class="bg-primary" title="Current ETN network speed calculated as netwok difficulty divided by 60">Hash rate: <span id="networkHashrate"></span></span>
-    <span class="bg-info" title="Current ETN network difficulty">Difficulty: <span id="networkDifficulty"></span></span>
-    <span class="bg-info" title="Most recent ETN block number">Blockchain height: <span id="blockchainHeight"></span></span>
+    <span class="bg-primary" title="Current network speed calculated as current difficulty divided by number of seconds per block defined for the network.">Hash rate: <span id="networkHashrate"></span></span>
+    <span class="bg-info" title="Current network difficulty">Difficulty: <span id="networkDifficulty"></span></span>
+    <span class="bg-info" title="Most recent block number">Blockchain height: <span id="blockchainHeight"></span></span>
 </div>
     
 <hr>
@@ -90,7 +90,7 @@
     </div>
     <span class="bg-primary" title="Number of hashes submitted in the selected round.">Round hashes: <span id="totalRoundHashes"></span></span>
     <span class="bg-info" title="Number of miners contributed to the selected round.">Round miners: <span id="totalMiners"></span></span>
-    <span class="bg-info" title="ETN block reward for the block found in the selected round.">Round block reward: <span id="blockReward"></span></span>
+    <span class="bg-info" title="Block reward for the block found in the selected round.">Round block reward: <span id="blockReward"></span></span>
 </div>
 
 <hr>
