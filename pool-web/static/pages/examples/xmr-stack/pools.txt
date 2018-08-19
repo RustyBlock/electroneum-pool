@@ -16,8 +16,8 @@
 "pool_list" :
 [
 	{
-		"pool_address" : "etn.rustyblock.com:23333",
-		"wallet_address" : "etnkCg2XsNghSa2f6ckETNCP6EHuhemP1ecnPW9ikVcaHMDFkQ1vtE2CY19NPEkFp73ygx3VfUCXD5JJGyKx6HXy2kfDi4eHTu",
+		"pool_address" : "xhv.rustyblock.com:23333",
+		"wallet_address" : "hvxyLoHkfdr8goq55bZjTVfjfCfjVTSFe1uX7kddiz4K19LLdeUJmjHi4sp9KtDy6ZM2yv3gwSdmfSEdrS5QmaUp6ZJ7zUKBA8",
 		"rig_id" : "", 
 		"pool_password" : "x", 
 		"use_nicehash" : false, 
@@ -51,8 +51,9 @@
  *    cryptonight
  *    cryptonight_v7
  *    # 4MiB scratchpad memory
+ *	  cryptonight_haven
  *    cryptonight_heavy
  */
 
-"currency" : "monero7",
+"currency" : "cryptonight_haven",
 

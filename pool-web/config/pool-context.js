@@ -34,7 +34,8 @@ module.exports = function(req) {
                     'Please keep the generated <b>Mnemonic seed</b> safe and secure. There is no way to recover it if it\'s lost or stolen.</span>',
                 desktopWalletPrompt: 'Official desktop wallets',
                 walletDownloadHtml: '<a href="https://havenprotocol.com/#downloads" style="float:left;margin: 4px 4px 0px 0px;" target="_blank">'+
-                    '<img alt="Download desktop wallet for Haven Protocol" src="images/havenWallets.png" /></a>'
+                    '<img alt="Download desktop wallet for Haven Protocol" src="images/havenWallets.png" /></a>',
+                miningInstructions: '../static/pages/xhv.downloads.html'
             }
         ]
     };

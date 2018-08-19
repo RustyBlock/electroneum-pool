@@ -1,5 +1,5 @@
 {
-    "algo": "cryptonight",
+    "algo": "cryptonight-heavy",
     "api": {
         "port": 0,
         "access-token": null,
@@ -19,8 +19,8 @@
     "max-cpu-usage": 75,
     "pools": [
         {
-            "url": "etn.rustyblock.com:23333",
-            "user": "etnkCg2XsNghSa2f6ckETNCP6EHuhemP1ecnPW9ikVcaHMDFkQ1vtE2CY19NPEkFp73ygx3VfUCXD5JJGyKx6HXy2kfDi4eHTu",
+            "url": "xhv.rustyblock.com:23333",
+            "user": "hvxyLoHkfdr8goq55bZjTVfjfCfjVTSFe1uX7kddiz4K19LLdeUJmjHi4sp9KtDy6ZM2yv3gwSdmfSEdrS5QmaUp6ZJ7zUKBA8",
             "pass": "x",
             "rig-id": null,
             "nicehash": false,

@@ -368,10 +368,11 @@
 					<span class="sr-only">Select crypto</span>
 				</button>
 				<ul class="dropdown-menu"><%
+				var site = req.headers.host.split('.');
 				for(var i=0;i<pool.supportedCurrencies.length;i++) {
-					var code = pool.supportedCurrencies[i].code,
-						name = pool.supportedCurrencies[i].name; %>
-					<li><a href="javascript:void(0)" value="<%= code %>"><%= code %> - <%= name %></a></li><% 
+					var cur = pool.supportedCurrencies[i],
+						code = cur.code, name = cur.name; %>
+					<li><a href="<%= 'https://' + site[0] + '.' + code + '.' + site[2] + '.' + site[3] %>" value="<%= code %>"><%= code %> - <%= name %></a></li><% 
 				} %>
 				</ul>
 			</div>			
