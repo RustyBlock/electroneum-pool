@@ -158,6 +158,35 @@ module.exports = function(app, passport) {
         app.post('/savewallets', userProfile.saveWallets);
 
         app.post('/saveNfSettings', userProfile.saveNfSettings);
+    
+        function makeFullUrl(req) {
+            var queryIndex = req.originalUrl.indexOf('?');
+            var base = 'https://' + req.get('host') + req.baseUrl;
+            if(queryIndex >= 0) {
+                return base + req.originalUrl.substr(queryIndex);
+            } else {
+                return base;
+            }
+        }
+        // redirects for marketing: from conventional URL to fragment-based
+        app.get('/stats', function(req, res) {
+            res.redirect(makeFullUrl(req) + '#stats');
+        });
+        app.get('/downloads', function(req, res) {
+            res.redirect(makeFullUrl(req) + '#downloads');
+        });
+        app.get('/pool_blocks', function(req, res) {
+            res.redirect(makeFullUrl(req) + '#pool_blocks');
+        });
+        app.get('/payments', function(req, res) {
+            res.redirect(makeFullUrl(req) + '#payments');
+        });
+        app.get('/support', function(req, res) {
+            res.redirect(makeFullUrl(req) + '#support');
+        });
+        app.get('/login', function(req, res) {
+            res.redirect(makeFullUrl(req) + '#login');
+        });
 
     // facebook -------------------------------
 

@@ -6,6 +6,7 @@
 	<meta name="description" content="Efficient, secure, community-friendy and transparent <%= pool.currency.name %> mining pool. Proportional reward split, 0.1% commission, regular payouts, min payout <%= pool.currency.code %> 5" />
 	<meta name="keywords" content="<%= pool.currency.code %>, <%= pool.currency.name %>, pool, mining, cryptocurrency, cryptonight, rustyblock, xmrstak, claymore, xmrig, nicehash" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+	<meta name="yandex-verification" content="8fd4423ebd2b63b1" />
 	<title>RustyBlock <%= pool.currency.name %> mining pool</title>
 
 	<link rel="shortcut icon" href="favicon.ico">
@@ -19,7 +20,35 @@
 
 		gtag('config', 'UA-111416801-1');
 	</script>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript" >
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter49998637 = new Ya.Metrika2({
+                    id:49998637,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
 
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/tag.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks2");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/49998637" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-timeago/1.4.0/jquery.timeago.min.js"></script>
