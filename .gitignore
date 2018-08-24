@@ -14,3 +14,4 @@ logs/
 /blacklist.json
 /pool-web/redirect.js
 /pool-web/config/auth.js
+*.orig
