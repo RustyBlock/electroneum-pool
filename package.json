@@ -23,7 +23,7 @@
     "dateformat": "1.0.12",
     "extend": "3.0.1",
     "multi-hashing": "git://github.com/MoneroOcean/node-cryptonight-hashing.git",
-    "node-cache": "^4.1.1",
+    "node-cache": "^4.2.0",
     "nodemailer": "2.7.2",
     "redis": "2.8.0",
     "uuid": "^3.2.1"

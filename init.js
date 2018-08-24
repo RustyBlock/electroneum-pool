@@ -3,7 +3,7 @@ var cluster = require('cluster');
 var os = require('os');
 
 var redis = require('redis');
-
+var NodeCache = require( "node-cache" );
 
 require('./lib/configReader.js');
 
@@ -12,6 +12,7 @@ require('./lib/logger.js');
 require('./lib/auth.js')
 
 global.redisClient = redis.createClient(config.redis.port, config.redis.host, {auth_pass: config.redis.auth});
+global.cache = new NodeCache();
 
 if (cluster.isWorker){
     switch(process.env.workerType){
