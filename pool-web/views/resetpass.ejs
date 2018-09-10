@@ -7,7 +7,7 @@
     <form action="password" method="post">
         <div class="form-group">
             <label>Email</label>
-            <input type="text" class="form-control" name="email" id="emailNew">
+            <input title="email" type="text" class="form-control" name="email" id="emailNew">
         </div>
         <button class="btn btn-primary" onclick="validateCredentials(event)"
             id="submit_resetpass">Reset my password</button>
@@ -17,7 +17,5 @@
 </div>
 </div>
 <script type="text/javascript">
-
-var btn = $('#submit_resetpass');
-
+window.btn = $('#submit_resetpass');
 </script>

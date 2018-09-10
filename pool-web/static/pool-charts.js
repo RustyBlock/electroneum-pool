@@ -1,4 +1,4 @@
-lastTimePoolHistoryRequested = new Date(2018, 1, 1);
+var lastTimePoolHistoryRequested = new Date(2018, 1, 1);
 
 poolChartContainerSelector = 'pool-chart-container';
 poolMinersChartContainerSelector = 'poolminers-chart-container';
@@ -7,8 +7,8 @@ poolChartTitle = 'Hash rate (kH/s)';
 poolChartUnits = 'kH/s';
 poolMinersChartUnits = 'conn.';
 poolAverageTitle = 'Average';
-poolChart = null;
-poolMinersChart = null;
+var poolChart = null;
+var poolMinersChart = null;
 
 function updatePoolChart(data) {
 

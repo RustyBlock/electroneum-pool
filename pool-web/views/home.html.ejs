@@ -1,8 +1,4 @@
 <style>
-	.marketFooter{
-		font-size: 10px;
-		opacity: 0.6;
-	}
 	#networkLastReward{
 		text-transform: uppercase;
 	}
@@ -10,9 +6,7 @@
 		font-family: 'Inconsolata', monospace;
 		font-size: 0.8em;
 	}
-	#poolDonations{
-		font-size: 0.75em;
-	}
+
 	#calcHashDropdown{
 		border-radius: 0;
 		border-left: 0;
@@ -221,7 +215,7 @@
 
 <script>
 
-lastMinerChartUpdate = new Date(2018, 1, 1);
+var lastMinerChartUpdate = new Date(2018, 1, 1);
 
 currentPage = {
 	destroy: function(){
@@ -231,9 +225,10 @@ currentPage = {
 		if (xhrGetPayments) xhrGetPayments.abort();
 	},
 	update: function(){
-		var ts = new Date(lastStats.network.timestamp * 1000).toISOString(), lastHsh;
-		$('#networkLastBlockFound').timeago('update', ts);
-		$('#networkLastBlockFound').parent().attr("title", ts);
+		var ts = new Date(lastStats.network.timestamp * 1000).toISOString(), lastHsh,
+			blckFound = $('#networkLastBlockFound');
+		blckFound.timeago('update', ts);
+		blckFound.parent().attr("title", ts);
 
 		updateText('networkHashrate', getReadableHashRateString(lastStats.network.difficulty / 120) + '/sec');
 		updateText('networkDifficulty', lastStats.network.difficulty.toString());
@@ -249,20 +244,22 @@ currentPage = {
 		updateText('poolHashrate', getReadableHashRateString(lastStats.pool.hashrate) + '/sec');
 
 		if (lastStats.pool.lastBlockFound){
-			var d = new Date(parseInt(lastStats.pool.lastBlockFound)).toISOString();
-			$('#poolLastBlockFound').timeago('update', d);
-			$('#poolLastBlockFound').parent().attr("title", d);
+			var d = new Date(parseInt(lastStats.pool.lastBlockFound)).toISOString(),
+				blckFound = $('#poolLastBlockFound');
+			blckFound.timeago('update', d);
+			blckFound.parent().attr("title", d);
 		}
 		else {
-			$('#poolLastBlockFound').removeAttr('title').data('ts', '').update('Never');
-			$('#poolLastBlockFound').parent().removeAttr("title");
+			blckFound.removeAttr('title').data('ts', '').update('Never');
+			blckFound.parent().removeAttr("title");
 		}
 
 		updateText('poolMiners', lastStats.pool.miners.toString());
 		updateText('poolRoundHashes', lastStats.pool.roundHashes.toString());
 		$('#poolRoundHashes').append("&nbsp;(luck: " + formatLuck(lastStats.network.difficulty, lastStats.pool.roundHashes) + ")");
 
-		var totalFee = lastStats.config.fee;
+		//noinspection NodeModulesDependencies
+        var totalFee = lastStats.config.fee;
 		updateText('poolFee', totalFee + '%');
 
 		updateText('blockSolvedTime', getReadableTime(lastStats.network.difficulty / lastStats.pool.hashrate));
@@ -298,8 +295,8 @@ function getReadableTime(seconds){
 $('#calcHashRate').keyup(calcEstimateProfit).change(calcEstimateProfit);
 
 $('#calcHashUnits > li > a').click(function(e){
-	e.preventDefault();
-	$('#calcHashUnit').text($(this).text()).data('mul', $(this).data('mul'));
+    e.preventDefault();
+    $('#calcHashUnit').text($(this).text()).data('mul', $(this).data('mul'));
 	calcEstimateProfit();
 });
 
@@ -323,6 +320,7 @@ function calcEstimateProfit(){
 
 /* Stats by mining address lookup */
 
+//noinspection JSUnusedLocalSymbols
 function getPaymentCells(payment){
 	return '<td>' + formatDate(payment.time) + '</td>' +
 			'<td>' + formatPaymentLink(payment.hash) + '</td>' +
@@ -331,16 +329,16 @@ function getPaymentCells(payment){
 }
 
 $('#lookUp').click(function(){
-	var addressLkp = $('#yourStatsInput').val().trim();
+	var statsInput = $('#yourStatsInput'), addressLkp = statsInput.val().trim();
 	if (!addressLkp){
-		$('#yourStatsInput').focus();
+		statsInput.focus();
 		return;
 	}		
 	window.location.href = window.location.href.split('?')[0].replace('#', '') + '?miner=' + addressLkp;
 });
 
-xhrAddressPoll = null;
-addressTimeout = null;
+var xhrAddressPoll = null;
+var addressTimeout = null;
 
 function fetchAddressStats(){
 	var interval = readCookie('addressChartInterval');
@@ -398,7 +396,7 @@ function fetchAddressStats(){
 					name: '~' + address.substr(address.length - 7),
 					data: function() {
 						var res = [], nao = data.stats.historyTimestamp * 1000;
-						date = nao - data.stats.history.length * 300000; 
+						var date = nao - data.stats.history.length * 300000;
 						data.stats.history.forEach(function(itm) {
 							res.push([date, itm / 300000]);
 							date += 300000;	
@@ -452,11 +450,11 @@ function applyMinerAddress() {
 	if (addressTimeout) clearTimeout(addressTimeout);
 
 	fetchAddressStats();
-};
+}
 
-qsChunks = window.location.href.split('?'),
-	qs = qsChunks.length > 1 ? qs = qsChunks[1] : '',
-	urlParams = parse_query_string(qs);
+qsChunks = window.location.href.split('?');
+qs = qsChunks.length > 1 ? qs = qsChunks[1] : '';
+urlParams = parse_query_string(qs);
 
 address = urlParams['miner'] || docCookies.getItem('mining_address');
 if(address) {
@@ -473,7 +471,7 @@ $('#yourStatsInput').keyup(function(e){
 		$('#lookUp').click();
 });
 
-xhrGetPayments = null;
+var xhrGetPayments = null;
 $('#loadMorePayments').click(function(){
 	if (xhrGetPayments) xhrGetPayments.abort();
 	xhrGetPayments = $.ajax({
@@ -505,21 +503,20 @@ if (readCookie('registerWarning') || isAuthenticated) {
 }
 
 // ****************************** Chart **************************
-minerChart = null;
+var minerChart = null;
 function renderMinerChart(data) {
 	lastMinerChartUpdate = new Date();
 	if(minerChart) {
-		var cntr = 0;
-		data.forEach(function(itm) {
-			minerChart.series[cntr].setData(data[cntr].data, true);			
-			cntr++;
+		data.forEach(function(itm, idx) {
+			minerChart.series[idx].setData(itm.data, true);
 		});
 		return;
 	}
 
 	$('#chartColumn').show();
 
-	minerChart = Highcharts.stockChart('chart-container', {
+	//noinspection JSUnusedGlobalSymbols
+    minerChart = Highcharts.stockChart('chart-container', {
 		rangeSelector: { enabled: false },
 		scrollbar: { enabled: false },
 		navigator: { enabled: true, height: 20 },

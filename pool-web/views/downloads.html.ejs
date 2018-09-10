@@ -13,9 +13,7 @@
 	#miningPorts > .stats:last-child{
 		margin-right: 0;
 	}
-	.getting_started_windows{
-		line-height: 40px;
-	}
+
 	#getting_started_list > li{
 		margin-bottom: 20px;
 	}
@@ -38,13 +36,7 @@
 	.miningAppTitle{
 		font-weight: bold;
 	}
-	.exampleAddress{
-		font-style: italic;
-	}
-	#cpuminer_code{
-		display: inline-block;
-		white-space: normal;
-	}
+
 </style>
 
 <h3>Mining Pool Connection Details</h3>
@@ -72,7 +64,8 @@
 		},
 		update: function(){
 
-			var portsJson = JSON.stringify(lastStats.config.ports);
+			//noinspection NodeModulesDependencies
+            var portsJson = JSON.stringify(lastStats.config.ports);
 			if (lastPortsJson !== portsJson) {
 				lastPortsJson = portsJson;
 				var $miningPortChildren = [];

@@ -1,8 +1,10 @@
 var captchaWidget;
+//noinspection JSUnusedGlobalSymbols
 function onLoadCaptcha() {
+    //noinspection NodeModulesDependencies
     captchaWidget = grecaptcha.render('captchaId', {
         'sitekey' : '6LdzjD0UAAAAAN2bTgOUP-eGIVnLsx-RhPgetsFu',
-        'callback' : onSubmit, 
+        'callback' : onSubmit
     });
 }
 
@@ -29,8 +31,8 @@ function readCookie(name) {
     var ca = document.cookie.split(';');
     for(var i=0;i < ca.length;i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) === ' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length,c.length);
     }
     return null;        
 }
@@ -45,8 +47,7 @@ function parse_query_string(query) {
         query_string[pair[0]] = decodeURIComponent(pair[1]);
         // If second entry with this name
       } else if (typeof query_string[pair[0]] === "string") {
-        var arr = [query_string[pair[0]], decodeURIComponent(pair[1])];
-        query_string[pair[0]] = arr;
+        query_string[pair[0]] = [query_string[pair[0]], decodeURIComponent(pair[1])];
         // If third or later entry with this name
       } else {
         query_string[pair[0]].push(decodeURIComponent(pair[1]));
@@ -59,7 +60,8 @@ function parse_query_string(query) {
     //Only an approximation to reverse the calculations done in pool.js, because the shares with their respective times are not recorded in redis
     //Approximation assumes equal pool hashrate for the whole round
     //Could potentially be replaced by storing the sum of all job.difficulty in the redis db. 
-    if (lastStats.config.slushMiningEnabled) {                                      //Uses integral calculus to calculate the average of a dynamic function
+    //noinspection NodeModulesDependencies
+      if (lastStats.config.slushMiningEnabled) {                                      //Uses integral calculus to calculate the average of a dynamic function
         var accurateShares = 1/lastStats.config.blockTime * (                       //1/blockTime to get the average
             shares * lastStats.config.weight * (                                    //Basically calculates the 'area below the graph' between 0 and blockTime
                 1 - Math.pow(
@@ -96,10 +98,7 @@ function getReadableHashRateString(hashrate){
 // Created time out for not loading the history on every refresh
 // because history is not updated more often than every 5 minutes
 function shouldFetchTheHistory(dt) {
-	if((new Date() - dt) / 1000 < 300) {
-		return false;
-	}
-	return true;
+	return (new Date() - dt) / 1000 >= 300;
 }
 
 function calculateDataAverage(data) {
@@ -110,12 +109,6 @@ function calculateDataAverage(data) {
         count++;
     });
     return res;
-}
-
-function pad(num, size) {
-    var s = num+"";
-    while (s.length < size) s = "0" + s;
-    return s;
 }
 
 function formatFromToDate (dtFrom, dtTo, varFrom, varTo) {

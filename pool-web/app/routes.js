@@ -18,21 +18,23 @@ module.exports = function(app, passport) {
             }
             req.flash(flashKey, flash[0]);
         }
+        //noinspection JSCheckFunctionSignatures
         res.render('index.ejs', { req : req, res : res, pool : poolCtx(req) });
     });
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res, done) {
-        wallets.getUserWallets(req.user.id, function(results)
+        wallets.getUserWallets(config.coin(req), req.user.id, function(results)
         {
             userProfile.getUserSettings(req, req.user, function(user) {
+                //noinspection JSCheckFunctionSignatures
                 res.render('profile.ejs', {
                     user : user,
                     message : req.flash('profileMessage').toString(),
                     wallets : results,
                     pool : poolCtx(req)
                 });    
-            }, function(error) {
+            }, function(err) {
                 done(err);    
             });
         }, function(err) {
@@ -54,7 +56,8 @@ module.exports = function(app, passport) {
         // LOGIN ===============================
         // show the login form
         app.get('/login', function(req, res) {
-            res.render('auth.ejs', { 
+            //noinspection JSCheckFunctionSignatures
+            res.render('auth.ejs', {
                 message: req.flash('loginMessage').toString(),
                 action: "login",
                 actionTitle: " Login ",
@@ -74,7 +77,8 @@ module.exports = function(app, passport) {
 
         // show password reset form
         app.get('/password', function(req, res) {
-            res.render('resetpass.ejs', { 
+            //noinspection JSCheckFunctionSignatures
+            res.render('resetpass.ejs', {
                 message: req.flash('passwordMessage').toString()
             });
         });
@@ -90,7 +94,8 @@ module.exports = function(app, passport) {
         // SIGNUP =================================
         // show the signup form
         app.get('/signup', function(req, res) {
-            res.render('auth.ejs', { 
+            //noinspection JSCheckFunctionSignatures
+            res.render('auth.ejs', {
                 message: req.flash('signupMessage').toString(),
                 action: "signup",
                 actionTitle: " Signup ",
@@ -109,7 +114,7 @@ module.exports = function(app, passport) {
         }));
 
         // verify email
-        app.get('/verify/:userName/:token?', function(req, res, next) {
+        app.get('/verify/:userName/:token?', function(req, res) {
             var userName = req.params.userName.toLowerCase();
             User.findOne({ 'local.email' :  userName }, function(err, user) {
                 // if there are any errors, return the error
@@ -146,7 +151,6 @@ module.exports = function(app, passport) {
                         return;
                     }
                     res.redirect('/#notverified');
-                    return;
                 }
             });            
 
@@ -299,7 +303,7 @@ module.exports = function(app, passport) {
     app.get('/unlink/facebook', isLoggedIn, function(req, res) {
         var user            = req.user;
         user.facebook.token = undefined;
-        user.save(function(err) {
+        user.save(function() {
             res.redirect('/profile');
         });
     });
@@ -308,7 +312,7 @@ module.exports = function(app, passport) {
     app.get('/unlink/twitter', isLoggedIn, function(req, res) {
         var user           = req.user;
         user.twitter.token = undefined;
-        user.save(function(err) {
+        user.save(function() {
             res.redirect('/profile');
         });
     });
@@ -317,7 +321,7 @@ module.exports = function(app, passport) {
     app.get('/unlink/google', isLoggedIn, function(req, res) {
         var user          = req.user;
         user.google.token = undefined;
-        user.save(function(err) {
+        user.save(function() {
             res.redirect('/profile');
         });
     });

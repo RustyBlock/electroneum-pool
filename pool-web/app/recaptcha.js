@@ -16,8 +16,8 @@ module.exports = function(success, failure)
                         req.connection.remoteAddress
                 }
             }, function (error, response, bodyText) {
-                if (!error && response.statusCode == 200) {
-                    body = JSON.parse(bodyText);
+                if (!error && response.statusCode === 200) {
+                    var body = JSON.parse(bodyText);
                     if(body.success){
                         s(req, res, next);
                     } else {
@@ -33,4 +33,4 @@ module.exports = function(success, failure)
             f(req, res, next, "reCAPTCHA data is not present in request");
         }
     };
-}
+};

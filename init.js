@@ -9,7 +9,7 @@ require('./lib/configReader.js');
 
 require('./lib/logger.js');
 
-require('./lib/auth.js')
+require('./lib/auth.js');
 
 global.redisClient = redis.createClient(config.redis.port, config.redis.host, {auth_pass: config.redis.auth});
 global.cache = new NodeCache();
@@ -65,7 +65,9 @@ var singleModule = (function(){
 
             switch(singleModule){
                 case 'pool':
-                    spawnPoolWorkers();
+                    for(var i=0; i<config.coins.length; i++) {
+                        spawnPoolWorkers(config.coins[i]);
+                    }
                     break;
                 case 'unlocker':
                     spawnBlockUnlocker();
@@ -79,11 +81,12 @@ var singleModule = (function(){
                 case 'web':
                     spawnWebsite();
                     break;
-
             }
         }
         else{
-            spawnPoolWorkers();
+            for(var i=0; i<config.coins.length; i++) {
+                spawnPoolWorkers(config.coins[i]);
+            }
             spawnBlockUnlocker();
             spawnPaymentProcessor();
             spawnApi();
@@ -125,11 +128,11 @@ function checkRedisVersion(callback){
     });
 }
 
-function spawnPoolWorkers(){
+function spawnPoolWorkers(coin){
 
-    if (!config.poolServer || !config.poolServer.enabled || !config.poolServer.ports || config.poolServer.ports.length === 0) return;
+    if (!config.poolServer || !config.poolServer.enabled || !config.poolServer.ports || config.poolServer.ports[coin].length === 0) return;
 
-    if (config.poolServer.ports.length === 0){
+    if (config.poolServer.ports[coin].length === 0){
         log('error', logSystem, 'Pool server enabled but no ports specified');
         return;
     }
@@ -155,7 +158,7 @@ function spawnPoolWorkers(){
         worker.forkId = forkId;
         worker.type = 'pool';
         poolWorkers[forkId] = worker;
-        worker.on('exit', function(code, signal){
+        worker.on('exit', function(){
             log('error', logSystem, 'Pool fork %s died, spawning replacement worker...', [forkId]);
             setTimeout(function(){
                 createPoolWorker(forkId);
@@ -191,7 +194,7 @@ function spawnBlockUnlocker(){
     var worker = cluster.fork({
         workerType: 'blockUnlocker'
     });
-    worker.on('exit', function(code, signal){
+    worker.on('exit', function(){
         log('error', logSystem, 'Block unlocker died, spawning replacement...');
         setTimeout(function(){
             spawnBlockUnlocker();
@@ -204,7 +207,7 @@ function spawnWebsite() {
     var worker = cluster.fork({
         workerType: 'web'
     });
-    worker.on('exit', function(code, signal){
+    worker.on('exit', function(){
         log('error', logSystem, 'Web site died, spawning replacement...');
         setTimeout(function(){
             spawnWebsite();
@@ -219,7 +222,7 @@ function spawnPaymentProcessor(){
     var worker = cluster.fork({
         workerType: 'paymentProcessor'
     });
-    worker.on('exit', function(code, signal){
+    worker.on('exit', function(){
         log('error', logSystem, 'Payment processor died, spawning replacement...');
         setTimeout(function(){
             spawnPaymentProcessor();
@@ -233,7 +236,7 @@ function spawnApi(){
     var worker = cluster.fork({
         workerType: 'api'
     });
-    worker.on('exit', function(code, signal){
+    worker.on('exit', function(){
         log('error', logSystem, 'API died, spawning replacement...');
         setTimeout(function(){
             spawnApi();

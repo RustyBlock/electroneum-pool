@@ -35,6 +35,7 @@
         },
         update: function(){
             updateText('blocksTotal', lastStats.pool.totalBlocks.toString());
+            //noinspection NodeModulesDependencies
             updateText('blocksMaturityCount', lastStats.config.depth.toString());
             renderBlocks(lastStats.pool.blocks);
         }
@@ -113,7 +114,7 @@
 
         var found = block.miner ? ('<td title="' + block.miner + '"><a href="/?miner=' + block.miner + '">' + formatDate(block.time) + '</a></td>') :
             ('<td>' + formatDate(block.time) + '</td>');
-        var columns =
+        row.innerHTML =
             '<td>' + block.height + '</td>' +
             '<td>' + block.maturity + '</td>' +
             '<td>' + block.difficulty + '</td>' +
@@ -121,11 +122,8 @@
             found +
             '<td>' + formatLuck(block.difficulty, block.shares) + '</td>';
 
-        row.innerHTML = columns;
-
         return row;
     }
-
 
     function renderBlocks(blocksResults){
 

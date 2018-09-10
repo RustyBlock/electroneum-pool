@@ -46,7 +46,6 @@ module.exports = function()
                 return done(null, false);
             }
             User.findOne({ 'local.email' :  req.user.local.email }, function(err, user) {
-                var currentWallets = [];
                 // if there are any errors, return the error
                 if (err) {
                     log('error', logSystem, 'Failed to find user %s: %s', [req.user.local.email, err.toString()]);
@@ -59,7 +58,7 @@ module.exports = function()
                     return done(null, false);
                 }
                 
-                wallets.getUserWallets(user.id, function(currentWallets) {
+                wallets.getUserWallets(config.coin(req), user.id, function(currentWallets) {
                     var removed = [], added = [], countProcessed;
 
                     // determine added and removed wallets
@@ -86,9 +85,8 @@ module.exports = function()
                         }
                         countProcessed = 0;
                         added.forEach(function(item) {
-                            var newWalletId;
-                            wallets.addWallet(item, user.id, function() {
-                                countProcessed++
+                            wallets.addWallet(config.coin(req), item, user.id, function() {
+                                countProcessed++;
                                 log('info', logSystem, 'Added wallet %s for user %s (%s)', [item, user.id, req.user.local.email]);
                                 if(countProcessed === added.length){
                                     res.send("Ok");
@@ -105,7 +103,7 @@ module.exports = function()
                             processAdded();
                         } else {
                             removed.forEach(function(item){
-                                wallets.removeWallet(item, user.id, function(){
+                                wallets.removeWallet(config.coin(req), item, user.id, function(){
                                     countProcessed++;
                                     log('info', logSystem, 'Removed wallet %s for user %s', [item, req.user.local.email]);
 
@@ -131,16 +129,15 @@ module.exports = function()
                 return done(null, false);
             }
 
-            var result = {}, 
-                userKey = config.coin + ':auth:users:' + req.user.id + ':hashNf',
+            var userKey = config.coin(req) + ':auth:users:' + req.user.id + ':hashNf',
                 redisCommands = [
-                    ['hset', userKey, 'loEnabled', req.body.hashNf.loEnabled == "true"],
-                    ['hset', userKey, 'hiEnabled', req.body.hashNf.hiEnabled == "true"],
+                    ['hset', userKey, 'loEnabled', req.body.hashNf.loEnabled === 'true'],
+                    ['hset', userKey, 'hiEnabled', req.body.hashNf.hiEnabled === 'true'],
                     ['hset', userKey, 'loRate', req.body.hashNf.loRate],
                     ['hset', userKey, 'hiRate', req.body.hashNf.hiRate]
                 ];
                                
-            redisClient.multi(redisCommands).exec(function(error, results) {
+            redisClient.multi(redisCommands).exec(function(error) {
                 if(error) {
                     log('error', logSystem, 'Failed ot save user notification settings: %s', [error.toString()]);
                     return done(error);
@@ -150,8 +147,7 @@ module.exports = function()
         },
 
         getUserSettings: function(req, user, success, error) {
-            var result = {}, 
-                userKey = config.coin + ':auth:users:' + user.id,
+            var userKey = config.coin(req) + ':auth:users:' + user.id,
                 redisCommands = [
                     ['hset', userKey, 'email', user.local.email],
                     ['hgetall', userKey + ':hashNf']
@@ -215,7 +211,7 @@ module.exports = function()
         }
     
         return false;
-    };    
+    }
 
     function passowrdEmail (email, password, callback) {
         var url = config.www.host + '/#login';
@@ -225,5 +221,5 @@ module.exports = function()
             'You can <a href="' + url + '" target="_blank">login</a> with your email address as a user name and this password: <b>' + htmlencode.htmlEncode(password) + '</b><br/>' +
             '<br/>--<br/><b>RustyBlock Team</b><br/><a href="mailto:' + process.env.emailAddressFrom + '">' + process.env.emailAddressFrom + '</a>',
             callback);
-    };
+    }
 };

@@ -13,5 +13,5 @@ afterEach(function () {
 before(function(){
   global.redisClient = redis.createClient(6379, "127.0.0.1");
   global.config = {};
-  global.config.coin = "electroneum";
+  global.config.coin = function () { return 'electroneum'; };
 });

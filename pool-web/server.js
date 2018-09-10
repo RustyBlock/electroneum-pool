@@ -47,14 +47,17 @@ app.use('/pages/', function(req, res, next) {
     var ext = filename.substr(filename.length - 5).toLowerCase();
     var ejs = __dirname + '/views/' + filename + '.ejs';
     if (ext === '.html' && fs.existsSync(ejs)) {
+        //noinspection JSCheckFunctionSignatures
         return res.render(ejs, { req: req, res: res, pool : poolCtx(req) });
     }
     next();
   });
 
 // required for passport
+var nao = new Date();
 app.use(session({
     secret: process.env.rustySessionSecret, // session secret
+    cookie: { domain:'.rustyblock.com', expires: new Date(nao.getFullYear() + 20, nao.getMonth(), nao.getDate()) },
     resave: true,
     saveUninitialized: true
 }));
@@ -62,7 +65,7 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-app.get('/pages/undefined', function(request, response, next) {
+app.get('/pages/undefined', function(request, response) {
     response.redirect('/login');
   });
 // custom static content integration

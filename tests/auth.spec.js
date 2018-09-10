@@ -11,7 +11,7 @@ describe('Authentication module', function () {
   });
 
   it('finds a wallet object by address', function * () {
-    getWallet('etnkNn3izXrXazWDgZo2LYECBeyTDmJxqedxtFsRNP1hb5znsr36dxp8EPz4svfGAXXMTkHJ7rGHFJYSFhVRSVUY8WJ3zzKJrQ', 
+    getWallet('electroneum', 'etnkNn3izXrXazWDgZo2LYECBeyTDmJxqedxtFsRNP1hb5znsr36dxp8EPz4svfGAXXMTkHJ7rGHFJYSFhVRSVUY8WJ3zzKJrQ', 
       function(w){
         assert.isTrue(typeof w !== 'undefined');
         assert.isTrue(typeof w.users !== 'undefined');
@@ -22,7 +22,7 @@ describe('Authentication module', function () {
   });
 
   it('doesn\'t find a wallet object by address', function * () {
-    getWallet('non-existing-address', 
+    getWallet('electroneum', 'non-existing-address', 
       function(w){
         assert.isTrue(typeof w === 'undefined');
       }, function(err) {

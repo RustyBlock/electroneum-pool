@@ -1,8 +1,8 @@
 module.exports = function()
 {
     return {
-        getUserWallets: function(userId, success, error) {
-            redisClient.lrange(config.coin + ':auth:users:' + userId + ':wallets', 0, -1, function(err, res) {
+        getUserWallets: function(coin, userId, success, error) {
+            redisClient.lrange(coin + ':auth:users:' + userId + ':wallets', 0, -1, function(err, res) {
                 if (err) {
                     log('error', 'Unable to get user\'s (%s) wallets: %s', [userId, err.toString()]);
                     error(err);
@@ -12,10 +12,10 @@ module.exports = function()
             });
         },
 
-        removeWallet: function(address, userId, success, error) {
+        removeWallet: function(coin, address, userId, success, error) {
             
-            var walletKey = config.coin + ':auth:wallets:' + address + ":users", 
-                userKey = config.coin + ':auth:users:' + userId + ":wallets",
+            var walletKey = coin + ':auth:wallets:' + address + ":users", 
+                userKey = coin + ':auth:users:' + userId + ":wallets",
                 multi = redisClient.multi();
 
             multi.lrem(walletKey, 0, userId);
@@ -45,9 +45,9 @@ module.exports = function()
             });
         },
 
-        addWallet: function(address, userId, success, error) {
-            var walletKey = config.coin + ':auth:wallets:' + address + ":users", 
-            userKey = config.coin + ':auth:users:' + userId + ":wallets";
+        addWallet: function(coin, address, userId, success, error) {
+            var walletKey = coin + ':auth:wallets:' + address + ":users", 
+            userKey = coin + ':auth:users:' + userId + ":wallets";
             
             function addToWallets()
             {
@@ -59,11 +59,10 @@ module.exports = function()
                             }
                         });
     
-                        redisClient.rpush(walletKey, userId, function(err, res){
+                        redisClient.rpush(walletKey, userId, function(err){
                             if(err) {
                                 log('error', 'Unable to add user %s to wallet %s: %s', [userId, address, err.toString()]);
                                 error(err);
-                                return;                            
                             } else {
                                 success();
                             }
@@ -86,7 +85,7 @@ module.exports = function()
                         }
                     });
 
-                    redisClient.rpush(userKey, address, function(err, result){
+                    redisClient.rpush(userKey, address, function(err){
                         if(err) {
                             log('error', 'Unable to add wallet %s to user %s: %s', [address, userId, err.toString()]);
                             error(err);

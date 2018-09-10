@@ -2,7 +2,7 @@ require('../lib/configReader.js');
 
 var redis = require('redis'),
     redisClient = redis.createClient(config.redis.port, config.redis.host, {auth_pass: config.redis.auth}),
-    logSystem = 'update-emails-from-auth', interval, cursor = 0, doneKeys = {},
+    logSystem = 'update-emails-from-auth', cursor = 0, doneKeys = {},
     fs = require('fs');
 
 require('../lib/exceptionWriter.js')(logSystem);
@@ -14,7 +14,7 @@ var User = require('../pool-web/app/models/user');
 
 function scan() {
 
-    redisClient.scan(cursor, 'MATCH', config.coin + ':auth:users:5*', 'COUNT', '500', function (error, reply) {
+    redisClient.scan(cursor, 'MATCH', 'electroneum:auth:users:5*', 'COUNT', '500', function (error, reply) {
         cursor = reply[0];
         if(error) {
             log('error', logSystem, 'Failed to query users: %s', [error.toString()]);
@@ -54,7 +54,7 @@ function scan() {
             });
         }
 
-        if(reply[0] == '0') {
+        if(parseInt(reply[0]) === 0) {
             return;
         }
 
@@ -71,7 +71,7 @@ function copyUserEmail(userId) {
             return;
         }
 
-        redisClient.hset(config.coin + ':auth:users:' + userId, 'email', user.local.email, function(error, result) {
+        redisClient.hset('electroneum:auth:users:' + userId, 'email', user.local.email, function(error) {
             if(error) {
                 log('error', logSystem, 'Failed to update user %s: %s', [userId, error.toString()]);
                 return;

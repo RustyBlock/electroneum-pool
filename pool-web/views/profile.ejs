@@ -13,7 +13,7 @@
                 <h4>Enter wallet address(es) of your miner(s)</h4>
                 <span>One address per line. <strong>Warning!</strong> Pool will not be able to accept miner connections if this field is empty or incorrect.</span>
                 <div>
-                    <textarea id="wallets" style="width:100%" rows="3"><%= wallets.join('\n') %></textarea>
+                    <textarea id="wallets" style="width:100%" rows="3" title="wallets"><%= wallets.join('\n') %></textarea>
                 </div>
                 <button id="saveWallets" class="btn btn-default">&nbsp;Save&nbsp;</button>&nbsp;&nbsp;
                 <span style="color:#FF0004;" id="saveWalletsMessage"></span>
@@ -28,8 +28,8 @@
                     <div class="col-sm-6">
                         <p>Send email if hashrate is<label for="chkNfLow">&nbsp;too low</label>&nbsp;<input type="checkbox" id="chkNfLow" <%= (user.hashNf.loEnabled ==='true' ? 'checked="checked"' : '') %>/>&nbsp;and/or&nbsp;<label for="chkNfHigh">too high</label>
                             <input type="checkbox" id="chkNfHigh" <%= (user.hashNf.hiEnabled === 'true' ? 'checked="checked"' : '') %>/></p>
-                        <p>Miner speed min. &nbsp;<input type="text" name="minRate" id="minRate" style="width:100px;" value="<%= user.hashNf.loRate %>"/>&nbsp;max.&nbsp;
-                            <input type="text" name="maxRate" id="maxRate" style="width:100px;" value="<%= user.hashNf.hiRate %>"/>&nbsp;<strong>H/s</strong></p>
+                        <p>Miner speed min. &nbsp;<input title="Min rate" type="text" name="minRate" id="minRate" style="width:100px;" value="<%= user.hashNf.loRate %>"/>&nbsp;max.&nbsp;
+                            <input title="Max rate" type="text" name="maxRate" id="maxRate" style="width:100px;" value="<%= user.hashNf.hiRate %>"/>&nbsp;<strong>H/s</strong></p>
                     </div>
                     <div class="col-sm-6">
                         <p>Also notify me if:
@@ -69,8 +69,8 @@
                     <p>Your password cannot be the same as your user name (email).</p>
                     <form method="post" id="passwordForm" action="/changepass">
                     <% include ../static/pages/password.html %>
-                    <input type="submit" class="btn btn-primary" data-loading-text="Changing Password..." value="Change password" id="submitPass" disabled="disabled">
-                    <input type="buton" class="btn btn-default" value="Cancel" onclick="$('#changePass').show(); $('#changePassForm').hide(); return false;">
+                    <input title="Change password" type="submit" class="btn btn-primary" data-loading-text="Changing Password..." value="Change password" id="submitPass" disabled="disabled">
+                    <input title="Cancel" type="buton" class="btn btn-default" value="Cancel" onclick="$('#changePass').show(); $('#changePassForm').hide(); return false;">
                     </form>
                     </div><!--/col-sm-6-->
                     </div><!--/row-->
@@ -91,7 +91,7 @@
                     </p>
                     <a href="/unlink/facebook" class="btn btn-primary">Unlink</a>
                 <% } else { %>
-                    <a class="btn btn-primary" disabled="disabled">Connect Facebook</a> coming soon...
+                    <a class="btn btn-primary">Connect Facebook</a> coming soon...
                 <% } %>
 
             </div>
@@ -112,7 +112,7 @@
 
                     <a href="/unlink/twitter" class="btn btn-info">Unlink</a>
                 <% } else { %>
-                    <a class="btn btn-info" disabled="disabled">Connect Twitter</a> coming soon...
+                    <a class="btn btn-info">Connect Twitter</a> coming soon...
                 <% } %>
 
             </div>
@@ -131,7 +131,7 @@
 
                     <a href="/unlink/google" class="btn btn-danger">Unlink</a>
                 <% } else { %>
-                    <a class="btn btn-danger" disabled="disabled">Connect Google</a> coming soon...
+                    <a class="btn btn-danger">Connect Google</a> coming soon...
                 <% } %>
 
             </div>
@@ -142,8 +142,8 @@
 
 <script type="text/javascript">
 
-var btn = $("#submitPass"),
-        mess = $("#changePassMessage");
+window.btn = $("#submitPass");
+window.mess = $("#changePassMessage");
 
 $("#passwordForm").submit(function(e){
 
@@ -159,13 +159,13 @@ $("#passwordForm").submit(function(e){
            type: "POST",
            url: "/changepass",
            data: $("#passwordForm").serialize(), // serializes the form's elements.
-           success: function(data) {
+           success: function() {
                mess.css("color","#00A41E");
                mess.text("Password changed successfully");
                $('#changePass').show(); $('#changePassForm').hide();
                mess.show();
            },
-           error: function(settings) {
+           error: function() {
                mess.css("color","#FF0004");
                mess.text("Failed to change password");
                mess.show();
@@ -191,7 +191,7 @@ $("#saveWallets").click(function(){
         mess = $("#saveWalletsMessage"),
         addresses = wallets.split("\n"), addressValid = true;
 
-    if(wallets == "") {
+    if(wallets === '') {
         mess.css("color","#FF0004");
         mess.text("List of wallets cannot be empty");
         return false;
@@ -238,7 +238,7 @@ $("#saveWallets").click(function(){
             addressValid = false;
             break;
         }
-    };
+    }
 
     if(!addressValid) {
             mess.css("color","#FF0004");

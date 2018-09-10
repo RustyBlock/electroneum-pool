@@ -38,6 +38,7 @@
         update: function(){
             updateText('paymentsTotal', lastStats.pool.totalPayments.toString());
             updateText('paymentsTotalPaid', lastStats.pool.totalMinersPaid.toString());
+            //noinspection NodeModulesDependencies
             updateText('paymentsMinimum', getReadableCoins(lastStats.config.minPaymentThreshold, coinDecimalPlaces));
             updateText('paymentsDenomination', getReadableCoins(lastStats.config.denominationUnit, coinDecimalPlaces));
             renderPayments(lastStats.pool.payments);
@@ -62,6 +63,7 @@
     });
 
 
+    //noinspection JSUnusedLocalSymbols
     function getPaymentCells(payment){
         return '<td>' + formatDate(payment.time) + '</td>' +
                 '<td>' + formatPaymentLink(payment.hash) + '</td>' +

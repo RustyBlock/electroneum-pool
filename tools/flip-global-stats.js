@@ -18,27 +18,29 @@ function flipSet(key, min, max)
             return;
         }
         for(var i=0; i<results.length; i+=2) {
-            var scor = results[i], val = results[i+1];
-            redisClient.zadd(key, scor, scor + ':' + val, function(error, result) {
-                if(error) {
-                    log('error', 'tools', 'Failed to add list item: %s', [error.toString()]);
-                    return;                            
-                }
-                console.log('+' + val);
-            });
-            redisClient.zrem(key, scor, function(error, result) {
-                if(error) {
-                    log('error', 'tools', 'Failed to delete list item: %s', [error.toString()]);
-                    return;                            
-                }
-                console.log('-' + scor);
-            });
+            (function() {
+                var scor = results[i], val = results[i+1];
+                redisClient.zadd(key, scor, scor + ':' + val, function (error) {
+                    if (error) {
+                        log('error', 'tools', 'Failed to add list item: %s', [error.toString()]);
+                        return;
+                    }
+                    console.log('+' + val);
+                });
+                redisClient.zrem(key, scor, function (error) {
+                    if (error) {
+                        log('error', 'tools', 'Failed to delete list item: %s', [error.toString()]);
+                        return;
+                    }
+                    console.log('-' + scor);
+                });
+            })();
         }
     });
 }
 
-flipSet(config.coin + ':stats:blockReward', '-inf', 800000);
-flipSet(config.coin + ':stats:blockTimings', '-inf', 100000);
-flipSet(config.coin + ':stats:networkDiff', 10000000000, '+inf');
-flipSet(config.coin + ':stats:poolHashrate', '-inf', 1000000);
-flipSet(config.coin + ':stats:poolMiners', '-inf', 1000);
+flipSet('electroneum:stats:blockReward', '-inf', 800000);
+flipSet('electroneum:stats:blockTimings', '-inf', 100000);
+flipSet('electroneum:stats:networkDiff', 10000000000, '+inf');
+flipSet('electroneum:stats:poolHashrate', '-inf', 1000000);
+flipSet('electroneum:stats:poolMiners', '-inf', 1000);

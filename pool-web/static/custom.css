@@ -1,16 +1,9 @@
 /* Insert your pool's unique css here */
-.alert-primary {
-	color: #004085;
-	background-color: #cce5ff;
-	border-color: #b8daff;
-}
 .alert-warning {
 	color: #856404;
 	background-color: #fff3cd;
 	border-color: #ffeeba;
 }
-
-
 
 .btn-primary {
 	background-color: #23bee2;
@@ -30,28 +23,17 @@
 	float: right;
 }
 
-
-
 /* Custom margins */
-.mb-20 {
-  margin-bottom: 20px !important;
-}
 
-
-
-
-
-.navbar-inverse {
-	background-color: #091b26;
-}
-.navbar-brand {
-	height: 70px;
-	padding: 10px 15px;
-}
 .navbar-brand img {
-	height: 100%;
 	display: inline-block;
+	margin-top: -9px;
 }
+
+a.navbar-brand {
+	height: 70px;
+}
+
 .navbar-nav>li>a {
 	padding-top: 25px;
 	padding-bottom: 25px;
@@ -62,39 +44,12 @@
 }
 
 @media (max-width: 1024px) {
-	.navbar-header {
-	float: none;
-	}
-	.navbar-left,.navbar-right {
-	float: none !important;
-	}
-	.navbar-toggle {
-	display: block;
-	}
-	.navbar-collapse {
-	border-top: 1px solid transparent;
-	box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-	}
-	.navbar-fixed-top {
-	top: 0;
-	border-width: 0 0 1px;
-	}
-	.navbar-collapse.collapse {
-	display: none!important;
-	}
-	.navbar-nav {
-	float: none!important;
-	margin-top: 7.5px;
-	}
 	.navbar-nav>li {
-	float: none;
+		float: none;
 	}
 	.navbar-nav>li>a {
-	padding-top: 10px;
-	padding-bottom: 10px;
-	}
-	.collapse.in{
-	display:block !important;
+		padding-top: 5px;
+		padding-bottom: 5px;
 	}
 }
 
@@ -141,9 +96,7 @@ input[type='checkbox']  {
 	position: absolute;
     width: 100%;
     height: 100%;
-	background: url(images/spinner.gif);
-	background-position: center;
-	background-repeat: no-repeat;
+	background: url(images/spinner.gif) no-repeat center;
 	z-index: 100;
 	margin: 5px;
 }
@@ -155,4 +108,42 @@ input[type='checkbox']  {
 	opacity: 0.1;
 	z-index: 99;
 	margin: 5px;
+}
+
+@media (max-width: 1028px) {
+	.navbar-header {
+		float: none;
+	}
+	.navbar-toggle {
+		display: block;
+	}
+	.navbar-collapse {
+		border-top: 1px solid transparent;
+		box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+	}
+	.navbar-collapse.collapse {
+		display: none!important;
+	}
+	.navbar-nav {
+		float: none!important;
+		margin: 7.5px -15px;
+	}
+	.navbar-nav>li {
+		float: none;
+	}
+	.navbar-nav>li>a {
+		padding-top: 10px;
+		padding-bottom: 10px;
+	}
+	.navbar-text {
+		float: none;
+		margin: 15px 0;
+	}
+	/* since 3.1.0 */
+	.navbar-collapse.collapse.in {
+		display: block!important;
+	}
+	.collapsing {
+		overflow: hidden!important;
+	}
 }

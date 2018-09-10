@@ -1,4 +1,4 @@
-lastTimeNetHistoryRequested = new Date(2018, 1, 1);
+var lastTimeNetHistoryRequested = new Date(2018, 1, 1);
 
 netChartContainerSelector = 'net-chart-container';
 netBlocksChartContainerSelector = 'netblocks-chart-container';
@@ -7,8 +7,8 @@ netBlocksTitle = 'Block timing (s)';
 netChartUnits = null;
 netBlocksChartUnits = 's';
 netAverageTitle = 'Average';
-netChart = null;
-netBlocksChart = null;
+var netChart = null;
+var netBlocksChart = null;
 
 function updateNetChart(data) {
     window.netChartData = [

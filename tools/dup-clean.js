@@ -68,5 +68,5 @@ redisClient.scan(cursor, 'MATCH', path, 'COUNT', '200', function (error, keys) {
 });
 }
 
-cleanList(config.coin + ':auth:users:*:wallets', '0');
-cleanList(config.coin + ':auth:wallets:*:users', '0');
+cleanList('electroneum:auth:users:*:wallets', '0');
+cleanList('electroneum:auth:wallets:*:users', '0');
