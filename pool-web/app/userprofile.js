@@ -193,7 +193,7 @@ module.exports = function()
                     }
                     log('info', logSystem, 'Password reset for user %s', [user.local.email]);
 
-                    passowrdEmail(req.body.email, newPass, function() {
+                    passowrdEmail(req, newPass, function() {
                         res.redirect(redirectUrl);
                     });
                 });
@@ -213,9 +213,9 @@ module.exports = function()
         return false;
     }
 
-    function passowrdEmail (email, password, callback) {
-        var url = config.www.host + '/#login';
-        mailer.send(email, 'RustyBlock pool: password reset',
+    function passowrdEmail (req, password, callback) {
+        var url = config.www.hosts[config.coin(req)] + '/#login';
+        mailer.send(req.body.email, 'RustyBlock pool: password reset',
             null, 'Hello,<br/><br/>this email address was used for registration on RustyBlock cryptocurrency mining pool. ' + 
             'We\'ve sent this message in response to the password reset request made on RustyBlock web site.<br/><br/>' + 
             'You can <a href="' + url + '" target="_blank">login</a> with your email address as a user name and this password: <b>' + htmlencode.htmlEncode(password) + '</b><br/>' +

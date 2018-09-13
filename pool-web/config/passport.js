@@ -66,7 +66,7 @@ module.exports = function(passport) {
                 if(!user.local.verified)
                     return done(null, false, req.flash('loginMessage', 
                         'Your email address is not verified.<br/>If you did not receive our verification email, we can <a href="' + 
-                         config.www.host + '/verify/' + encodeURIComponent(user.local.email) + '">send it again</a>.'));
+                         config.www.hosts[config.coin(req)] + '/verify/' + encodeURIComponent(user.local.email) + '">send it again</a>.'));
 
                 // all is well, return user
                 else
@@ -121,7 +121,7 @@ module.exports = function(passport) {
                             if (err)
                                 return done(err);
                             
-                            passport.verifyEmail(newUser, function(error){
+                            passport.verifyEmail(req, newUser, function(error){
                                 if(error) {
                                     log('error', logSystem, 'Failed to send email for new user %s: %s', [email, error.toString()]);
                                     // complete user registration anyway
@@ -154,7 +154,7 @@ module.exports = function(passport) {
                             if (err)
                                 return done(err);
 
-                                passport.verifyEmail(user, function(error){
+                                passport.verifyEmail(req, user, function(error){
                                     if(error) {
                                         log('error', logSystem, 'Failed to send email for newly connected user %s: %s', [email, error.toString()]);
                                         // complete user registration anyway
@@ -404,8 +404,8 @@ module.exports = function(passport) {
 
     }));
 
-    passport.verifyEmail = function(user, callback) {
-        var url = config.www.host + '/verify/' + encodeURIComponent(user.local.email) + '/' + user.local.verify_token;
+    passport.verifyEmail = function(req, user, callback) {
+        var url = config.www.hosts[config.coin(req)] + '/verify/' + encodeURIComponent(user.local.email) + '/' + user.local.verify_token;
         mailer.send(user.local.email, 'RustyBlock pool registration: confirm your email',
             null, 'Hello,<br/><br/>this email address was used for registration on RustyBlock cryptocurrency mining pool. ' + 
             'We\'ve sent this message to check ownership of the specified email address.<br/><br/>' + 

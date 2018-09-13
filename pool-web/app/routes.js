@@ -141,7 +141,7 @@ module.exports = function(app, passport) {
                     } else if(user === null) {
                         log('info', logSystem, 'User %s not found for email verification', [userName]);
                     } else {
-                        passport.verifyEmail(user, function(error){
+                        passport.verifyEmail(req, user, function(error){
                             if(error) {
                                 log('error', logSystem, 'Failed to re-send email for user %s: %s', [user.local.email, error.toString()]);
                                 // complete user registration anyway
