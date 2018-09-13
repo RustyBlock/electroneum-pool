@@ -1,6 +1,6 @@
 var poolHosts = {
-    "etn": "etn.rustyblock.com:8117",
-    "xhv": "xhv.rustyblock.com:9117"
+    "etn": "etn.rustyblock.com",
+    "xhv": "xhv.rustyblock.com"
 };
 var blockchainExplorers = {
     "etn": "https://blockexplorer.electroneum.com/block/",
@@ -10,6 +10,15 @@ var transactionExplorers = {
     "etn": "https://blockexplorer.electroneum.com/tx/",
     "xhv": "https://explorer.havenprotocol.com/tx/"
 };
+var coinUnitSizes = {
+    "etn": 100,
+    "xhv": 1000000000000
+};
+var coinDecimals = {
+    "etn": 2,
+    "xhv": 4
+};
+
 window.GetCoinSymbol = function() {
     if(window._coinSymbol) {
         return window._coinSymbol;
@@ -28,6 +37,6 @@ var transactionExplorer = transactionExplorers[GetCoinSymbol()];
 
 //noinspection JSUnusedGlobalSymbols
 var isHttps = location.protocol === 'https:';
-var api = (isHttps ? 'https' : 'http') + "://devapi." + poolHost;
-var coinUnits = 100;
-var coinDecimalPlaces = 2;
+var api = (isHttps ? 'https' : 'http') + "://api." + poolHost;
+var coinSymbol = GetCoinSymbol(), coinUnits = coinUnitSizes[coinSymbol],
+    coinDecimalPlaces = coinDecimals[coinSymbol];

@@ -164,15 +164,18 @@ function spawnPoolWorkers(coin){
                 createPoolWorker(forkId);
             }, 2000);
         }).on('message', function(msg){
-            switch(msg.type){
-                case 'banIP':
-                    Object.keys(cluster.workers).forEach(function(id) {
-                        if (cluster.workers[id].type === 'pool'){
+            Object.keys(cluster.workers).forEach(function(id) {
+                if (cluster.workers[id].type === 'pool') {
+                    switch (msg.type) {
+                        case 'banIP':
                             cluster.workers[id].send({type: 'banIP', ip: msg.ip});
-                        }
-                    });
-                    break;
-            }
+                            break;
+                        case 'poolCache':
+                            cluster.workers[id].send({type: 'poolCache', key: msg.key, data: msg.data, ttl: msg.ttl});
+                            break;
+                    }
+                }
+            });
         });
     };
 
