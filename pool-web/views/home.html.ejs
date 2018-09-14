@@ -416,6 +416,12 @@ function fetchAddressStats(){
 			}
 
 			$('#chartOverlay').hide();
+
+			if(urlParams['miner']) { // clear url from miner address
+				var url = window.location.href.split('?');
+				var query = url[1].split('#');
+                window.location.href = url[0] + (query.length > 1 ? query[1] : '');
+			}
 			setTimeout(fetchAddressStats, 60000);
 		},
 		error: function(e){
