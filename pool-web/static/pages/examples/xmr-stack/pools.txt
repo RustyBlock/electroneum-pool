@@ -17,7 +17,7 @@
 [
 	{
 		"pool_address" : "xhv.rustyblock.com:23333",
-		"wallet_address" : "hvxyLoHkfdr8goq55bZjTVfjfCfjVTSFe1uX7kddiz4K19LLdeUJmjHi4sp9KtDy6ZM2yv3gwSdmfSEdrS5QmaUp6ZJ7zUKBA8",
+		"wallet_address" : "hvxy4fEM7gvaCfoYwDZnZUdB4UxCec3i9a8eowCWNxnoj9pQzmiBNgoXLrU6RZtcthByBrWP6x55jYMRGUQkx5Ze5Vr28iH87h",
 		"rig_id" : "", 
 		"pool_password" : "x", 
 		"use_nicehash" : false, 
