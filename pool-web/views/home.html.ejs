@@ -242,10 +242,9 @@ currentPage = {
 		}
 
 		updateText('poolHashrate', getReadableHashRateString(lastStats.pool.hashrate) + '/sec');
-
+        blckFound = $('#poolLastBlockFound');
 		if (lastStats.pool.lastBlockFound){
-			var d = new Date(parseInt(lastStats.pool.lastBlockFound)).toISOString(),
-				blckFound = $('#poolLastBlockFound');
+			var d = new Date(parseInt(lastStats.pool.lastBlockFound)).toISOString();
 			blckFound.timeago('update', d);
 			blckFound.parent().attr("title", d);
 		}
