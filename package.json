@@ -23,6 +23,7 @@
     "cryptonight-hashing": "git://github.com/MoneroOcean/node-cryptonight-hashing",
     "dateformat": "1.0.12",
     "extend": "3.0.1",
+    "multi-hashing": "git://github.com/Snipa22/node-multi-hashing-aesni.git",
     "node-cache": "^4.2.0",
     "nodemailer": "2.7.2",
     "port-mux": "0.0.9",
