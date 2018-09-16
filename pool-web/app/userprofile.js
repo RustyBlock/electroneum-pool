@@ -5,6 +5,7 @@ module.exports = function()
     var mailer = require('../../lib/mailer');
     var htmlencode = require('htmlencode');
     var randomstring = require("randomstring");
+    var logSystem = 'poolweb';
 
     return {
         changePassword: function(req, res, done) {
