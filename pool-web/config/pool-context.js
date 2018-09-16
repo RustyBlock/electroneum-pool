@@ -13,6 +13,9 @@ module.exports = function(req) {
                 coinMarketId: 2137,
                 walletPrefix: [['etn', 98],['f4V', 109]],
                 promptHtml: 'Calling for ASIC owners to support Electroneum. Happy mining!',
+                warningHtml: '<p style="font-size:x-small;font-family: Verdana, Geneva, Tahoma, sans-serif;"><span style="color: red;font-weight: bold;">Orphaned blocks alert!</span> RustyBlock pool recently found multiple orphaned blocks ' +
+                    'due to the new mining hardware submitting <b>shares for expired blocks</b> even after the pool\'s notification about new job. We are working on pool improvements to avoid confusions and make sure that expired shares ' +
+                    'will not be accepted as blocks. In addition to the fixes for expired shares, we are working on improving transparency of RustyBlock pool by adding <b>live status of our network nodes</b> and real-time tracker for the <b>best shares submitted by miners</b>.</p>',
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.kucoin.com/#/trade.pro/ETN-BTC" target="_blank">KuCoin</a>, <a href="https://accounts.qryptos.com/sign-up?affiliate=LkK_26BZ309235" target="_blank">Qryptos</a>,  <a href="https://www.cryptopia.co.nz/Exchange" target="_blank">Cryptopia</a> and <a href="https://electroneum.com/exchanges/" target="_blank">others</a>.</strong> Use hyphen symbol (-) to separate your ETN wallet address and Payment ID. '+
                     'For example <span style="font-family:Courier New, Courier, monospace">etnjzKFU6ogESSKRZZbdq...BWYqtchtq9tBap8Qr4M<b style="color:chocolate;">-a6e59f7bb27d9ba...8b6df</b></span>.',
                 paperWalletHtml: '<a href="https://downloads.electroneum.com/offline_paper_electroneum_walletV1.6.html" style="float:left;padding: 4px;margin: 4px 10px 0 0;background-color: black;" target="_blank">'+
@@ -28,6 +31,10 @@ module.exports = function(req) {
                 logo: 'images/logoXHV.png',
                 coinMarketId: 2662,
                 walletPrefix: [['hvx', 98],['hvi', 109]],
+                warningHtml: '<p style="font-size:x-small;font-family: Verdana, Geneva, Tahoma, sans-serif;"><span style="color: red;font-weight: bold;">Haven Protocol Governance Fee.</span> RustyBlock takes into account ' +
+                '<a href="https://www.reddit.com/r/havenprotocol/comments/8ohw6t/haven_v3_hardfork_coming_in_2_weeks/" target="_blank"><b>5% Governance Fee</b> introduced by Haven Protocol community since version 3</a>. ' +
+                'Last block reward on the Home page and Reward column on the Stats page display amounts adjusted accordingly, so you may notice the difference of 5% between reward amounts displayed on RustyBlock web site ' +
+                'and reward amount on the <a href="https://explorer.havenprotocol.com" target="_blank">Haven Protocol block explorer</a>.</p>',
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.southxchange.com/Market/Book/XHV/BTC" target="_blank">southXchange</a>.</strong> Use hyphen symbol (-) to separate your XHV wallet address and Payment ID. '+
                     'For example <span style="font-family:Courier New, Courier, monospace">hvxyC6NNG4zMSX4sA8hUe...gsuvoyjAyq3o8o2JsEpX<b style="color:chocolate;">-b02000cccc124e...e548f</b></span>.',
                 paperWalletHtml: '<a href="https://havenwallet.com/#/" style="float:left;margin: 4px 4px 0 0;" target="_blank">'+

@@ -82,9 +82,7 @@
 <div class="row">
 	<div class="alert alert-success clearfix">
 		<p><a href="https://goo.gl/oEM1sM" target="_blank"><b>Join RustyBlock community on &nbsp;<img src="images/slack-logo.png"/></b></a> &nbsp;for discussions and support. Happy mining!</p>
-		<p style="font-size:x-small;font-family: Verdana, Geneva, Tahoma, sans-serif;"><span style="color: red;font-weight: bold;">Orphaned blocks alert!</span> RustyBlock pool recently found multiple orphaned blocks
-		due to the new mining hardware submitting <b>shares for expired blocks</b> even after the pool's notification about new job. We are working on pool improvements to avoid confusions and make sure that expired shares 
-		will not be accepted as blocks. In addition to the fixes for expired shares, we are working on improving transparency of RustyBlock pool by adding <b>live status of our network nodes</b> and real-time tracker for the <b>best shares submitted by miners</b>.</p>
+        <%- pool.currency.warningHtml %>
 	</div>
 </div>
 
