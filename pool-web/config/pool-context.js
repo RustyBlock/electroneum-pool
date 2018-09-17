@@ -12,8 +12,8 @@ module.exports = function(req) {
                 logo: 'images/logo.png',
                 coinMarketId: 2137,
                 walletPrefix: [['etn', 98],['f4V', 109]],
-                promptHtml: 'Calling for ASIC owners to support Electroneum. Happy mining!',
-                warningHtml: '<p style="font-size:x-small;font-family: Verdana, Geneva, Tahoma, sans-serif;"><span style="color: red;font-weight: bold;">Orphaned blocks alert!</span> RustyBlock pool recently found multiple orphaned blocks ' +
+                warningHtml: '<p><a href="https://play.google.com/store/apps/details?id=etn.rusty.block" target="_blank"><img src="images/gplay_badge_small.png">Download our new monitoring app</a> for Android and tell us what you think.</p>' +
+                    '<p style="font-size:x-small;font-family: Verdana, Geneva, Tahoma, sans-serif;"><span style="color: red;font-weight: bold;">Orphaned blocks alert!</span> RustyBlock pool recently found multiple orphaned blocks ' +
                     'due to the new mining hardware submitting <b>shares for expired blocks</b> even after the pool\'s notification about new job. We are working on pool improvements to avoid confusions and make sure that expired shares ' +
                     'will not be accepted as blocks. In addition to the fixes for expired shares, we are working on improving transparency of RustyBlock pool by adding <b>live status of our network nodes</b> and real-time tracker for the <b>best shares submitted by miners</b>.</p>',
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.kucoin.com/#/trade.pro/ETN-BTC" target="_blank">KuCoin</a>, <a href="https://accounts.qryptos.com/sign-up?affiliate=LkK_26BZ309235" target="_blank">Qryptos</a>,  <a href="https://www.cryptopia.co.nz/Exchange" target="_blank">Cryptopia</a> and <a href="https://electroneum.com/exchanges/" target="_blank">others</a>.</strong> Use hyphen symbol (-) to separate your ETN wallet address and Payment ID. '+
@@ -22,8 +22,8 @@ module.exports = function(req) {
                     '<img alt="Electroneum paper (offline) wallet generator" width="195" '+
                     'src="images/paper-wallet.png" /></a><span>An offline wallet is a public Electroneum wallet that you can transfer funds to that was not generated on the Internet. Please keep the generated PDF document safe and secure. There is no way to recover it if it\'s lost or stolen.</span>',
                 desktopWalletPrompt: 'Official Electroneum mobile wallet',
-                walletDownloadHtml: '<a href="https://play.google.com/store/apps/details?id=com.electroneum.mobile" style="float:left;margin: 4px 10px 0 0;" target="_blank">'+
-                    '<img alt="Get it on Google Play" src="https://developer.android.com/images/brand/en_generic_rgb_wo_45.png" /></a>'
+                walletDownloadHtml: '<a href="https://play.google.com/store/apps/details?id=com.electroneum.mobile" style="float:left; target="_blank">'+
+                    '<img alt="Get it on Google Play" src="images/gplay_badge_medium.png"/></a>'
             }, {
                 code: 'XHV',
                 name: 'Haven Protocol',
