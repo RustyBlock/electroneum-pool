@@ -1,0 +1,5 @@
+sudo service poolcore stop
+sudo service poolpay stop
+sudo service poolunlocker stop
+sudo service poolapi stop
+sudo service poolweb stop

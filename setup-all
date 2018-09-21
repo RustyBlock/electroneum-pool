@@ -1,0 +1,10 @@
+sudo forever-service delete poolcore
+sudo forever-service install poolcore -s init.js -o " -module=pool" -e "emailAddressFrom=$emailAddressFrom rustySessionSecret=$rustySessionSecret rustyReCaptchaKey=$rustyReCaptchaKey emailPassword=$emailPassword emailServer=$emailServer emailUser=$emailUser rustyDbUrl=$rustyDbUrl"
+sudo forever-service delete poolpay
+sudo forever-service install poolpay -s init.js -o " -module=payments" -e "emailAddressFrom=$emailAddressFrom rustySessionSecret=$rustySessionSecret rustyReCaptchaKey=$rustyReCaptchaKey emailPassword=$emailPassword emailServer=$emailServer emailUser=$emailUser rustyDbUrl=$rustyDbUrl"
+sudo forever-service delete poolunlocker
+sudo forever-service install poolunlocker -s init.js -o " -module=unlocker" -e "emailAddressFrom=$emailAddressFrom rustySessionSecret=$rustySessionSecret rustyReCaptchaKey=$rustyReCaptchaKey emailPassword=$emailPassword emailServer=$emailServer emailUser=$emailUser rustyDbUrl=$rustyDbUrl"
+sudo forever-service delete poolapi
+sudo forever-service install poolapi -s init.js -o " -module=api" -e "emailAddressFrom=$emailAddressFrom rustySessionSecret=$rustySessionSecret rustyReCaptchaKey=$rustyReCaptchaKey emailPassword=$emailPassword emailServer=$emailServer emailUser=$emailUser rustyDbUrl=$rustyDbUrl"
+sudo forever-service delete poolweb
+sudo forever-service install poolweb -s init.js -o " -module=web" -e "emailAddressFrom=$emailAddressFrom rustySessionSecret=$rustySessionSecret rustyReCaptchaKey=$rustyReCaptchaKey emailPassword=$emailPassword emailServer=$emailServer emailUser=$emailUser rustyDbUrl=$rustyDbUrl"

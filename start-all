@@ -1,0 +1,5 @@
+sudo service poolcore start
+sudo service poolpay start
+sudo service poolunlocker start
+sudo service poolapi start
+sudo service poolweb start
