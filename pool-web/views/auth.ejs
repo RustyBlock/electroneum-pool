@@ -32,14 +32,14 @@
         <% } %>
         <button class="btn btn-primary"
             onclick="validateCredentials(event)"
-            id="submit_<%= action %>" <%= (action === 'signup' ? ' disabled="disabled"' : '') %>><%= actionTitle %></button>
+            id="submit_<%= action %>" <%= (action === 'signup' ? ' disabled="disabled"' : '') %>><%= actionTitle %></button><!--
         <div class="fb-login-button" style="top:5px;"
              data-max-rows="1"
              data-size="medium"
              data-button-type="login_with"
              data-show-faces="false"
              data-auto-logout-link="false"
-             data-use-continue-as="false"></div>
+             data-use-continue-as="false"></div>-->
         <hr>
         <p><% include ../static/pages/recaptcha.html %><%- include(promptLocation) %></p>
     </form>
