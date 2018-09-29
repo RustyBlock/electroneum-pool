@@ -1,3 +1,13 @@
+<div id="fb-root"></div>
+<script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.1&appId=277108029763781&autoLogAppEvents=1';
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 <div class="container">
 <div class="col-sm-6 col-sm-offset-3">
     <% if (message) { %>
@@ -20,9 +30,16 @@
             <input type="password" class="form-control" name="password" title="password">
         </div>
         <% } %>
-        <button class="btn btn-primary" 
-            onclick="validateCredentials(event)" 
+        <button class="btn btn-primary"
+            onclick="validateCredentials(event)"
             id="submit_<%= action %>" <%= (action === 'signup' ? ' disabled="disabled"' : '') %>><%= actionTitle %></button>
+        <div class="fb-login-button" style="top:5px;"
+             data-max-rows="1"
+             data-size="medium"
+             data-button-type="login_with"
+             data-show-faces="false"
+             data-auto-logout-link="false"
+             data-use-continue-as="false"></div>
         <hr>
         <p><% include ../static/pages/recaptcha.html %><%- include(promptLocation) %></p>
     </form>
