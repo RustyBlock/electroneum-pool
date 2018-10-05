@@ -11,10 +11,13 @@ var mongoose = require('../pool-web/node_modules/mongoose');
 mongoose.connect(process.env.rustyDbUrl, { useMongoClient: true }); // connect to our database
 
 var User = require('../pool-web/app/models/user');
+var coin = process.argv[2] || 'electroneum';
+
+log('info', logSystem, 'Using coin %s', [coin]);
 
 function scan() {
 
-    redisClient.scan(cursor, 'MATCH', 'electroneum:auth:users:5*', 'COUNT', '500', function (error, reply) {
+    redisClient.scan(cursor, 'MATCH', coin + ':auth:users:5*', 'COUNT', '500', function (error, reply) {
         cursor = reply[0];
         if(error) {
             log('error', logSystem, 'Failed to query users: %s', [error.toString()]);
@@ -29,6 +32,7 @@ function scan() {
                 var keys = keyRedis.split(':');
                 var key = keys.slice(0, 4).join(':');
                 if(doneKeys[key]) {
+                    log('info', logSystem, 'Key %s is already processed', [key]);
                     return;
                 } else {
                     doneKeys[key] = true;
@@ -45,11 +49,13 @@ function scan() {
                         fs.appendFile('emails.csv', result + '\n', function(err) {
                             if(err) {
                                 log('error', logSystem, 'Failed to write email to file: %s', [err.toString()]);
+                            } else {
+                                log('info', logSystem, 'File appended for %s', [key]);
                             }
                         });
-                        return;
+                    } else {
+                        copyUserEmail(keys[3]);
                     }
-                    copyUserEmail(keys[3]);
                 });
             });
         }
@@ -71,12 +77,18 @@ function copyUserEmail(userId) {
             return;
         }
 
-        redisClient.hset('electroneum:auth:users:' + userId, 'email', user.local.email, function(error) {
+        redisClient.hset(coin + ':auth:users:' + userId, 'email', user.local.email, function(error) {
             if(error) {
                 log('error', logSystem, 'Failed to update user %s: %s', [userId, error.toString()]);
                 return;
             }
-            log('info', logSystem, 'Set email for user %s', [userId]);            
+            log('info', logSystem, 'Set email for user %s', [userId]);
+
+            fs.appendFile('emails.csv', result + '\n', function(err) {
+                if(err) {
+                    log('error', logSystem, 'Failed to write email to file: %s', [err.toString()]);
+                }
+            });
         });
     });
 }
