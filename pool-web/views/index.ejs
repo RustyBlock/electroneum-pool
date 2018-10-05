@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-
+	<% var shortCoinName = pool.currency.name.split(' ')[0].toLowerCase(); %>
 	<meta charset="UTF-8">
-	<meta name="description" content="Efficient, secure, community-friendy and transparent <%= pool.currency.name %> mining pool. Proportional reward split, 0.1% commission, regular payouts, min payout <%= pool.currency.code %> 5" />
+	<meta name="description" content="Efficient, secure, community-friendy and transparent <%= pool.currency.name %> mining pool. Proportional reward split,
+		<%= config.blockUnlocker.poolFee[shortCoinName] %>% commission, regular payouts, min payout <%= pool.currency.code %>
+	<%= config.payments.minPayment[shortCoinName] / config.payments.denomination[shortCoinName] %>" />
 	<meta name="keywords" content="<%= pool.currency.code %>, <%= pool.currency.name %>, pool, mining, cryptocurrency, cryptonight, rustyblock, xmrstak, claymore, xmrig, nicehash" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 	<meta name="yandex-verification" content="8fd4423ebd2b63b1" />
