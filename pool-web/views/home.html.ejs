@@ -420,7 +420,7 @@ function fetchAddressStats(){
 				var query = url[1].split('#');
                 window.location.href = url[0] + (query.length > 1 ? query[1] : '');
 			}
-			setTimeout(fetchAddressStats, 60000);
+            addressTimeout = setTimeout(fetchAddressStats, 60000);
 		},
 		error: function(e){
 			$('#chartOverlay').hide();
