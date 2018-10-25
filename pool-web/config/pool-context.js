@@ -12,10 +12,7 @@ module.exports = function(req) {
                 logo: 'images/logo.png',
                 coinMarketId: 2137,
                 walletPrefix: [['etn', 98],['f4V', 109]],
-                warningHtml: '<p><a href="https://play.google.com/store/apps/details?id=etn.rusty.block" target="_blank"><img src="images/gplay_badge_small.png">Download our new monitoring app</a> for Android and tell us what you think.</p>' +
-                    '<p style="font-size:x-small;font-family: Verdana, Geneva, Tahoma, sans-serif;"><span style="color: red;font-weight: bold;">Orphaned blocks alert!</span> RustyBlock pool recently found multiple orphaned blocks ' +
-                    'due to the new mining hardware submitting <b>shares for expired blocks</b> even after the pool\'s notification about new job. We are working on pool improvements to avoid confusions and make sure that expired shares ' +
-                    'will not be accepted as blocks. In addition to the fixes for expired shares, we are working on improving transparency of RustyBlock pool by adding <b>live status of our network nodes</b> and real-time tracker for the <b>best shares submitted by miners</b>.</p>',
+                warningHtml: '<p><a href="https://play.google.com/store/apps/details?id=etn.rusty.block" target="_blank"><img src="images/gplay_badge_small.png">Download our new monitoring app</a> for Android and tell us what you think.</p>',
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.kucoin.com/#/trade.pro/ETN-BTC" target="_blank">KuCoin</a>, <a href="https://accounts.qryptos.com/sign-up?affiliate=LkK_26BZ309235" target="_blank">Qryptos</a>,  <a href="https://www.cryptopia.co.nz/Exchange" target="_blank">Cryptopia</a> and <a href="https://electroneum.com/exchanges/" target="_blank">others</a>.</strong> Use hyphen symbol (-) to separate your ETN wallet address and Payment ID. '+
                     'For example <span style="font-family:Courier New, Courier, monospace">etnjzKFU6ogESSKRZZbdq...BWYqtchtq9tBap8Qr4M<b style="color:chocolate;">-a6e59f7bb27d9ba...8b6df</b></span>.',
                 paperWalletHtml: '<a href="https://downloads.electroneum.com/offline_paper_electroneum_walletV1.6.html" style="float:left;padding: 4px;margin: 4px 10px 0 0;background-color: black;" target="_blank">'+
