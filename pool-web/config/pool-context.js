@@ -31,10 +31,7 @@ module.exports = function(req) {
                 logo: 'images/logoXHV.png',
                 coinMarketId: 2662,
                 walletPrefix: [['hvx', 98],['hvi', 109]],
-                warningHtml: '<p style="font-size:x-small;font-family: Verdana, Geneva, Tahoma, sans-serif;"><span style="color: red;font-weight: bold;">Haven Protocol Governance Fee.</span> RustyBlock takes into account ' +
-                '<a href="https://www.reddit.com/r/havenprotocol/comments/8ohw6t/haven_v3_hardfork_coming_in_2_weeks/" target="_blank"><b>5% Governance Fee</b> introduced by Haven Protocol community since version 3</a>. ' +
-                'Last block reward on the Home page and Reward column on the Stats page display amounts adjusted accordingly, so you may notice the difference of 5% between reward amounts displayed on RustyBlock web site ' +
-                'and reward amount on the <a href="https://explorer.havenprotocol.com" target="_blank">Haven Protocol block explorer</a>.</p>',
+                warningHtml: '',
                 walletPromptHtml: '<strong>We support direct mining to exchange accounts with Payment ID, e.g. <a href="https://www.southxchange.com/Market/Book/XHV/BTC" target="_blank">southXchange</a>.</strong> Use hyphen symbol (-) to separate your XHV wallet address and Payment ID. '+
                     'For example <span style="font-family:Courier New, Courier, monospace">hvxyC6NNG4zMSX4sA8hUe...gsuvoyjAyq3o8o2JsEpX<b style="color:chocolate;">-b02000cccc124e...e548f</b></span>.',
                 paperWalletHtml: '<a href="https://havenwallet.com/#/" style="float:left;margin: 4px 4px 0 0;" target="_blank">'+
