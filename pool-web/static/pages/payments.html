@@ -15,12 +15,10 @@
             <th><i class="fa fa-paw"></i> Transaction Hash</th>
             <th><i class="fa fas fa-money-bill-alt"></i> Amount</th>
             <th><i class="fa fa-tag"></i> Fee</th>
-            <th><i class="fa fa-sitemap"></i> Mixin</th>
             <th><i class="fa fas fa-users"></i> Payees</th>
         </tr>
         </thead>
         <tbody id="stats_rows" class="stats_rows">
-
         </tbody>
     </table>
 </div>
@@ -69,7 +67,6 @@
                 '<td>' + formatPaymentLink(payment.hash) + '</td>' +
                 '<td>' + getReadableCoins(payment.amount, coinDecimalPlaces, true) + '</td>' +
                 '<td>' + getReadableCoins(payment.fee, coinDecimalPlaces, true) + '</td>' +
-                '<td>' + payment.extra + '</td>' +
                 '<td>' + payment.recipients + '</td>';
     }
 
