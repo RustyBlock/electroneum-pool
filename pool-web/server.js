@@ -24,7 +24,7 @@ mongoose.connect(process.env.rustyDbUrl, { useMongoClient: true }); // connect t
 
 require('./config/passport')(passport); // pass passport for configuration
 
-logSystem = 'poolweb';
+globals.logSystem = 'poolweb';
 require('../lib/logger.js');
 require('../lib/exceptionWriter.js')(logSystem);
 

@@ -49,11 +49,13 @@ module.exports = function(req) {
 
 function getCurrencyFromRequest(ctx, req) {
     var subs = req.hostname.split('.').reverse();
+    var retVal = JSON.parse(JSON.stringify(ctx.supportedCurrencies[0]));
     if(subs.length < 3) {
-        throw new Error('Site URL expected to have at least 2 subdomain names');
+        var curr = ctx.supportedCurrencies[0];
+        log('warn', logSystem, 'Failed to determine coin from host address %s, defaulted to %s', [req.hostname, retVal.code]);
+        return retVal;
     }
     subs[2] = subs[2].toLowerCase(); // expect 3rd level domain is currency code
-    var retVal = JSON.parse(JSON.stringify(ctx.supportedCurrencies[0]));
     for(var i=1; i<ctx.supportedCurrencies.length;i++) {
         var cur = ctx.supportedCurrencies[i].code.toLowerCase();
         if(cur === subs[2]) {
