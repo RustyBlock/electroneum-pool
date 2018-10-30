@@ -35,8 +35,7 @@ app.use(bodyParser.json()); // get information from html forms
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(function (req, res, next) {
-    var ret = redirect(req, res);
-    return ret ? ret : next();
+    return redirect(req, res, next);
 });
 
 app.set('view engine', 'ejs'); // set up ejs for templating
