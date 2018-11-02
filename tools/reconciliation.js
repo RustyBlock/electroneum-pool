@@ -56,7 +56,11 @@ redisClient.zrangebyscore(coin + ':blocks:matured', from, to, 'WITHSCORES', func
                                 if (error) {
                                     throw new Error('Failed to get worker data: ' + error.toString());
                                 }
-                                log('info', logSystem, '%s,%s,%s,%s', [wal, wallets[wal], bal.paid ? bal.paid : 0, bal.balance]);
+                                if(bal) {
+                                    log('info', logSystem, '%s,%s,%s,%s', [wal, wallets[wal], bal.paid ? bal.paid : 0, bal.balance]);
+                                } else {
+                                    throw new Error('No worker record for ' + wal + ' in round ' + blockNum);
+                                }
                             });
                         })(wal);
                     }
