@@ -35,13 +35,21 @@ redisClient.zrangebyscore(coin + ':blocks:matured', from, to, 'WITHSCORES', func
                 var sum = 0, roundWallets = {};
                 for (var j = 0; j < res.length; j += 2) {
                     sum += parseInt(res[j + 1]);
-                    roundWallets[res[j]] = res[j + 1];
+                    var walAddress = res[j].split(':'),
+                        wal = roundWallets[walAddress[0]] ? roundWallets[walAddress[0]] : { amount: 0, penalty: false };
+                    wal.amount += res[j + 1];
+                    wal.penalty = wal.penalty | (walAddress.length > 1);
+                    roundWallets[walAddress[0]] = wal;
                 }
                 for (var wal in roundWallets) {
                     if (!roundWallets.hasOwnProperty(wal)) {
                         continue;
                     }
-                    var cut = (roundWallets[wal] / sum) * reward;
+                    if(roundWallets[wal].penalty) {
+                        roundWallets[wal].amount= roundWallets[wal].amount / 2;
+                        sum -= roundWallets[wal].amount / 2;
+                    }
+                    var cut = (roundWallets[wal].amount / sum) * reward;
                     wallets[wal] = (wallets[wal] ? wallets[wal] : 0) + cut;
                     //log('info', logSystem, 'Added %s to %s for %s', [cut, wal, blockNum]);
                 }
@@ -51,7 +59,7 @@ redisClient.zrangebyscore(coin + ':blocks:matured', from, to, 'WITHSCORES', func
                         if (!wallets.hasOwnProperty(wal)) {
                             continue;
                         }
-                        (function (wal, blockNum) {
+                        (function (wal) {
                             redisClient.hgetall(coin + ':workers:' + wal, function (error, bal) {
                                 if (error) {
                                     throw new Error('Failed to get worker data: ' + error.toString());
@@ -59,10 +67,10 @@ redisClient.zrangebyscore(coin + ':blocks:matured', from, to, 'WITHSCORES', func
                                 if(bal) {
                                     log('info', logSystem, '%s,%s,%s,%s', [wal, wallets[wal], bal.paid ? bal.paid : 0, bal.balance]);
                                 } else {
-                                    throw new Error('No worker record for ' + wal + ' in round ' + blockNum);
+                                    throw new Error('No worker record for ' + wal);
                                 }
                             });
-                        })(wal, blockNum);
+                        })(wal);
                     }
                 }
             });
