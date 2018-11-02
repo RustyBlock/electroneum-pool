@@ -28,9 +28,9 @@ redisClient.zrangebyscore(coin + ':blocks:matured', from, to, 'WITHSCORES', func
         blockNum = results[i+1];
         var reward = block[5] - (block[5] * commission / 100); // subtract commission
         (function(blockNum, reward) {
-            redisClient.zrange(coin + ':shares:round-' + results[i + 1], 0, -1, 'WITHSCORES', function (error, res) {
+            redisClient.zrange(coin + ':shares:round-' + blockNum, 0, -1, 'WITHSCORES', function (error, res) {
                 if (error) {
-                    throw Error('Failed to get round ' + results[i + 1] + ': ' + error.toString());
+                    throw Error('Failed to get round ' + blockNum + ': ' + error.toString());
                 }
                 var sum = 0, roundWallets = {};
                 for (var j = 0; j < res.length; j += 2) {
@@ -51,7 +51,7 @@ redisClient.zrangebyscore(coin + ':blocks:matured', from, to, 'WITHSCORES', func
                         if (!wallets.hasOwnProperty(wal)) {
                             continue;
                         }
-                        (function (wal) {
+                        (function (wal, blockNum) {
                             redisClient.hgetall(coin + ':workers:' + wal, function (error, bal) {
                                 if (error) {
                                     throw new Error('Failed to get worker data: ' + error.toString());
@@ -62,7 +62,7 @@ redisClient.zrangebyscore(coin + ':blocks:matured', from, to, 'WITHSCORES', func
                                     throw new Error('No worker record for ' + wal + ' in round ' + blockNum);
                                 }
                             });
-                        })(wal);
+                        })(wal, blockNum);
                     }
                 }
             });
