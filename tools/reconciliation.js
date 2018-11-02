@@ -4,12 +4,12 @@ require('../lib/logger.js');
 
 global.redisClient = redis.createClient(config.redis.port, config.redis.host, {auth_pass: config.redis.auth});
 
-var logSystem = 'tools', coin = 'haven';
+var logSystem = 'tools', coin = process.argv[2];
 require('../lib/exceptionWriter.js')(logSystem);
 
-var from = process.argv[2], to = process.argv[3], commission = parseFloat(process.argv[4]);
-if(isNaN(from) || isNaN(to) || isNaN(commission)) {
-    throw Error('Must specify start and end block numbers as arguments then commission percentage');
+var from = process.argv[3], to = process.argv[4], commission = parseFloat(process.argv[5]);
+if(!coin || isNaN(from) || isNaN(to) || isNaN(commission)) {
+    throw Error('Must specify arguments: <coin> <start block> <end block> <commission percentage>');
 }
 
 from = from === '0' ? '-inf' : from;
