@@ -38,7 +38,6 @@ if (cluster.isWorker){
 var logSystem = 'master';
 require('./lib/exceptionWriter.js')(logSystem);
 
-
 var singleModule = (function(){
 
     var validModules = ['pool', 'api', 'unlocker', 'payments', 'web'];
@@ -65,9 +64,7 @@ var singleModule = (function(){
 
             switch(singleModule){
                 case 'pool':
-                    for(var i=0; i<config.coins.length; i++) {
-                        spawnPoolWorkers(config.coins[i]);
-                    }
+                    spawnPoolWorker();
                     break;
                 case 'unlocker':
                     spawnBlockUnlocker();
@@ -84,9 +81,7 @@ var singleModule = (function(){
             }
         }
         else{
-            for(var i=0; i<config.coins.length; i++) {
-                spawnPoolWorkers(config.coins[i]);
-            }
+            spawnPoolWorker();
             spawnBlockUnlocker();
             spawnPaymentProcessor();
             spawnApi();
@@ -128,15 +123,17 @@ function checkRedisVersion(callback){
     });
 }
 
-function spawnPoolWorkers(coin){
+function spawnPoolWorker(){
 
-    if (!config.poolServer || !config.poolServer.enabled || !config.poolServer.ports || config.poolServer.ports[coin].length === 0) return;
+    if (!config.poolServer || !config.poolServer.enabled || !config.poolServer.ports) return;
 
-    if (config.poolServer.ports[coin].length === 0){
-        log('error', logSystem, 'Pool server enabled but no ports specified');
-        return;
+    for(var i=0;i<config.coins.length;i++) {
+        var coin = config.coins[i];
+        if (config.poolServer.ports[coin].length === 0) {
+            log('error', logSystem + '-' + config.symbols[i].toLowerCase(), 'Pool server enabled but no ports specified');
+            return;
+        }
     }
-
 
     var numForks = (function(){
         if (!config.poolServer.clusterForks)
