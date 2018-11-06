@@ -1,3 +1,6 @@
+Not maintained, pools are off
+====================
+
 Electroneum Pool (node-cryptonote-pool)
 ====================
 
